@@ -16,7 +16,11 @@ export default [
       ecmaVersion: "latest",
       sourceType: "module",
       globals: {
-        ...globals.browser,
+        ...Object.fromEntries(Object.entries(globals.browser).map(([k, v]) => [k.trim(), v])),
+        React: true,
+        module: true,
+        require: true,
+        __dirname: true,
       },
     },
     plugins: {
