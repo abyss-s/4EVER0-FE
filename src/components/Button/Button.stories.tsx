@@ -1,5 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Button } from "./Button";
+import { buttonVariants } from "./buttonVariants";
+import type { VariantProps } from "class-variance-authority";
+
+type ButtonVariant = VariantProps<typeof buttonVariants>["variant"];
+type ButtonSize = VariantProps<typeof buttonVariants>["size"];
 
 const meta: Meta<typeof Button> = {
   title: "Components/Button",
@@ -21,7 +26,6 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-// Playground
 export const Playground: Story = {
   args: {
     children: "Button",
@@ -30,15 +34,16 @@ export const Playground: Story = {
   },
 };
 
-// Visual Summary
 export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-wrap gap-4">
-      {["default", "destructive", "outline", "secondary", "ghost", "link"].map((variant) => (
-        <Button key={variant} variant={variant as any}>
-          {variant}
-        </Button>
-      ))}
+      {(["default", "destructive", "outline", "secondary", "ghost", "link"] as ButtonVariant[]).map(
+        (variant) => (
+          <Button key={variant} variant={variant}>
+            {variant}
+          </Button>
+        ),
+      )}
     </div>
   ),
 };
@@ -46,8 +51,8 @@ export const AllVariants: Story = {
 export const AllSizes: Story = {
   render: () => (
     <div className="flex gap-4">
-      {["sm", "default", "lg", "icon"].map((size) => (
-        <Button key={size} size={size as any}>
+      {(["sm", "default", "lg", "icon"] as ButtonSize[]).map((size) => (
+        <Button key={size} size={size}>
           {size === "icon" ? "⭐️" : size}
         </Button>
       ))}

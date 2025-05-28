@@ -1,9 +1,9 @@
 ---
 name: Feature request Template
 about: Suggest an idea for this project
-title: '[FEAT]'
-labels: ''
-assignees: ''
+title: "[FEAT]"
+labels: ""
+assignees: ""
 ---
 
 ### 💼 작업 설명
