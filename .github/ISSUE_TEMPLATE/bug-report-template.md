@@ -2,9 +2,8 @@
 name: Bug report Template
 about: Create a report to help us improve
 title: "[BUG]"
-labels: ''
-assignees: ''
-
+labels: ""
+assignees: ""
 ---
 
 ## ✨ 어떤 버그인가요?

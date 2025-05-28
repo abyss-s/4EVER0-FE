@@ -11,7 +11,9 @@
     "test": "jest --watchAll",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token=chpt_2ca9de6b3535f59"
+    "chromatic": "npx chromatic --project-token=chpt_2ca9de6b3535f59",
+    "format": "prettier --cache --write .",
+    "prepare": "husky"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
@@ -54,6 +56,7 @@
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-storybook": "^0.12.0",
+    "husky": "^9.1.7",
     "playwright": "^1.52.0",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
