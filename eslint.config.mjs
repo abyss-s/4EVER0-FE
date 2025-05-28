@@ -11,6 +11,7 @@ import globals from "globals";
 export default [
   {
     files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
+    ignores: ["dist/**", "build/**", "coverage/**", "node_modules/**", "*.d.ts", "*.log"],
     languageOptions: {
       parser: tsParser,
       ecmaVersion: "latest",
