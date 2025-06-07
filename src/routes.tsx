@@ -17,11 +17,11 @@ import DesignSystemTest from '@/pages/test/DesignSystemTest';
 import UBTI from '@/pages/ubti/UBTI';
 import UplTuple from '@/pages/upltuple/UplTuple';
 import NaverMap from '@/components/NaverMap/NaverMap';
-import BaseLayout from './components/Layout/BaseLayout';
+import Layout from './components/Layout/Layout';
 
 const routes: RouteObject[] = [
   {
-    element: <BaseLayout />,
+    element: <Layout />,
     children: [
       // index:true 로 "/" 기본페이지 지정
       { index: true, element: <Home /> },
