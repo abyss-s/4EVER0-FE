@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { logout } from '../utils/auth';
+import { logout } from '@/utils/auth';
 import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
