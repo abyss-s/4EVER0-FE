@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import type { NaverMapOptions, MarkerOptions } from "@/types.ts/naverMap";
+import type { NaverMapOptions, MarkerOptions } from "@/types/naverMap";
 
 export function useNaverMap(options: NaverMapOptions = {}) {
   const mapRef = useRef<HTMLDivElement>(null);

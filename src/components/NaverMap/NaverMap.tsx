@@ -1,6 +1,6 @@
 import React from "react";
 import { useNaverMap } from "@/hooks/useNaverMap";
-import type { NaverMapOptions } from "@/types.ts/naverMap";
+import type { NaverMapOptions } from "@/types/naverMap";
 
 interface NaverMapProps {
   className?: string;
