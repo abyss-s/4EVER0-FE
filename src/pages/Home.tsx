@@ -1,6 +1,6 @@
-import { useCallback } from "react";
-import { logout } from "../utils/auth";
-import { useNavigate } from "react-router-dom";
+import { useCallback } from 'react';
+import { logout } from '../utils/auth';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -8,10 +8,10 @@ const Home = () => {
   const handleLogout = useCallback(async () => {
     try {
       await logout();
-      navigate("/login");
+      navigate('/login');
     } catch (e) {
-      console.error("로그아웃 실패", e);
-      alert("로그아웃 중 오류가 발생했습니다.");
+      console.error('로그아웃 실패', e);
+      alert('로그아웃 중 오류가 발생했습니다.');
     }
   }, [navigate]);
 

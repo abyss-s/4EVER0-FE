@@ -1,10 +1,10 @@
 /* 1) Import custom CSS files like tokens, base styles, and utilities first */
-@import "./tokens.css";
-@import "./base.css";
-@import "./utilities.css";
+@import './tokens.css';
+@import './base.css';
+@import './utilities.css';
 
 /* 2) Import TailwindCSS core styles using @import or @tailwind directives */
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* 3) Define custom dark mode variants with @custom-variant for `.dark` class */
 @custom-variant dark (&:where(.dark, .dark *));

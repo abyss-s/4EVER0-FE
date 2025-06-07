@@ -1,6 +1,6 @@
-import React from "react";
-import { useNaverMap } from "@/hooks/useNaverMap";
-import type { NaverMapOptions } from "@/types/naverMap";
+import React from 'react';
+import { useNaverMap } from '@/hooks/useNaverMap';
+import type { NaverMapOptions } from '@/types/naverMap';
 
 interface NaverMapProps {
   className?: string;
@@ -11,7 +11,7 @@ interface NaverMapProps {
 }
 
 export default function NaverMap({
-  className = "",
+  className = '',
   style = {},
   options = {},
   onMapLoad,
@@ -26,8 +26,8 @@ export default function NaverMap({
   }, [isLoaded, mapInstance, onMapLoad]);
 
   return (
-    <div className={`naver-map ${className}`} style={{ width: "100%", height: "400px", ...style }}>
-      <div ref={mapRef} style={{ width: "100%", height: "100%" }} />
+    <div className={`naver-map ${className}`} style={{ width: '100%', height: '400px', ...style }}>
+      <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
 
       {isLoaded && children}
     </div>
