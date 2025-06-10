@@ -1,4 +1,4 @@
-import { API_BASE_URL, apiWithToken, apiWithoutToken } from "./apiconfig";  
+import { API_BASE_URL, apiWithToken, apiWithoutToken } from './apiconfig';
 
 export type Provider = 'google' | 'kakao' | 'naver';
 
@@ -10,7 +10,7 @@ export function loginViaProvider(provider: Provider) {
 export async function refreshAccessToken(userId: string): Promise<void> {
   try {
     await apiWithoutToken.post(`/auth/refresh`, null, {
-      params: { userId }
+      params: { userId },
     });
     // 서버에서 Set-Cookie 헤더로 ACCESS_TOKEN 쿠키를 다시 내려줍니다.
   } catch (e) {
