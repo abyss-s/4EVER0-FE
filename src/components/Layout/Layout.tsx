@@ -1,5 +1,5 @@
-import { Outlet } from "react-router-dom";
-import { ThemeProvider } from "@/provider/ThemeProvider";
+import { Outlet } from 'react-router-dom';
+import { ThemeProvider } from '@/provider/ThemeProvider';
 
 const Layout = (): React.ReactElement => {
   return (

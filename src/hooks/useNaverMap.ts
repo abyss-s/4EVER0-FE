@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, useCallback } from "react";
-import type { NaverMapOptions, MarkerOptions } from "@/types.ts/naverMap";
+import { useEffect, useRef, useState, useCallback } from 'react';
+import type { NaverMapOptions, MarkerOptions } from '@/types/naverMap';
 
 export function useNaverMap(options: NaverMapOptions = {}) {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -52,7 +52,7 @@ export function useNaverMap(options: NaverMapOptions = {}) {
             const currentMarker = new naver.maps.Marker({
               position: currentPos,
               map: mapInstanceRef.current,
-              title: "현재 위치",
+              title: '현재 위치',
               icon: {
                 content:
                   '<div style="background: #4285f4; border-radius: 50%; width: 12px; height: 12px; border: 3px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"></div>',
@@ -64,7 +64,7 @@ export function useNaverMap(options: NaverMapOptions = {}) {
           }
         },
         (error) => {
-          console.warn("위치 정보를 가져올 수 없습니다:", error.message);
+          console.warn('위치 정보를 가져올 수 없습니다:', error.message);
         },
         {
           enableHighAccuracy: true,
@@ -138,11 +138,11 @@ export function useNaverMap(options: NaverMapOptions = {}) {
       initializeMap();
     } else {
       // 스크립트 로드 완료 이벤트 리스너 추가
-      window.addEventListener("naver-maps-loaded", handleMapLoad);
+      window.addEventListener('naver-maps-loaded', handleMapLoad);
     }
 
     return () => {
-      window.removeEventListener("naver-maps-loaded", handleMapLoad);
+      window.removeEventListener('naver-maps-loaded', handleMapLoad);
       // 컴포넌트 언마운트 시 마커들 정리
       markersRef.current.forEach((marker) => marker.setMap(null));
       markersRef.current = [];

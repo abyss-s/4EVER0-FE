@@ -1,0 +1,13 @@
+{
+  // 저장할 때 항상 Prettier 포맷터 사용
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+
+  // Prettier 설정 덮어쓰기
+  "prettier.singleQuote": true,
+  "prettier.semi": true,
+  "prettier.tabWidth": 2,
+  "prettier.printWidth": 100,
+  "prettier.trailingComma": "all",
+  "prettier.bracketSpacing": true
+}
