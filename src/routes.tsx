@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouteObject } from 'react-router-dom';
-import Layout from '@/components/Layout/Layout';
 import Home from '@/pages/home/Home';
 import Attendance from '@/pages/attendance/Attendance';
 import Chatbot from '@/pages/chatbot/Chatbot';
@@ -18,10 +17,11 @@ import DesignSystemTest from '@/pages/test/DesignSystemTest';
 import UBTI from '@/pages/ubti/UBTI';
 import UplTuple from '@/pages/upltuple/UplTuple';
 import NaverMap from '@/components/NaverMap/NaverMap';
+import BaseLayout from './components/Layout/BaseLayout';
 
 const routes: RouteObject[] = [
   {
-    element: <Layout />,
+    element: <BaseLayout />,
     children: [
       // index:true 로 "/" 기본페이지 지정
       { index: true, element: <Home /> },
