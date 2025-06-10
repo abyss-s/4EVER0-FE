@@ -1,9 +1,5 @@
 // src/utils/apiconfig.ts
-import axios, {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse,
-} from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { logout, refreshAccessToken } from "./auth";
 
 export const API_BASE_URL = "http://localhost:5050";
@@ -69,5 +65,5 @@ apiWithToken.interceptors.response.use(
     }
 
     return Promise.reject(err);
-  }
+  },
 );
