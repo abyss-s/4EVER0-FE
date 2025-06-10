@@ -9,11 +9,12 @@ export const buttonVariants = cva(
         destructive:
           'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         outline:
-          'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 dark:hover:text-accent-foreground',
+          'border border-gray-300 bg-background text-gray-700 shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 dark:hover:text-accent-foreground',
         secondary: 'bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80',
         ghost:
           'text-foreground hover:bg-accent hover:text-accent-foreground dark:text-foreground dark:hover:bg-accent/50 dark:hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline dark:text-primary dark:hover:text-primary/80',
+        login: 'bg-[#25394B] text-white rounded-[8px] hover:bg-[#1d2f3d]',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',
