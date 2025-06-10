@@ -22,6 +22,7 @@ export default [
         module: true,
         require: true,
         __dirname: true,
+        naver: true,
       },
     },
     plugins: {
