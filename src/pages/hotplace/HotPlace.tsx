@@ -36,7 +36,7 @@ const Hotplace = () => {
   const bestDeals = [
     {
       rank: 1,
-      title: '팝업맵 오픈기념',
+      title: '팝업 오픈기념',
       subtitle: '팝업스토어 정보를 한눈에!',
       discount: '30%할인',
       badge: '신규',

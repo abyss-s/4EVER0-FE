@@ -1,7 +1,7 @@
-import { Outlet } from "react-router-dom";
-import { ThemeProvider } from "@/provider/ThemeProvider";
-import TopNav from "./TopNav";
-import BottomNav from "./BottomNav";
+import { Outlet } from 'react-router-dom';
+import { ThemeProvider } from '@/provider/ThemeProvider';
+import TopNav from './TopNav';
+import BottomNav from './BottomNav';
 
 const Layout = (): React.ReactElement => {
   return (
