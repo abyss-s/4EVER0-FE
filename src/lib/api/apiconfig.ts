@@ -1,12 +1,7 @@
-// src/utils/apiconfig.ts
-import axios, {
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse,
-} from "axios";
-import { logout, refreshAccessToken } from "./auth";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { logout, refreshAccessToken } from "@/utils/auth";
 
-export const API_BASE_URL = "http://localhost:5050";
+export const API_BASE_URL = "http://localhost:5050/api";
 
 // — 1) 인증 필요 없는 인스턴스 —
 export const apiWithoutToken = axios.create({
@@ -69,5 +64,5 @@ apiWithToken.interceptors.response.use(
     }
 
     return Promise.reject(err);
-  }
+  },
 );

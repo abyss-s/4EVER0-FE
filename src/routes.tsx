@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import DesignSystemTest from "./pages/Test/DesignSystemTest";
 import NaverMap from "./components/NaverMap/NaverMap";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "signup",
+        element: <Signup />,
       },
     ],
   },
