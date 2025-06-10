@@ -7,6 +7,7 @@ import NotFound from '@/pages/common/NotFound';
 import HotPlace from '@/pages/hotplace/HotPlace';
 import Landing from '@/pages/landing/Landing';
 import Login from '@/pages/login/Login';
+import Singup from '@/pages/Signup';
 import ChangePlans from '@/pages/me/change-plans/ChangePlans';
 import Coupons from '@/pages/me/coupons/Coupons';
 import Events from '@/pages/me/events/Events';
@@ -31,6 +32,7 @@ const routes: RouteObject[] = [
       { path: 'hotplace', element: <HotPlace /> },
       { path: 'landing', element: <Landing /> },
       { path: 'login', element: <Login /> },
+      { path: 'signup', element: <Singup /> },
       { path: 'mission', element: <Mission /> },
       { path: 'ubti', element: <UBTI /> },
       { path: 'upltuple', element: <UplTuple /> },

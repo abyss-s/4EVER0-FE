@@ -1,8 +1,8 @@
 import React from 'react';
-import { loginViaProvider, Provider } from '@/utils/auth';
+import { loginViaProvider } from '@/utils/auth';
 
 const Login: React.FC = () => {
-  const handleLogin = (provider: Provider) => () => {
+  const handleLogin = (provider: string) => () => {
     loginViaProvider(provider);
   };
 

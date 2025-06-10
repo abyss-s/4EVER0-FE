@@ -1,8 +1,6 @@
-import { API_BASE_URL, apiWithToken, apiWithoutToken } from './apiconfig';
+import { API_BASE_URL, apiWithToken, apiWithoutToken } from '@/lib/api/apiconfig';
 
-export type Provider = 'google' | 'kakao' | 'naver';
-
-export function loginViaProvider(provider: Provider) {
+export function loginViaProvider(provider: string) {
   // 브라우저를 백엔드 OAuth 엔드포인트로 리다이렉트
   window.location.href = `${API_BASE_URL}/auth/${provider}`;
 }
