@@ -1,8 +1,7 @@
-// src/utils/apiconfig.ts
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { logout, refreshAccessToken } from "./auth";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { logout, refreshAccessToken } from '@/utils/auth';
 
-export const API_BASE_URL = "http://localhost:5050";
+export const API_BASE_URL = 'http://localhost:5050/api';
 
 // — 1) 인증 필요 없는 인스턴스 —
 export const apiWithoutToken = axios.create({
@@ -43,7 +42,7 @@ apiWithToken.interceptors.response.use(
 
       isRefreshing = true;
       try {
-        const userId = "mciA6SMvQGQEDZYS9W7IXTXGAgOt4sd4YJLIimSiCSI";
+        const userId = 'mciA6SMvQGQEDZYS9W7IXTXGAgOt4sd4YJLIimSiCSI';
         // 3) REFRESH_TOKEN 쿠키로 재발급
         await refreshAccessToken(userId);
         // 서버가 새 ACCESS_TOKEN 쿠키를 Set-Cookie 해 줍니다
@@ -57,7 +56,7 @@ apiWithToken.interceptors.response.use(
       } catch (e) {
         // 재발급 실패 시 로그아웃
         await logout();
-        window.location.href = "/login";
+        window.location.href = '/login';
         return Promise.reject(e);
       } finally {
         isRefreshing = false;

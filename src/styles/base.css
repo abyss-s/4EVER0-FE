@@ -1,7 +1,7 @@
 @layer base {
   @font-face {
-    font-family: "Pretendard";
-    src: url("/fonts/PretendardVariable.woff2") format("woff2-variations");
+    font-family: 'Pretendard';
+    src: url('/fonts/PretendardVariable.woff2') format('woff2-variations');
     font-weight: 100 900;
     font-display: swap;
   }
@@ -31,7 +31,7 @@
     min-height: 100dvh;
     padding-bottom: env(safe-area-inset-bottom);
     font-size: 16px;
-    font-family: "Pretendard", sans-serif;
+    font-family: 'Pretendard', sans-serif;
     overflow-x: hidden;
   }
 
@@ -60,7 +60,7 @@
   input:focus,
   button:focus,
   textarea:focus {
-    outline: 2px solid theme("colors.ring.DEFAULT", #3b82f6);
+    outline: 2px solid theme('colors.ring.DEFAULT', #3b82f6);
     outline-offset: 2px;
   }
 }
