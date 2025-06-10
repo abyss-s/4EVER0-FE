@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
+import type { Components } from 'react-markdown';
 import { Message } from '@/types/chat';
 import { cn } from '@/lib/utils';
 
@@ -10,6 +12,27 @@ interface ChatBubbleProps {
 export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, isStreaming = false }) => {
   const isBot = message.type === 'bot';
 
+  // react-markdown 컴포넌트로 수정
+  const markdownComponents: Components = {
+    h1: ({ children }) => <h1 className="text-lg font-bold mb-2">{children}</h1>,
+    h2: ({ children }) => <h2 className="text-base font-bold mb-2">{children}</h2>,
+    h3: ({ children }) => <h3 className="text-sm font-bold mb-1">{children}</h3>,
+    ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
+    ol: ({ children }) => <ol className="list-decimal list-inside mb-2 space-y-1">{children}</ol>,
+    li: ({ children }) => <li className="text-sm">{children}</li>,
+    strong: ({ children }) => <strong className="font-bold text-primary">{children}</strong>,
+    em: ({ children }) => <em className="italic">{children}</em>,
+    p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+    code: ({ children }) => (
+      <code className="bg-gray-100 px-1 py-0.5 rounded text-xs font-mono">{children}</code>
+    ),
+    a: ({ href, children }) => (
+      <a href={href} className="text-blue-500 underline" target="_blank" rel="noopener noreferrer">
+        {children}
+      </a>
+    ),
+  };
+
   return (
     <div className={cn('flex w-full mb-4', isBot ? 'justify-start' : 'justify-end')}>
       <div
@@ -20,8 +43,13 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, isStreaming = f
             : 'bg-primary text-primary-foreground rounded-tr-none',
         )}
       >
-        <div className="text-sm whitespace-pre-wrap">
-          {message.content}
+        <div className="text-sm">
+          {isBot ? (
+            <ReactMarkdown components={markdownComponents}>{message.content}</ReactMarkdown>
+          ) : (
+            <div className="whitespace-pre-wrap">{message.content}</div>
+          )}
+
           {isStreaming && isBot && (
             <span className="inline-block w-2 h-4 bg-current opacity-50 animate-pulse ml-1">|</span>
           )}

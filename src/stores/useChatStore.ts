@@ -118,7 +118,7 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
 
     if (!session) return false;
 
-    if (session.usageCount >= 3) {
+    if (session.usageCount >= 5) {
       // 세션 종료
       set((currentState) => ({
         ...currentState,

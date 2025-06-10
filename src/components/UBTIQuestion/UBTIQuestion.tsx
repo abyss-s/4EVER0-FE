@@ -84,7 +84,7 @@ export const UBTIQuestionComponent: React.FC<UBTIQuestionProps> = ({ onComplete 
           <CardTitle>UBTI 분석 진행 중...</CardTitle>
         </CardHeader>
         <CardContent>
-          <p>단계 {step + 1}/3</p>
+          <p>단계 {step + 1}/4</p>
           {ubtiMutation.isPending && (
             <div className="mt-2">
               <div className="animate-pulse">분석 중...</div>
