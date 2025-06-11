@@ -3,18 +3,40 @@ import { cn } from '@/lib/utils';
 import { progressVariants } from './progressVariants';
 import type { ProgressProps } from './Progress.types';
 
-export function Progress({ className, value, variant, size, ...props }: ProgressProps) {
+export function Progress({
+  className,
+  value,
+  variant,
+  size,
+  current,
+  total,
+  showFraction = false,
+  ...props
+}: ProgressProps) {
+  const progressValue = current && total ? (current / total) * 100 : value;
+
   return (
-    <ProgressPrimitive.Root
-      data-slot="progress"
-      className={cn(progressVariants({ variant, size, className }))}
-      {...props}
-    >
-      <ProgressPrimitive.Indicator
-        data-slot="progress-indicator"
-        className="h-full w-full flex-1 transition-all"
-        style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
-      />
-    </ProgressPrimitive.Root>
+    <div className="relative">
+      <ProgressPrimitive.Root
+        data-slot="progress"
+        className={cn(progressVariants({ variant, size, className }))}
+        {...props}
+        value={progressValue}
+      >
+        <ProgressPrimitive.Indicator
+          data-slot="progress-indicator"
+          className="h-full w-full flex-1 transition-all"
+          style={{ transform: `translateX(-${100 - (progressValue || 0)}%)` }}
+        />
+      </ProgressPrimitive.Root>
+
+      {showFraction && current !== undefined && total !== undefined && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-xs font-medium text-gray-700 dark:text-gray-300 bg-white/80 dark:bg-gray-800/80 px-2 py-0.5 rounded backdrop-blur-sm">
+            {current}/{total}
+          </span>
+        </div>
+      )}
+    </div>
   );
 }

@@ -5,4 +5,8 @@ import { progressVariants } from './progressVariants';
 
 export interface ProgressProps
   extends React.ComponentProps<typeof ProgressPrimitive.Root>,
-    VariantProps<typeof progressVariants> {}
+    VariantProps<typeof progressVariants> {
+  current?: number;
+  total?: number;
+  showFraction?: boolean;
+}
