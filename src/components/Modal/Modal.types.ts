@@ -8,9 +8,10 @@ export interface ModalProps extends React.ComponentProps<typeof DialogPrimitive.
 export interface ModalContentProps
   extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>,
     VariantProps<typeof contentVariants> {
-  showCloseButton?: boolean;
+  showClose?: boolean;
+  closeOnOverlayClick?: boolean;
+  closeOnEscape?: boolean;
 }
 
 export interface ModalHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
-
 export interface ModalFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
