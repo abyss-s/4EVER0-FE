@@ -1,9 +1,10 @@
 import React from 'react';
+import { ChatContainer } from '@/components/ChatContainer/ChatContainer';
 
 const Chatbot: React.FC = () => {
   return (
-    <div>
-      <h1>챗봇 페이지</h1>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <ChatContainer />
     </div>
   );
 };
