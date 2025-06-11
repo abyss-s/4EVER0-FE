@@ -1,4 +1,3 @@
-// avatarVariants.ts (옵션)
 import { cva } from 'class-variance-authority';
 
 export const avatarVariants = cva('rounded-full', {
