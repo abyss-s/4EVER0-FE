@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-const Hotplace = () => {
+const HotPlace = () => {
   const [selectedLocation, setSelectedLocation] = useState<{ id: number; name: string } | null>(
     null,
   );
@@ -193,4 +193,4 @@ const Hotplace = () => {
   );
 };
 
-export default Hotplace;
+export default HotPlace;
