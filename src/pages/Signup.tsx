@@ -1,25 +1,25 @@
-import React, { useState, FormEvent } from "react";
-import { useSearchParams } from "react-router-dom";
-import { apiWithoutToken } from "@/lib/api/apiconfig";
-import { loginViaProvider } from "@/utils/auth";
+import React, { useState, FormEvent } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { apiWithoutToken } from '@/lib/api/apiconfig';
+import { loginViaProvider } from '@/utils/auth';
 
 const Signup: React.FC = () => {
   const [searchParams] = useSearchParams();
 
   // URL 쿼리에서 OAuth 정보 꺼내기
-  const provider = searchParams.get("provider") || "";
-  const oauthId = searchParams.get("oauthId") || "";
+  const provider = searchParams.get('provider') || '';
+  const oauthId = searchParams.get('oauthId') || '';
 
-  const [email, setEmail] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [name, setName] = useState<string>("");
-  const [birth, setBirth] = useState<string>("");
+  const [email, setEmail] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [birth, setBirth] = useState<string>('');
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
       // apiWithoutToken 사용
-      await apiWithoutToken.post("/users", {
+      await apiWithoutToken.post('/users', {
         userId: oauthId,
         email,
         phoneNumber: phone,
@@ -29,8 +29,8 @@ const Signup: React.FC = () => {
       // 회원가입 성공 후 OAuth 재인증 플로우 재시작
       loginViaProvider(provider);
     } catch (error: unknown) {
-      console.error("회원가입 오류:", error);
-      alert("회원가입에 실패했습니다. 다시 시도해 주세요.");
+      console.error('회원가입 오류:', error);
+      alert('회원가입에 실패했습니다. 다시 시도해 주세요.');
     }
   };
 
