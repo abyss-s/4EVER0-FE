@@ -1,4 +1,3 @@
-// Tabs.tsx
 import { Tabs as TabsPrimitive, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import type { TabsComponentProps } from './Tabs.types';

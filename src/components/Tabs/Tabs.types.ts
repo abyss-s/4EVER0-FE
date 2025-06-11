@@ -1,4 +1,3 @@
-// Tabs.types.ts
 export interface TabItem {
   value: string;
   label: string;
