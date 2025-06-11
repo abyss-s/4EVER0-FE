@@ -3,35 +3,33 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import NaverMap from '@/components/NaverMap/NaverMap';
 
 const HotPlace = () => {
-  const [selectedLocation, setSelectedLocation] = useState<{ id: number; name: string } | null>(
-    null,
-  );
+  const [selectedLocation] = useState<{ id: number; name: string } | null>(null);
 
-  type LocationType = {
-    id: number;
-    name: string;
-    x: number;
-    y: number;
-    number: number;
-  };
+  // type LocationType = {
+  //   id: number;
+  //   name: string;
+  //   x: number;
+  //   y: number;
+  //   number: number;
+  // };
 
-  const handleLocationClick = (location: LocationType) => {
-    setSelectedLocation(location);
-  };
+  // const handleLocationClick = (location: LocationType) => {
+  //   setSelectedLocation(location);
+  // };
 
-  // 지도 위 장소 데이터
-  const locations = [
-    { id: 1, name: '서울', x: 35, y: 40, number: 6 },
-    { id: 2, name: '강원', x: 65, y: 25, number: 1 },
-    { id: 3, name: '경기', x: 45, y: 50, number: 9 },
-    { id: 4, name: '충북', x: 55, y: 65, number: 3 },
-    { id: 5, name: '대전', x: 50, y: 75, number: 2 },
-    { id: 6, name: '경북', x: 70, y: 70, number: 4 },
-    { id: 7, name: '전북', x: 35, y: 85, number: 9 },
-    { id: 8, name: '광주', x: 30, y: 95, number: 2 },
-    { id: 9, name: '경남', x: 65, y: 85, number: 4 },
-    { id: 10, name: '제주', x: 25, y: 110, number: 2 },
-  ];
+  // // 지도 위 장소 데이터
+  // const locations = [
+  //   { id: 1, name: '서울', x: 35, y: 40, number: 6 },
+  //   { id: 2, name: '강원', x: 65, y: 25, number: 1 },
+  //   { id: 3, name: '경기', x: 45, y: 50, number: 9 },
+  //   { id: 4, name: '충북', x: 55, y: 65, number: 3 },
+  //   { id: 5, name: '대전', x: 50, y: 75, number: 2 },
+  //   { id: 6, name: '경북', x: 70, y: 70, number: 4 },
+  //   { id: 7, name: '전북', x: 35, y: 85, number: 9 },
+  //   { id: 8, name: '광주', x: 30, y: 95, number: 2 },
+  //   { id: 9, name: '경남', x: 65, y: 85, number: 4 },
+  //   { id: 10, name: '제주', x: 25, y: 110, number: 2 },
+  // ];
 
   // BEST 혜택 데이터
   const bestDeals = [
