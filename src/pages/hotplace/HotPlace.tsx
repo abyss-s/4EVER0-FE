@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import NaverMap from '@/components/NaverMap/NaverMap';
 
 const HotPlace = () => {
   const [selectedLocation, setSelectedLocation] = useState<{ id: number; name: string } | null>(
@@ -59,19 +60,18 @@ const HotPlace = () => {
 
   return (
     <ScrollArea className="h-screen w-full">
-      <div className="max-w-md mx-auto bg-pink-50 min-h-screen"></div>
       <div className="max-w-md mx-auto bg-pink-50 min-h-screen">
         {/* 상단 지도 섹션 */}
-        <div className="relative p-4">
+        <div className="relative p-12">
           {/* 헤더 */}
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center m-4">
             <div className="bg-gray-800 text-white px-4 py-2 rounded-full text-sm">
               ⭐ 요즘 핫한 MZ들의 PICK은?!
             </div>
           </div>
 
-          {/* 지도 배경 */}
-          <div className="relative bg-yellow-300 rounded-2xl p-6 mb-4" style={{ height: '300px' }}>
+          {/* 지도 */}
+          <div className="relative bg-yellow-300 rounded-sm mb-4" style={{ height: '340px' }}>
             {/* 한국 지도 모양 (간단한 형태) */}
             <div className="absolute inset-0 rounded-2xl overflow-hidden">
               <svg viewBox="0 0 100 120" className="w-full h-full">
@@ -85,24 +85,7 @@ const HotPlace = () => {
             </div>
 
             {/* 장소 마커들 */}
-            {locations.map((location) => (
-              <div
-                key={location.id}
-                className="absolute cursor-pointer transform -translate-x-1/2 -translate-y-1/2"
-                style={{ left: `${location.x}%`, top: `${location.y}%` }}
-                onClick={() => handleLocationClick(location)}
-              >
-                <div className="relative">
-                  <div className="w-8 h-10 bg-white rounded-full shadow-lg flex items-center justify-center border-2 border-gray-300">
-                    <span className="text-xs font-bold text-gray-700">{location.number}</span>
-                  </div>
-                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-white rotate-45"></div>
-                  <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs font-medium whitespace-nowrap">
-                    {location.name}
-                  </div>
-                </div>
-              </div>
-            ))}
+            <NaverMap />
 
             {/* 우측 범례 */}
             <div className="absolute right-4 top-4 space-y-2">
@@ -110,7 +93,7 @@ const HotPlace = () => {
                 <div className="w-6 h-8 bg-blue-500 rounded-full flex items-center justify-center">
                   <span className="text-white text-xs font-bold">9</span>
                 </div>
-                <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">많음</span>
+                <span className="bg-gray-700 text-white px-2 py-1 rounded text-xs">🎟️ 쿠폰</span>
               </div>
               <div className="flex items-center space-x-2">
                 <div className="w-6 h-8 bg-red-500 rounded-full flex items-center justify-center">
