@@ -9,7 +9,7 @@ export const useUserProfile = () => {
 
   return useQuery<UserResponse>({
     queryKey: ['userProfile', userId],
-    queryFn: () => apiWithToken.get('/users').then((res) => res.data),
+    queryFn: () => apiWithToken.get('/user').then((res) => res.data),
     enabled: !!userId,
     staleTime: 1000 * 60 * 5,
     refetchOnMount: false,
