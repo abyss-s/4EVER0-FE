@@ -2,6 +2,8 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import type { Components } from 'react-markdown';
 import { Message } from '@/types/chat';
+import { ICONS } from '@/constant/iconPath';
+import { AvatarComponent } from '../Avatar/Avatar';
 import { cn } from '@/lib/utils';
 
 interface ChatBubbleProps {
@@ -35,6 +37,11 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, isStreaming = f
 
   return (
     <div className={cn('flex w-full mb-4', isBot ? 'justify-start' : 'justify-end')}>
+      {isBot && (
+        <div className="w-8 h-8 mr-2 mt-1">
+          <AvatarComponent src={ICONS.PROFILE_ICON} />
+        </div>
+      )}
       <div
         className={cn(
           'max-w-[80%] px-4 py-2 rounded-lg',
