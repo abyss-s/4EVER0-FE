@@ -1,4 +1,4 @@
 export interface AvatarComponentProps {
   src?: string;
-  fallback?: string;
+  fallback: string;
 }
