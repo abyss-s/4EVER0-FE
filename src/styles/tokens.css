@@ -113,3 +113,144 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* 모달 애니메이션을 위한 CSS */
+@layer base {
+  /* 애니메이션 키프레임 */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes zoomIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  @keyframes zoomOut {
+    from {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.95);
+    }
+  }
+
+  @keyframes slideInFromBottom {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideOutToBottom {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+
+  /* 애니메이션 클래스 */
+  .animate-in {
+    animation-duration: 200ms;
+    animation-fill-mode: forwards;
+  }
+
+  .animate-out {
+    animation-duration: 200ms;
+    animation-fill-mode: forwards;
+  }
+
+  .fade-in-0 {
+    animation-name: fadeIn;
+  }
+
+  .fade-out-0 {
+    animation-name: fadeOut;
+  }
+
+  .zoom-in-95 {
+    animation-name: zoomIn;
+  }
+
+  .zoom-out-95 {
+    animation-name: zoomOut;
+  }
+
+  .slide-in-from-bottom {
+    animation-name: slideInFromBottom;
+  }
+
+  .slide-out-to-bottom {
+    animation-name: slideOutToBottom;
+  }
+
+  /* 데이터 상태에 따른 애니메이션 */
+  [data-state='open'] {
+    animation-duration: 200ms;
+    animation-timing-function: ease-out;
+  }
+
+  [data-state='closed'] {
+    animation-duration: 150ms;
+    animation-timing-function: ease-in;
+  }
+}
+
+@layer utilities {
+  /* 백드롭 필터 지원 */
+  .backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+  }
+
+  .backdrop-blur-md {
+    backdrop-filter: blur(12px);
+  }
+
+  /* 링 스타일 */
+  .ring-offset-background {
+    --tw-ring-offset-color: hsl(var(--background));
+  }
+
+  .ring-ring {
+    --tw-ring-color: hsl(var(--ring));
+  }
+
+  /* 포커스 링 */
+  .focus\:ring-2:focus {
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width)
+      var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width))
+      var(--tw-ring-color);
+    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  }
+
+  .focus\:ring-offset-2:focus {
+    --tw-ring-offset-width: 2px;
+  }
+}
