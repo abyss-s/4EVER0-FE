@@ -14,7 +14,7 @@ const OAuthCallback: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await apiWithToken.get<UserResponse>('/users');
+        const { data } = await apiWithToken.get<UserResponse>('/user');
         login(data.userId, data.id);
 
         // React Query 캐시에 미리 저장
