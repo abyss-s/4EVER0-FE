@@ -22,13 +22,15 @@ type Story = StoryObj<typeof Alert>;
 export const Playground: Story = {
   args: {
     variant: 'default',
-    children: 'Heads up! You can add components to your app using the CLI.',
+    title: 'Heads up!',
+    description: 'You can add components to your app using the CLI.',
   },
 };
 
 export const Destructive: Story = {
   args: {
     variant: 'destructive',
-    children: 'Your session has expired. Please log in again.',
+    title: 'Your session has expired.',
+    description: 'Please log in again.',
   },
 };
