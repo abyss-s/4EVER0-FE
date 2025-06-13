@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { BaseCalendar } from './BaseCalendar';
 import { useState } from 'react';
 import { format } from 'date-fns';
+import { ICONS } from '@/constant/iconPath';
 
 const meta: Meta<typeof BaseCalendar> = {
   title: 'Components/BaseCalendar',
@@ -108,17 +109,27 @@ export const WithEventsOnly: Story = {
 };
 
 // 출석 스탬프만 있는 캘린더
-export const WithStampOnly: Story = {
+// small 크기
+export const WithSmallStamp: Story = {
   args: {
     variant: 'modern',
     selectedDate: new Date(),
     renderDay: (date, isCurrentMonth) => (
       <div className="flex flex-col items-center justify-center h-full relative">
         <span className="relative z-20 drop-shadow-lg">{format(date, 'd')}</span>
-        {/* 출석 스탬프 */}
-        {[3, 8, 12, 18, 22].includes(date.getDate()) && isCurrentMonth && (
-          <div className="absolute -inset-2 flex items-center justify-center z-10">
-            <img src="/icons/stamp_v1.svg" alt="출석 스탬프" className="w-14 h-14 opacity-95" />
+        {[3, 8, 12, 13, 18, 22].includes(date.getDate()) && isCurrentMonth && (
+          <div className="absolute -inset-3 flex items-center justify-center z-10">
+            <img
+              src={ICONS.STAMP_V1}
+              alt="출석 스탬프"
+              className="w-16 h-16 opacity-95 object-contain"
+              style={{
+                minWidth: '44px',
+                minHeight: '44px',
+                maxWidth: '44px',
+                maxHeight: '44px',
+              }}
+            />
           </div>
         )}
       </div>
@@ -126,7 +137,7 @@ export const WithStampOnly: Story = {
   },
 };
 
-// 현재 크기 (WithLargeOverflowStamp와 동일)
+// medium 크기
 export const WithMediumStamp: Story = {
   args: {
     variant: 'modern',
@@ -134,9 +145,19 @@ export const WithMediumStamp: Story = {
     renderDay: (date, isCurrentMonth) => (
       <div className="flex flex-col items-center justify-center h-full relative">
         <span className="relative z-20 drop-shadow-lg">{format(date, 'd')}</span>
-        {[3, 8, 12, 18, 22].includes(date.getDate()) && isCurrentMonth && (
-          <div className="absolute -inset-2 flex items-center justify-center z-10">
-            <img src="/icons/stamp_v1.svg" alt="출석 스탬프" className="w-14 h-14 opacity-95" />
+        {[3, 8, 12, 13, 18, 22].includes(date.getDate()) && isCurrentMonth && (
+          <div className="absolute -inset-3 flex items-center justify-center z-10">
+            <img
+              src={ICONS.STAMP_V1}
+              alt="출석 스탬프"
+              className="w-16 h-16 opacity-95 object-contain"
+              style={{
+                minWidth: '54px',
+                minHeight: '54px',
+                maxWidth: '54px',
+                maxHeight: '54px',
+              }}
+            />
           </div>
         )}
       </div>
@@ -144,17 +165,27 @@ export const WithMediumStamp: Story = {
   },
 };
 
-// 더 큰 크기 (살짝 더 큰 버전)
+// 더 큰 크기 (살짝 더 큰 버전): WithLargeStamp 수정 - 모든 스탬프 크기 균일화
 export const WithLargeStamp: Story = {
   args: {
     variant: 'modern',
     selectedDate: new Date(),
     renderDay: (date, isCurrentMonth) => (
       <div className="flex flex-col items-center justify-center h-full relative">
-        <span className="relative z-20 drop-shadow-lg">{format(date, 'd')}</span>
-        {[3, 8, 12, 18, 22].includes(date.getDate()) && isCurrentMonth && (
+        <span className="relative z-20 font-bold drop-shadow-lg text-xs">{format(date, 'd')}</span>
+        {[3, 8, 12, 13, 18, 22].includes(date.getDate()) && isCurrentMonth && (
           <div className="absolute -inset-3 flex items-center justify-center z-10">
-            <img src="/icons/stamp_v1.svg" alt="출석 스탬프" className="w-16 h-16 opacity-95" />
+            <img
+              src={ICONS.STAMP_V1}
+              alt="출석 스탬프"
+              className="w-16 h-16 opacity-95 object-contain"
+              style={{
+                minWidth: '64px',
+                minHeight: '64px',
+                maxWidth: '64px',
+                maxHeight: '64px',
+              }}
+            />
           </div>
         )}
       </div>
@@ -179,8 +210,18 @@ export const WithEventsAndStamp: Story = {
         )}
         {/* 출석 스탬프 */}
         {[3, 8, 12, 18, 22].includes(date.getDate()) && isCurrentMonth && (
-          <div className="absolute -inset-2 flex items-center justify-center z-10">
-            <img src="/icons/stamp_v1.svg" alt="출석 스탬프" className="w-14 h-14 opacity-95" />
+          <div className="absolute -inset-3 flex items-center justify-center z-10">
+            <img
+              src={ICONS.STAMP_V1}
+              alt="출석 스탬프"
+              className="w-16 h-16 opacity-95 object-contain"
+              style={{
+                minWidth: '54px',
+                minHeight: '54px',
+                maxWidth: '54px',
+                maxHeight: '54px',
+              }}
+            />
           </div>
         )}
       </div>
