@@ -42,8 +42,8 @@ const Home: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-2xl font-bold mb-4">홈</h1>
+    <div className="flex flex-col">
+      <h1 className="text-2xl font-bold mb-6">홈</h1>
       <p className="mb-4">로그인하시면 더 많은 기능을 이용하실 수 있습니다.</p>
       <button
         onClick={() => navigate('/login', { state: { from: location } })}
