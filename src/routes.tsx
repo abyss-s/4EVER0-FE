@@ -17,7 +17,9 @@ import DesignSystemTest from '@/pages/test/DesignSystemTest';
 import UBTI from '@/pages/ubti/UBTI';
 import UplTuple from '@/pages/upltuple/UplTuple';
 import NaverMap from '@/components/NaverMap/NaverMap';
-import Layout from './components/Layout/Layout';
+import Layout from '@/components/Layout/Layout';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import OAuthCallback from './pages/login/Callback';
 
 const routes: RouteObject[] = [
   {
@@ -26,30 +28,36 @@ const routes: RouteObject[] = [
       // index:true 로 "/" 기본페이지 지정
       { index: true, element: <Home /> },
 
-      // 일반 페이지
-      { path: 'attendance', element: <Attendance /> },
-      { path: 'chatbot', element: <Chatbot /> },
-      { path: 'hotplace', element: <HotPlace /> },
-      { path: 'landing', element: <Landing /> },
-      { path: 'login', element: <Login /> },
-      { path: 'signup', element: <Singup /> },
-      { path: 'mission', element: <Mission /> },
-      { path: 'ubti', element: <UBTI /> },
-      { path: 'upltuple', element: <UplTuple /> },
-
-      // 마이 페이지
+      // 로그인 필수 페이지
       {
-        path: 'me',
-        element: <MyPage />,
+        element: <ProtectedRoute />,
         children: [
-          { path: 'coupons', element: <Coupons /> },
-          { path: 'likes', element: <Likes /> },
-          { path: 'events', element: <Events /> },
-          { path: 'change-plans', element: <ChangePlans /> },
+          { path: 'attendance', element: <Attendance /> },
+          { path: 'hotplace', element: <HotPlace /> },
+          { path: 'mission', element: <Mission /> },
+          { path: 'ubti', element: <UBTI /> },
+          { path: 'upltuple', element: <UplTuple /> },
+          {
+            path: 'me',
+            element: <MyPage />,
+            children: [
+              { path: 'coupons', element: <Coupons /> },
+              { path: 'likes', element: <Likes /> },
+              { path: 'events', element: <Events /> },
+              { path: 'change-plans', element: <ChangePlans /> },
+            ],
+          },
         ],
       },
 
-      // 테스트
+      // 선택형 or  로그인 필요 없는는 페이지
+      { path: 'chatbot', element: <Chatbot /> },
+      { path: 'landing', element: <Landing /> },
+      { path: 'login', element: <Login /> },
+      { path: 'signup', element: <Singup /> },
+      { path: 'authcallback', element: <OAuthCallback /> },
+
+      // 테스트용
       { path: 'design-system', element: <DesignSystemTest /> },
       { path: 'map-test', element: <NaverMap /> },
 
