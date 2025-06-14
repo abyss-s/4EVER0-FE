@@ -12,11 +12,16 @@ import {
 import { Message } from '@/types/chat';
 import { UBTIQuestion } from '@/types/chat';
 import { ToneSwitch } from '../ToneSwitch/ToneSwitch';
+import { useModalStore } from '@/stores/useModalStore';
+import { useAuthStore } from '@/stores/useAuthStore';
+import { PremiumFeatureButton } from './PremiumFeatureButton';
 
 export const ChatContainer: React.FC = () => {
+  const { isLoggedIn } = useAuthStore();
   const [currentUBTIStep, setCurrentUBTIStep] = useState<number>(-1);
   const [ubtiInProgress, setUbtiInProgress] = useState(false);
   const [isMunerTone, setIsMunerTone] = useState(true);
+  const { openModal } = useModalStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fullResponseRef = useRef('');
   const isInitializedRef = useRef(false);
@@ -117,17 +122,34 @@ export const ChatContainer: React.FC = () => {
     (_message: string, userMessage: string, isUBTI: boolean = false) => {
       if (!currentSessionId || isSessionEnded) return;
 
-      // 사용 횟수 체크
-      const canContinue = incrementUsage(currentSessionId);
-      if (!canContinue) {
-        addMessage(currentSessionId, '채팅 세션이 종료되었습니다. (최대 5회 사용)', 'bot');
-        return;
+      // 로그인 사용자는 사용량 제한 없음
+      if (!isLoggedIn) {
+        const canContinue = incrementUsage(currentSessionId);
+        if (!canContinue) {
+          openModal({
+            id: 'chat-limit-modal',
+            title: '채팅 횟수가 제한되었습니다!',
+            description:
+              '비회원은 5회까지 채팅을 이용할 수 있습니다.\n로그인하고 더 많은 기능을 이용하세요.',
+            variant: 'default',
+            size: 'sm',
+            showClose: false,
+            showCancel: false,
+            showConfirm: true,
+            confirmText: '로그인하기',
+            confirmVariant: 'default',
+            closeOnOverlayClick: false,
+            closeOnEscape: false,
+            onConfirm: () => {
+              navigate('/login');
+            },
+          });
+          return;
+        }
       }
 
       // 사용자 메시지 추가
       addMessage(currentSessionId, userMessage, 'user');
-
-      // 빈 봇 메시지 생성
       addMessage(currentSessionId, '', 'bot');
       fullResponseRef.current = '';
 
@@ -171,7 +193,7 @@ export const ChatContainer: React.FC = () => {
         },
       };
     },
-    [currentSessionId, isSessionEnded, parseAndDisplayUBTIResponse],
+    [currentSessionId, isSessionEnded, isLoggedIn, openModal, navigate],
   );
 
   // 일반 채팅 메시지 전송
@@ -325,7 +347,19 @@ export const ChatContainer: React.FC = () => {
               UBTI 진행중
             </span>
           )}
-          <span className="text-sm text-gray-500">{usageDisplay}</span>
+          {/* 사용량 표시 - 로그인 사용자는 무제한 */}
+          <div className="flex items-center space-x-1">
+            <span className="text-xs font-medium text-gray-400">채팅</span>
+            {!isLoggedIn && (
+              <span
+                className={`text-xs font-medium ${
+                  (currentSession?.usageCount || 0) >= 4 ? 'text-brand-red' : 'text-gray-600'
+                }`}
+              >
+                {usageDisplay}회
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -353,22 +387,22 @@ export const ChatContainer: React.FC = () => {
       <div className="bottom-0 left-0 right-0 flex flex-col space-y-3 bg-white py-3 border-t border-gray-300">
         {!ubtiInProgress && (
           <div className="flex justify-between w-full space-x-2">
-            <Button
-              variant="outline"
+            <PremiumFeatureButton
               className="flex-1"
               onClick={handleUBTIStart}
               disabled={buttonDisabled}
+              featureName="UBTI 분석"
             >
               UBTI 분석하기
-            </Button>
-            <Button
-              variant="outline"
+            </PremiumFeatureButton>
+            <PremiumFeatureButton
               className="flex-1"
               onClick={handleLikesRecommendation}
               disabled={buttonDisabled}
+              featureName="서비스 추천"
             >
               서비스 추천받기
-            </Button>
+            </PremiumFeatureButton>
           </div>
         )}
 
