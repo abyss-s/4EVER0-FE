@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUBTIMutation } from '@/hooks/useChatMutation';
 import { useChatStore } from '@/stores/useChatStore';
 
@@ -40,7 +40,7 @@ export const UBTIQuestionComponent: React.FC<UBTIQuestionProps> = ({ onComplete 
         // 3단계(step 2) 완료 후 결과 전달
         if (step >= 2) {
           setIsCompleted(true);
-          // 약간의 지연 후 완료 처리
+          // 지연 1초 후 완료 처리
           setTimeout(() => {
             onComplete(fullResponseRef.current);
           }, 1000);

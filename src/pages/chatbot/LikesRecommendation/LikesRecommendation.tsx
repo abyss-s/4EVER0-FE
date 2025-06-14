@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import { Button } from '../ui/button';
+import { Button } from '@/components/Button';
 import { useLikesRecommendationMutation } from '@/hooks/useChatMutation';
 import { useChatStore } from '@/stores/useChatStore';
 

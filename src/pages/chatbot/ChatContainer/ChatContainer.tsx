@@ -2,8 +2,7 @@ import React, { useRef, useEffect, useCallback, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { ChatBubble } from '../ChatBubble/ChatBubble';
 import { ChatInput } from '../ChatInput/ChatInput';
-import { Button } from '../ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '@/components/Button';
 import { useChatStore } from '@/stores/useChatStore';
 import {
   useChatMutation,
@@ -11,11 +10,7 @@ import {
   useLikesRecommendationMutation,
 } from '@/hooks/useChatMutation';
 import { Message } from '@/types/chat';
-
-interface UBTIQuestion {
-  question: string;
-  step: number;
-}
+import { UBTIQuestion } from '@/types/chat';
 
 export const ChatContainer: React.FC = () => {
   const [currentUBTIStep, setCurrentUBTIStep] = useState<number>(-1);
@@ -116,6 +111,7 @@ export const ChatContainer: React.FC = () => {
   );
 
   // 공통 스트리밍 로직
+  // ChatContainer의 processStreamingMessage 함수 수정
   const processStreamingMessage = useCallback(
     (_message: string, userMessage: string, isUBTI: boolean = false) => {
       if (!currentSessionId || isSessionEnded) return;
@@ -136,18 +132,33 @@ export const ChatContainer: React.FC = () => {
 
       return {
         onChunk: (chunk: string) => {
-          fullResponseRef.current += chunk;
+          // data: 접두사 제거 및 빈 라인 필터링
+          const processedChunk = chunk
+            .split('\n')
+            .map((line) => {
+              // data: 접두사 제거
+              if (line.startsWith('data:')) {
+                return line.substring(5); // 'data:' 제거
+              }
+              return line;
+            })
+            .filter((line) => line.trim() !== '') // 빈 라인 제거
+            .join('\n');
 
-          if (isUBTI) {
-            // UBTI인 경우 JSON 파싱 시도
-            const isParsed = parseAndDisplayUBTIResponse(fullResponseRef.current);
-            if (!isParsed) {
-              // JSON 파싱 실패시 일반 텍스트로 표시
+          if (processedChunk.trim()) {
+            fullResponseRef.current += processedChunk;
+
+            if (isUBTI) {
+              // UBTI인 경우 JSON 파싱 시도
+              const isParsed = parseAndDisplayUBTIResponse(fullResponseRef.current);
+              if (!isParsed) {
+                // JSON 파싱 실패시 일반 텍스트로 표시
+                updateLastBotMessage(currentSessionId, fullResponseRef.current);
+              }
+            } else {
+              // 일반 메시지는 그대로 표시
               updateLastBotMessage(currentSessionId, fullResponseRef.current);
             }
-          } else {
-            // 일반 메시지는 그대로 표시
-            updateLastBotMessage(currentSessionId, fullResponseRef.current);
           }
         },
         onError: () => {
@@ -286,22 +297,22 @@ export const ChatContainer: React.FC = () => {
   }, [ubtiInProgress, currentUBTIStep]);
 
   return (
-    <Card className="w-full max-w-md mx-auto h-[600px] flex flex-col">
-      <CardHeader>
-        <CardTitle className="flex justify-between items-center">
-          <span>LG U+ 챗봇</span>
-          <div className="flex items-center space-x-2">
-            {ubtiInProgress && (
-              <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                UBTI 진행중
-              </span>
-            )}
-            <span className="text-sm font-normal text-muted-foreground">{usageDisplay}</span>
-          </div>
-        </CardTitle>
-      </CardHeader>
+    <div className="flex flex-col relative" style={{ height: 'calc(100dvh - 112px)' }}>
+      {/* 헤더 영역 */}
+      <div className="flex justify-between items-center py-4 bg-white shrink-0">
+        <h1 className="text-lg font-semibold">무너와 대화하기</h1>
+        <div className="flex items-center space-x-2">
+          {ubtiInProgress && (
+            <span className="text-xs bg-blue-100 text-brand-darkblue px-2 py-1 rounded">
+              UBTI 진행중
+            </span>
+          )}
+          <span className="text-sm text-gray-500">{usageDisplay}</span>
+        </div>
+      </div>
 
-      <CardContent className="flex-1 overflow-y-auto p-4">
+      {/* 메시지 영역 - 하단에 입력창 공간 확보 */}
+      <div className="flex-1 overflow-y-auto">
         <div className="flex flex-col space-y-2">
           {messages.map((message: Message, index: number) => (
             <ChatBubble
@@ -318,9 +329,10 @@ export const ChatContainer: React.FC = () => {
           ))}
           <div ref={messagesEndRef} />
         </div>
-      </CardContent>
+      </div>
 
-      <CardFooter className="flex flex-col space-y-4 p-4 border-t">
+      {/* 입력 영역 - 푸터 위에 고정 */}
+      <div className="absolute bottom-0 left-0 right-0 flex flex-col space-y-3 bg-white py-3 border-t border-gray-300">
         {!ubtiInProgress && (
           <div className="flex justify-between w-full space-x-2">
             <Button
@@ -353,7 +365,7 @@ export const ChatContainer: React.FC = () => {
             새 대화 시작하기
           </Button>
         )}
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
 };
