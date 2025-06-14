@@ -121,7 +121,7 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, isStreaming = f
         className={cn(
           'max-w-[80%] px-4 py-2 rounded-lg',
           isBot
-            ? 'bg-brand-yellow-light text-secondary-foreground rounded-tl-none shadow-sm'
+            ? 'bg-brand-red-light text-secondary-foreground rounded-tl-none shadow-sm'
             : 'bg-brand-darkblue-light text-brand-darkblue rounded-tr-none',
         )}
       >

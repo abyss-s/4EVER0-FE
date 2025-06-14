@@ -13,11 +13,16 @@ export const useChatMutation = () =>
     }: {
       sessionId: string;
       message: string;
-      tone: 'muner' | 'normal';
+      tone?: 'muneoz' | 'general';
       onChunk: (chunk: string) => void;
     }) => {
-      return await sendChatMessageStreaming({ session_id: sessionId, message, tone }, (chunk) =>
-        onChunk(chunk.data),
+      return await sendChatMessageStreaming(
+        {
+          session_id: sessionId,
+          message,
+          tone: tone === 'muneoz' ? 'muneoz' : 'general',
+        },
+        (chunk) => onChunk(chunk.data),
       );
     },
   });
@@ -30,11 +35,15 @@ export const useLikesRecommendationMutation = () =>
       onChunk,
     }: {
       sessionId: string;
-      tone: 'muner' | 'normal';
+      tone: 'muneoz' | 'general';
       onChunk: (chunk: string) => void;
     }) => {
-      return await getLikesRecommendationStreaming({ session_id: sessionId, tone }, (chunk) =>
-        onChunk(chunk.data),
+      return await getLikesRecommendationStreaming(
+        {
+          session_id: sessionId,
+          tone: tone === 'muneoz' ? 'muneoz' : 'general',
+        },
+        (chunk) => onChunk(chunk.data),
       );
     },
   });
@@ -49,11 +58,16 @@ export const useUBTIMutation = () =>
     }: {
       sessionId: string;
       message: string;
-      tone: 'muner' | 'normal';
+      tone: 'muneoz' | 'general';
       onChunk: (chunk: string) => void;
     }) => {
-      return await sendUBTIAnswerStreaming({ session_id: sessionId, message, tone }, (chunk) =>
-        onChunk(chunk.data),
+      return await sendUBTIAnswerStreaming(
+        {
+          session_id: sessionId,
+          message,
+          tone: tone === 'muneoz' ? 'muneoz' : 'general',
+        },
+        (chunk) => onChunk(chunk.data),
       );
     },
   });

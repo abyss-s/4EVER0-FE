@@ -57,7 +57,7 @@ export const LikesRecommendation: React.FC<LikesRecommendationProps> = ({
 
       await likesRecommendationMutation.mutateAsync({
         sessionId: currentSessionId,
-        tone: isMunerTone ? 'muner' : 'normal',
+        tone: isMunerTone ? 'muneoz' : 'general',
         onChunk: (chunk: string) => {
           console.log('청크 받음:', chunk.substring(0, 50) + '...');
           fullResponseRef.current += chunk;

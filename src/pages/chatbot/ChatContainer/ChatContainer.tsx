@@ -209,7 +209,7 @@ export const ChatContainer: React.FC = () => {
             sessionId: currentSessionId!,
             message,
             onChunk: handlers.onChunk,
-            tone: isMunerTone ? 'muner' : 'normal',
+            tone: isMunerTone ? 'muneoz' : 'general',
           });
         } catch (error) {
           console.error('UBTI 답변 에러:', error);
@@ -227,7 +227,7 @@ export const ChatContainer: React.FC = () => {
           sessionId: currentSessionId!,
           message,
           onChunk: handlers.onChunk,
-          tone: isMunerTone ? 'muner' : 'normal',
+          tone: isMunerTone ? 'muneoz' : 'general',
         });
       } catch (error) {
         console.error('채팅 에러:', error);
@@ -259,7 +259,7 @@ export const ChatContainer: React.FC = () => {
         sessionId: currentSessionId!,
         message,
         onChunk: handlers.onChunk,
-        tone: isMunerTone ? 'muner' : 'normal',
+        tone: isMunerTone ? 'muneoz' : 'general',
       });
     } catch (error) {
       console.error('UBTI 시작 에러:', error);
@@ -277,7 +277,7 @@ export const ChatContainer: React.FC = () => {
       await likesRecommendationMutation.mutateAsync({
         sessionId: currentSessionId!,
         onChunk: handlers.onChunk,
-        tone: isMunerTone ? 'muner' : 'normal',
+        tone: isMunerTone ? 'muneoz' : 'general',
       });
     } catch (error) {
       console.error('추천 에러:', error);

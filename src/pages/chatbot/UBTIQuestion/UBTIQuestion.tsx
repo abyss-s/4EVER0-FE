@@ -35,7 +35,7 @@ export const UBTIQuestionComponent: React.FC<UBTIQuestionProps> = ({
         await ubtiMutation.mutateAsync({
           sessionId: currentSessionId,
           message: answer,
-          tone: isMunerTone ? 'muner' : 'normal',
+          tone: isMunerTone ? 'muneoz' : 'general',
           onChunk: (chunk: string) => {
             fullResponseRef.current += chunk;
             updateLastBotMessage(currentSessionId, fullResponseRef.current);
