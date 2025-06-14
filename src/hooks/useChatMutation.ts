@@ -8,15 +8,16 @@ export const useChatMutation = () =>
     mutationFn: async ({
       sessionId,
       message,
+      tone,
       onChunk,
     }: {
       sessionId: string;
       message: string;
+      tone: 'muner' | 'normal';
       onChunk: (chunk: string) => void;
     }) => {
-      return await sendChatMessageStreaming(
-        { session_id: sessionId, message },
-        (chunk) => onChunk(chunk.data), // 객체에서 data만 추출해서 전달
+      return await sendChatMessageStreaming({ session_id: sessionId, message, tone }, (chunk) =>
+        onChunk(chunk.data),
       );
     },
   });
@@ -25,14 +26,15 @@ export const useLikesRecommendationMutation = () =>
   useMutation({
     mutationFn: async ({
       sessionId,
+      tone,
       onChunk,
     }: {
       sessionId: string;
+      tone: 'muner' | 'normal';
       onChunk: (chunk: string) => void;
     }) => {
-      return await getLikesRecommendationStreaming(
-        { session_id: sessionId },
-        (chunk) => onChunk(chunk.data), // 객체에서 data만 추출해서 전달
+      return await getLikesRecommendationStreaming({ session_id: sessionId, tone }, (chunk) =>
+        onChunk(chunk.data),
       );
     },
   });
@@ -42,15 +44,16 @@ export const useUBTIMutation = () =>
     mutationFn: async ({
       sessionId,
       message,
+      tone,
       onChunk,
     }: {
       sessionId: string;
       message: string;
+      tone: 'muner' | 'normal';
       onChunk: (chunk: string) => void;
     }) => {
-      return await sendUBTIAnswerStreaming(
-        { session_id: sessionId, message },
-        (chunk) => onChunk(chunk.data), // 객체에서 data만 추출해서 전달
+      return await sendUBTIAnswerStreaming({ session_id: sessionId, message, tone }, (chunk) =>
+        onChunk(chunk.data),
       );
     },
   });

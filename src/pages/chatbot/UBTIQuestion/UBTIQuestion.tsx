@@ -5,9 +5,13 @@ import { useChatStore } from '@/stores/useChatStore';
 
 interface UBTIQuestionProps {
   onComplete: (result: string) => void;
+  isMunerTone?: boolean;
 }
 
-export const UBTIQuestionComponent: React.FC<UBTIQuestionProps> = ({ onComplete }) => {
+export const UBTIQuestionComponent: React.FC<UBTIQuestionProps> = ({
+  onComplete,
+  isMunerTone = true,
+}) => {
   const [step, setStep] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const { currentSessionId, addMessage, updateLastBotMessage } = useChatStore();
@@ -31,6 +35,7 @@ export const UBTIQuestionComponent: React.FC<UBTIQuestionProps> = ({ onComplete 
         await ubtiMutation.mutateAsync({
           sessionId: currentSessionId,
           message: answer,
+          tone: isMunerTone ? 'muner' : 'normal',
           onChunk: (chunk: string) => {
             fullResponseRef.current += chunk;
             updateLastBotMessage(currentSessionId, fullResponseRef.current);
@@ -52,7 +57,15 @@ export const UBTIQuestionComponent: React.FC<UBTIQuestionProps> = ({ onComplete 
         updateLastBotMessage(currentSessionId, 'UBTI 질문 처리 중 오류가 발생했습니다.');
       }
     },
-    [currentSessionId, addMessage, updateLastBotMessage, ubtiMutation, step, onComplete],
+    [
+      currentSessionId,
+      addMessage,
+      updateLastBotMessage,
+      ubtiMutation,
+      step,
+      onComplete,
+      isMunerTone,
+    ],
   );
 
   // 컴포넌트 마운트 시 UBTI 시작

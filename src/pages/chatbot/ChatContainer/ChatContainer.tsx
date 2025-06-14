@@ -11,10 +11,12 @@ import {
 } from '@/hooks/useChatMutation';
 import { Message } from '@/types/chat';
 import { UBTIQuestion } from '@/types/chat';
+import { ToneSwitch } from '../ToneSwitch/ToneSwitch';
 
 export const ChatContainer: React.FC = () => {
   const [currentUBTIStep, setCurrentUBTIStep] = useState<number>(-1);
   const [ubtiInProgress, setUbtiInProgress] = useState(false);
+  const [isMunerTone, setIsMunerTone] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fullResponseRef = useRef('');
   const isInitializedRef = useRef(false);
@@ -111,7 +113,6 @@ export const ChatContainer: React.FC = () => {
   );
 
   // 공통 스트리밍 로직
-  // ChatContainer의 processStreamingMessage 함수 수정
   const processStreamingMessage = useCallback(
     (_message: string, userMessage: string, isUBTI: boolean = false) => {
       if (!currentSessionId || isSessionEnded) return;
@@ -186,6 +187,7 @@ export const ChatContainer: React.FC = () => {
             sessionId: currentSessionId!,
             message,
             onChunk: handlers.onChunk,
+            tone: isMunerTone ? 'muner' : 'normal',
           });
         } catch (error) {
           console.error('UBTI 답변 에러:', error);
@@ -203,6 +205,7 @@ export const ChatContainer: React.FC = () => {
           sessionId: currentSessionId!,
           message,
           onChunk: handlers.onChunk,
+          tone: isMunerTone ? 'muner' : 'normal',
         });
       } catch (error) {
         console.error('채팅 에러:', error);
@@ -216,6 +219,7 @@ export const ChatContainer: React.FC = () => {
       currentSessionId,
       ubtiInProgress,
       currentUBTIStep,
+      isMunerTone,
     ],
   );
 
@@ -233,6 +237,7 @@ export const ChatContainer: React.FC = () => {
         sessionId: currentSessionId!,
         message,
         onChunk: handlers.onChunk,
+        tone: isMunerTone ? 'muner' : 'normal',
       });
     } catch (error) {
       console.error('UBTI 시작 에러:', error);
@@ -250,6 +255,7 @@ export const ChatContainer: React.FC = () => {
       await likesRecommendationMutation.mutateAsync({
         sessionId: currentSessionId!,
         onChunk: handlers.onChunk,
+        tone: isMunerTone ? 'muner' : 'normal',
       });
     } catch (error) {
       console.error('추천 에러:', error);
@@ -266,6 +272,13 @@ export const ChatContainer: React.FC = () => {
     const newSessionId = createSession();
     addMessage(newSessionId, '새로운 대화를 시작합니다! 😊 무엇을 도와드릴까요?', 'bot');
   }, [currentSessionId]);
+
+  const handleToneToggle = useCallback(
+    (isMuner: boolean) => {
+      setIsMunerTone(isMuner);
+    },
+    [isMunerTone],
+  );
 
   // 버튼 상태
   const buttonDisabled = useMemo(
@@ -301,7 +314,12 @@ export const ChatContainer: React.FC = () => {
       {/* 헤더 영역 */}
       <div className="flex justify-between items-center py-4 bg-white shrink-0">
         <h1 className="text-lg font-semibold">무너와 대화하기</h1>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-3">
+          <ToneSwitch
+            isMunerTone={isMunerTone}
+            onToggle={handleToneToggle}
+            disabled={buttonDisabled}
+          />
           {ubtiInProgress && (
             <span className="text-xs bg-blue-100 text-brand-darkblue px-2 py-1 rounded">
               UBTI 진행중
