@@ -10,6 +10,8 @@ jobs:
   chromatic:
     name: 'Run Chromatic'
     runs-on: ubuntu-latest
+    # 워크플로우 자체를 조직에서만 실행
+    if: github.repository_owner == 'Ureca-Middle-Project-Team4'
     # Job steps
     steps:
       - uses: actions/checkout@v4
@@ -18,7 +20,6 @@ jobs:
       - run: yarn
         #👇 Adds Chromatic as a step in the workflow
       - uses: chromaui/action@latest
-        if: github.repository == 'abyss-s/4EVER0-FE'
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_TOKEN }}
         # Options required for Chromatic's GitHub Action
