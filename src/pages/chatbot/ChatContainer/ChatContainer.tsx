@@ -297,7 +297,7 @@ export const ChatContainer: React.FC = () => {
   }, [ubtiInProgress, currentUBTIStep]);
 
   return (
-    <div className="flex flex-col relative" style={{ height: 'calc(100dvh - 112px)' }}>
+    <div className="flex flex-col relative h-full">
       {/* 헤더 영역 */}
       <div className="flex justify-between items-center py-4 bg-white shrink-0">
         <h1 className="text-lg font-semibold">무너와 대화하기</h1>
@@ -312,7 +312,7 @@ export const ChatContainer: React.FC = () => {
       </div>
 
       {/* 메시지 영역 - 하단에 입력창 공간 확보 */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto pb-4">
         <div className="flex flex-col space-y-2">
           {messages.map((message: Message, index: number) => (
             <ChatBubble
@@ -332,7 +332,7 @@ export const ChatContainer: React.FC = () => {
       </div>
 
       {/* 입력 영역 - 푸터 위에 고정 */}
-      <div className="absolute bottom-0 left-0 right-0 flex flex-col space-y-3 bg-white py-3 border-t border-gray-300">
+      <div className="bottom-0 left-0 right-0 flex flex-col space-y-3 bg-white py-3 border-t border-gray-300">
         {!ubtiInProgress && (
           <div className="flex justify-between w-full space-x-2">
             <Button
