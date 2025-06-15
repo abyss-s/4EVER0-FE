@@ -30,30 +30,33 @@ export function SubscriptionHeader({
   const currentStepIndex = stepOrder.indexOf(currentStep);
 
   return (
-    <div className="bg-white border-b border-gray-200 p-4 mb-4">
-      <div className="flex items-center justify-between">
+    <div className="bg-white border-b border-gray-200 my-8s py-4 relative">
+      <div className="relative flex items-center justify-center">
+        {/* 이전 버튼 */}
         <Button
           variant="ghost"
           size="sm"
           onClick={onPrev}
           disabled={currentStep === 'main'}
-          className="flex items-center"
+          className="absolute left-0 flex items-center px-0"
         >
           <ChevronLeft className="w-4 h-4" />
           이전
         </Button>
 
-        <div className="flex-1 text-center">
-          <h1 className="text-lg font-semibold">{stepConfig[currentStep].title}</h1>
-          <p className="text-sm text-gray-600">{stepConfig[currentStep].description}</p>
+        {/* 중앙 텍스트 */}
+        <div className="text-center py-3">
+          <h1 className="text-title-1 font-semibold">{stepConfig[currentStep].title}</h1>
+          <p className="text-sm text-brand-darkblue">{stepConfig[currentStep].description}</p>
         </div>
 
+        {/* 다음 버튼 */}
         <Button
           variant="ghost"
           size="sm"
           onClick={onNext}
           disabled={!canGoNext || isProcessing}
-          className="flex items-center"
+          className="absolute right-0 flex items-center px-0"
         >
           {currentStep === 'payment' ? (
             isProcessing ? (
@@ -73,7 +76,7 @@ export function SubscriptionHeader({
       {/* 진행 단계 표시 */}
       <div className="flex items-center justify-center mt-4 space-x-2">
         {stepOrder.map((step, index) => (
-          <div key={step} className="flex items-center">
+          <div key={step} className="flex items-center py-2">
             <div
               className={cn(
                 'w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium',

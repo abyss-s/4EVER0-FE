@@ -42,7 +42,7 @@ export function MainSubscriptionStep({
       </div>
 
       {loading ? (
-        <div className="text-center py-8">로딩 중...</div>
+        <div className="text-center py-6s">로딩 중...</div>
       ) : (
         <div className="space-y-3">
           {mainSubscriptions.map((item) => {

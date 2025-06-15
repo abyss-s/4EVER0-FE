@@ -176,7 +176,7 @@ export const SubscriptionSteps = ({ className }: SubscriptionStepsProps) => {
         isProcessing={subscribeMutation.isPending}
       />
 
-      <div className="space-y-4">
+      <div className="space-y-4 py-4">
         {currentStep === 'main' && (
           <MainSubscriptionStep
             mainSubscriptions={mainSubscriptions}

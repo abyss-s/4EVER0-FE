@@ -42,13 +42,13 @@ export function LifeBenefitsStep({
 
       {/* 카테고리 선택 - 모바일 친화적 가로 스크롤 */}
       <div className="w-full overflow-x-auto scrollbar-hide touch-scroll">
-        <div className="flex gap-2 px-1 pb-2">
+        <div className="flex gap-2 px-1 py-2">
           {BRAND_CATEGORIES.map((cat) => (
             <button
               key={cat.value}
               onClick={() => onCategoryChange(cat.value)}
               className={cn(
-                'flex-shrink-0 px-4 py-2 text-sm font-medium rounded-full border border-gray-50 transition-colors',
+                'flex-shrink-0 px-4 py-2 text-sm font-medium rounded-full borde transition-colors',
                 selectedCategory === cat.value
                   ? 'bg-pink-500 text-white border-pink-500'
                   : 'border-pink-200 text-pink-700 hover:bg-pink-50 bg-white',
@@ -73,7 +73,7 @@ export function LifeBenefitsStep({
                 <Card
                   key={brand.id}
                   className={cn(
-                    'cursor-pointer transition-all',
+                    'cursor-pointer transition-all border border-gray-50',
                     isSelected ? 'ring-2 ring-pink-500 bg-pink-50' : 'hover:shadow-md',
                   )}
                   onClick={() => onToggleBrand(brand)}
