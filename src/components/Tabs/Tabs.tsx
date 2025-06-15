@@ -2,11 +2,12 @@ import { Tabs as TabsPrimitive, TabsContent, TabsList, TabsTrigger } from '@/com
 import { cn } from '@/lib/utils';
 import type { TabsComponentProps } from './Tabs.types';
 
-export const Tabs = ({ items, defaultValue, className }: TabsComponentProps) => {
+export const Tabs = ({ items, defaultValue, className, onValueChange }: TabsComponentProps) => {
   return (
     <TabsPrimitive
       defaultValue={defaultValue ?? items[0]?.value}
       className={cn('w-[400px]', className)}
+      onValueChange={onValueChange}
     >
       <TabsList>
         {items.map(({ value, label }) => (
