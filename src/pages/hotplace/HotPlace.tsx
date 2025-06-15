@@ -1,10 +1,7 @@
-import { useState } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import NaverMap from '@/components/NaverMap/NaverMap';
 
 const HotPlace = () => {
-  const [selectedLocation] = useState<{ id: number; name: string } | null>(null);
-
   const bestDeals = [
     {
       rank: 1,
