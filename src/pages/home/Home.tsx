@@ -1,9 +1,9 @@
-// src/pages/home/Home.tsx
 import React, { useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useUserProfile } from '@/stores/useUserProfile';
 import { logout as apiLogout } from '@/utils/auth';
+import Subscription from './Subscription';
 import { Banner } from '@/components/Banner';
 import { Button } from '@/components/Button';
 import { IMAGES } from '@/constant/imagePath';
@@ -75,6 +75,8 @@ const Home: React.FC = () => {
           </button>
         </div>
       )}
+
+      <Subscription />
     </div>
   );
 };
