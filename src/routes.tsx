@@ -39,8 +39,8 @@ const routes: RouteObject[] = [
           { path: 'upltuple', element: <UplTuple /> },
           {
             path: 'me',
-            element: <MyPage />,
             children: [
+              { index: true, element: <MyPage /> },
               { path: 'coupons', element: <Coupons /> },
               { path: 'likes', element: <Likes /> },
               { path: 'events', element: <Events /> },
