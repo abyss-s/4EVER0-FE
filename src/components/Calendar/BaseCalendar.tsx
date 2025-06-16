@@ -153,8 +153,8 @@ export const BaseCalendar: React.FC<BaseCalendarProps> = ({
   const defaultRenderDay = (
     date: Date,
     isCurrentMonth: boolean,
-    isSelected: boolean,
-    isToday: boolean,
+    // isSelected: boolean,
+    // isToday: boolean,
   ) => (
     <div className="flex flex-col items-center justify-center h-full relative">
       <span className="relative z-20 drop-shadow-lg">{format(date, 'd')}</span>
