@@ -8,4 +8,5 @@ export interface TabsComponentProps {
   items: TabItem[];
   defaultValue?: string;
   className?: string;
+  onValueChange?: (value: string) => void;
 }

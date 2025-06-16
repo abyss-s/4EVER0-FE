@@ -6,8 +6,11 @@ const meta: Meta<typeof Scrollbar> = {
   component: Scrollbar,
   tags: ['autodocs'],
   argTypes: {
+    size: {
+      control: 'select',
+      options: ['sm', 'default', 'lg', 'auto'],
+    },
     className: { control: 'text' },
-    children: { control: 'text' },
   },
 };
 
@@ -27,14 +30,6 @@ Jokester began sneaking into the castle in the middle of the night and leaving j
 export const Playground: Story = {
   args: {
     children: longText,
-    className: '',
+    size: 'default',
   },
-};
-
-export const SmallScrollArea: Story = {
-  render: () => <Scrollbar className="h-[100px] w-[300px]">{longText}</Scrollbar>,
-};
-
-export const LargeScrollArea: Story = {
-  render: () => <Scrollbar className="h-[300px] w-[500px]">{longText}</Scrollbar>,
 };
