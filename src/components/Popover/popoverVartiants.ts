@@ -1,10 +1,10 @@
 import { cva } from 'class-variance-authority';
 
-export const contentVariants = cva('z-50 rounded-md border bg-white p-4 shadow-md', {
+export const contentVariants = cva('z-50 rounded-md border p-4 shadow-md', {
   variants: {
     variant: {
-      light: 'border-gray-200 text-gray-900',
-      dark: 'border-gray-700 bg-gray-900 text-gray-100',
+      light: 'bg-white border-gray-200 text-gray-900 shadow-lg',
+      dark: 'bg-gray-900 border-gray-700 text-gray-100 shadow-black/50',
     },
   },
   defaultVariants: {
