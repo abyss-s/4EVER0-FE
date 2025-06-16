@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { cn } from '@/lib/utils';
@@ -161,11 +161,18 @@ export const SubscriptionSteps = ({ className }: SubscriptionStepsProps) => {
     setSelectedCategory(category as BrandCategory);
   };
 
-  const canGoNext =
-    (currentStep === 'main' && selectedMainItems.length > 0) ||
-    (currentStep === 'life' && selectedLifeBrands.length > 0) ||
-    currentStep === 'payment';
-
+  const canGoNext = useMemo(() => {
+    switch (currentStep) {
+      case 'main':
+        return selectedMainItems.length > 0;
+      case 'life':
+        return selectedLifeBrands.length > 0;
+      case 'payment':
+        return true;
+      default:
+        return false;
+    }
+  }, [currentStep, selectedMainItems, selectedLifeBrands]);
   return (
     <div className={cn('w-full', className)}>
       <SubscriptionHeader
