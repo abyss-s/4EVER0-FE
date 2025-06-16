@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { getTodayAttendance, postTodayAttendance } from '@/apis/attendance';
+import { getTodayAttendance, postTodayAttendance } from '@/apis/attendance/attendance';
 import { useUserProfile } from '@/stores/useUserProfile';
 
 export const useAttendance = () => {
@@ -18,6 +18,7 @@ export const useAttendance = () => {
   const { mutate: checkAttendance, isPending } = useMutation({
     mutationFn: postTodayAttendance,
     onSuccess: () => {
+      console.log('✅ 출석 성공 → refetch 실행');
       refetchAttendance(); // ✅ 출석 후 바로 상태 업데이트
     },
   });
