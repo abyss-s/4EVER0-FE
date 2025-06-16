@@ -5,6 +5,8 @@ import { fetchCurrentPlan } from '@/apis/plan/getCurrentPlan';
 import { useUserProfile } from '@/stores/useUserProfile';
 import { Ticket, Coins, Package, FolderHeart, Stamp, ClipboardCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { IMAGES } from '@/constant/imagePath';
+
 const MyPage: React.FC = () => {
   const {
     data: plan,
@@ -21,10 +23,29 @@ const MyPage: React.FC = () => {
   if (isLoading) return <p className="p-4">로딩 중...</p>;
   if (error || !plan) return <p className="p-4">요금제를 불러오지 못했습니다.</p>;
 
+  const formatUsage = (label: string, variant: 'data' | 'call' | 'sms', value: string) => {
+    const isUnlimited = value === '무제한';
+    const numeric = isUnlimited ? 1 : Number(value.replace(/GB|분/g, ''));
+
+    return {
+      label,
+      variant,
+      current: numeric,
+      total: 1,
+      displayText: isUnlimited ? '무제한' : variant === 'sms' ? `${numeric}건` : value,
+    };
+  };
+
+  // ✅ 여기에서 정의해야 함!
+  const usageData = [
+    formatUsage('데이터', 'data', plan.data),
+    formatUsage('통화', 'call', plan.voice),
+    formatUsage('문자', 'sms', plan.sms),
+  ];
   return (
     <div className="pb-20 space-y-8">
       <h2 className="title-1 mt-6 flex items-center gap-2">
-        <img src="/images/mooner-phone.svg" alt="문어 아이콘" className="w-15 h-15" />
+        <img src={IMAGES.MOONER['mooner-phone']} alt="문어 아이콘" className="w-15 h-15" />
         {profile?.name ?? '고객'} 님 안녕하세요!
       </h2>
       <h3 className="title-2 mb-4 mt-4">내 요금제</h3>
@@ -33,49 +54,30 @@ const MyPage: React.FC = () => {
         planName={plan.name}
         month={month}
         amount={Number(plan.price)}
-        usageData={[
-          {
-            label: '데이터',
-            variant: 'data',
-            current: plan.data === '무제한' ? 1 : Number(plan.data.replace('GB', '')),
-            total: 1,
-            displayText: plan.data,
-          },
-          {
-            label: '통화',
-            variant: 'call',
-            current: plan.voice === '무제한' ? 1 : Number(plan.voice.replace('분', '')),
-            total: 1,
-            displayText: plan.voice,
-          },
-          {
-            label: '문자',
-            variant: 'sms',
-            current: plan.sms === '무제한' ? 1 : Number(plan.sms),
-            total: 1,
-            displayText: plan.sms === '무제한' ? '무제한' : `${plan.sms}건`,
-          },
-        ]}
+        usageData={usageData}
       />
       <h3 className="title-2 mb-4 mt-4">내 정보</h3>
-      <div className="flex justify-between items-center px-4 py-3 rounded-xl bg-card text-card-foreground shadow-sm hover:shadow-md border border-gray-50">
-        <Link to="coupons" className="flex items-center gap-2 transition-all">
+      <div className="grid grid-cols-2 gap-4">
+        <Link
+          to="coupons"
+          className="w-full py-3 rounded-lg bg-card text-card-foreground shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2"
+        >
           <Ticket className="w-5 h-5 text-yellow-600" />
-          <span className="caption-2">보유 쿠폰</span>
-          <span className="body-1 font-bold ml-1">3개</span>
+          <span className="caption-1">보유 쿠폰</span>
+          <span className="caption-1 font-bold ml-1">3개</span>
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="w-full py-3 rounded-lg bg-card text-card-foreground shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2">
           <Coins className="w-5 h-5 text-blue-600" />
-          <span className="caption-2">보유 포인트</span>
-          <span className="body-1 font-bold ml-1">1,250P</span>
+          <span className="caption-1">보유 포인트</span>
+          <span className="caption-1 font-bold ml-1">1,250P</span>
         </div>
       </div>
       <h3 className="title-2 mb-4 mt-4">요금제 설정</h3>
       <div className="grid grid-cols-2 gap-4">
-        <button className="w-full py-3 rounded-lg bg-card text-card-foreground shadow-sm hover:shadow-md transition-all">
+        <button className="w-full py-3 rounded-lg bg-card text-card-foreground shadow-sm hover:shadow-md transition-all caption-1">
           요금제 해지
         </button>
-        <button className="w-full py-3 rounded-lg bg-card text-card-foreground shadow-sm hover:shadow-md transition-all">
+        <button className="w-full py-3 rounded-lg bg-card text-card-foreground shadow-sm hover:shadow-md transition-all caption-1">
           요금제 변경
         </button>
       </div>

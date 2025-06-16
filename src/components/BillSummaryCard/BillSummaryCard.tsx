@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import { Progress } from '@/components/Progress/Progress';
 import { BillSummaryCardProps } from './BillSummaryCard.types';
-import { formatPrice } from './BillSummaryCard.utils';
+import { formatPrice } from '@/utils/priceUtils';
 
 const BillSummaryCard = ({
   phoneNumber,
