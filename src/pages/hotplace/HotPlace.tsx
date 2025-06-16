@@ -67,60 +67,63 @@ const HotPlace = () => {
         </div>
       </div>
 
-      {/* BEST 혜택 3위 */}
+      {/*인기 쿠폰 TOP 3*/}
       <div className="px-4">
         <div className="flex justify-center mb-4">
           <div className="bg-gray-800 text-white px-4 py-2 rounded-full text-sm">
-            ⭐ BEST 혜택 3위
+            ⭐ 인기 쿠폰 TOP 3
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-3">
+        <div className="flex flex-col gap-4">
           {[0, 1, 2].map((index) => {
             const deal = bestDeals[index];
             const showSkeleton = isLoading || !deal;
 
             return (
-              <div key={index} className="bg-white rounded-xl shadow-md p-2 relative">
-                {/* 순위 배지 */}
+              <div
+                key={index}
+                className="bg-white rounded-xl shadow-md px-4 py-3 flex flex-row items-start gap-4 relative"
+              >
                 <div
-                  className={`absolute -top-2 -left-2 w-8 h-8 rounded-full text-white text-sm flex items-center justify-center font-bold z-10 ${
+                  className={`absolute -top-3 -left-3 w-10 h-10 rounded-full text-white text-sm flex items-center justify-center font-bold shadow-md ${
                     index === 0 ? 'bg-red-500' : index === 1 ? 'bg-yellow-500' : 'bg-gray-500'
                   }`}
                 >
                   {index + 1}위
                 </div>
 
-                {/* 이미지 */}
-                <img
-                  src={`/images/deal-${index + 1}.png`}
-                  alt="deal"
-                  className="w-full h-24 object-cover rounded-md mb-2"
-                />
+                <div className="flex flex-col items-center w-28 pt-4">
+                  {showSkeleton ? (
+                    <div className="w-20 h-4 bg-gray-200 mb-2 rounded animate-pulse" />
+                  ) : (
+                    <p className="text-sm font-bold text-center mb-2">{deal.brand}</p>
+                  )}
 
-                {showSkeleton ? (
-                  <>
-                    <div className="h-[2rem] mb-2 bg-gray-100 rounded-sm animate-pulse" />
-                    <div className="h-[1rem] bg-gray-100 rounded-sm animate-pulse" />
-                    <div className="flex justify-between text-xs mt-2">
-                      <span className="w-1/2 h-3 bg-gray-200 rounded animate-pulse" />
-                      <span className="w-1/3 h-3 bg-gray-200 rounded animate-pulse" />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <h3 className="font-bold text-xs mb-1 line-clamp-2">{deal.title}</h3>
-                    <p className="text-gray-600 text-xs mb-2 line-clamp-2">{deal.description}</p>
-                    <div className="flex justify-between text-xs">
-                      <span className="text-red-500 font-bold">{getDiscountLabel(deal)}</span>
-                      <span
-                        className={`px-2 py-0.5 rounded text-white ${getBadgeColor(deal.brand)}`}
-                      >
-                        {deal.brand}
+                  <img
+                    src={`/images/deal-${index + 1}.png`}
+                    alt="deal"
+                    className="w-full h-20 object-cover rounded-md"
+                  />
+                </div>
+
+                <div className="flex-1 pt-4">
+                  {showSkeleton ? (
+                    <>
+                      <div className="h-4 mb-2 bg-gray-200 rounded-sm animate-pulse w-3/4" />
+                      <div className="h-3 mb-2 bg-gray-100 rounded-sm animate-pulse w-full" />
+                      <div className="h-3 bg-gray-100 rounded-sm animate-pulse w-1/2" />
+                    </>
+                  ) : (
+                    <>
+                      <h3 className="font-bold text-base mb-1">{deal.title}</h3>
+                      <p className="text-gray-600 text-sm mb-2">{deal.description}</p>
+                      <span className="text-red-500 text-sm font-bold">
+                        {getDiscountLabel(deal)}
                       </span>
-                    </div>
-                  </>
-                )}
+                    </>
+                  )}
+                </div>
               </div>
             );
           })}
