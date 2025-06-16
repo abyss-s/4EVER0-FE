@@ -27,12 +27,6 @@ const HotPlace = () => {
       : `${deal.discountValue.toLocaleString()}원 할인`;
   };
 
-  const getBadgeColor = (brand: string) => {
-    if (brand.includes('넷플릭스') || brand.includes('왓챠')) return 'bg-indigo-500';
-    if (brand.includes('예스24') || brand.includes('리디')) return 'bg-green-500';
-    return 'bg-red-500';
-  };
-
   return (
     <div className="max-w-md mx-auto bg-pink-50 min-h-screen">
       {/* 상단 지도 영역 */}
