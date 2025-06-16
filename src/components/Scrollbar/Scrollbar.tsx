@@ -1,15 +1,14 @@
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import { scrollbarVariants } from './scrollbarVariants';
+import type { ScrollbarProps } from './Scrollbar.types';
 
-export interface ScrollbarProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
-export const Scrollbar = ({ children, className }: ScrollbarProps) => {
+export const Scrollbar = ({ children, className, size, ...props }: ScrollbarProps) => {
   return (
-    <ScrollArea className={cn('h-[200px] w-[350px] rounded-md border p-4', className)}>
-      {children}
-    </ScrollArea>
+    <div className={cn(scrollbarVariants({ size }), className)} {...props}>
+      <ScrollArea className="h-full w-full">
+        <div className="p-4">{children}</div>
+      </ScrollArea>
+    </div>
   );
 };

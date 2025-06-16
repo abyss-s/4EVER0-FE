@@ -44,7 +44,7 @@ const Login: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50">
+    <div className="flex flex-col items-center justify-center bg-gray-50">
       <h1 className="text-3xl font-bold mb-8">OAuth Login</h1>
       <div className="space-y-4">
         <button
