@@ -1,0 +1,12 @@
+# 기본 텍스트 파일은 Git이 알아서 처리
+* text=auto
+
+# 코드 파일들은 LF로 고정
+*.js  text eol=lf
+*.jsx text eol=lf
+*.ts  text eol=lf
+*.tsx text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.scss text eol=lf
+*.md  text eol=lf
