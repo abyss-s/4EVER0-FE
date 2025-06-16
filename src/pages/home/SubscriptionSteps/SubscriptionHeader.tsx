@@ -38,10 +38,9 @@ export function SubscriptionHeader({
           size="sm"
           onClick={onPrev}
           disabled={currentStep === 'main'}
-          className="absolute left-0 flex items-center px-0"
+          className="absolute left-0 flex items-center px-0 cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
-          이전
         </Button>
 
         {/* 중앙 텍스트 */}
@@ -56,7 +55,7 @@ export function SubscriptionHeader({
           size="sm"
           onClick={onNext}
           disabled={!canGoNext || isProcessing}
-          className="absolute right-0 flex items-center px-0"
+          className="absolute right-0 flex items-center px-0 cursor-pointer"
         >
           {currentStep === 'payment' ? (
             isProcessing ? (
@@ -66,7 +65,6 @@ export function SubscriptionHeader({
             )
           ) : (
             <>
-              다음
               <ChevronRight className="w-4 h-4" />
             </>
           )}
