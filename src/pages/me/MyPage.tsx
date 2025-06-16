@@ -27,7 +27,7 @@ const MyPage: React.FC = () => {
         <img src="/images/mooner-phone.svg" alt="문어 아이콘" className="w-15 h-15" />
         {profile?.name ?? '고객'} 님 안녕하세요!
       </h2>
-      <h3 className="title-2 mb-3 mt-3">내 요금제</h3>
+      <h3 className="title-2 mb-4 mt-4">내 요금제</h3>
       <BillSummaryCard
         phoneNumber={profile?.phoneNumber ?? '010-****-****'}
         planName={plan.name}
@@ -57,6 +57,7 @@ const MyPage: React.FC = () => {
           },
         ]}
       />
+      <h3 className="title-2 mb-4 mt-4">내 정보</h3>
       <div className="flex justify-between items-center px-4 py-3 rounded-xl bg-card text-card-foreground shadow-sm hover:shadow-md border border-gray-50">
         <Link to="coupons" className="flex items-center gap-2 transition-all">
           <Ticket className="w-5 h-5 text-yellow-600" />
@@ -69,7 +70,7 @@ const MyPage: React.FC = () => {
           <span className="body-1 font-bold ml-1">1,250P</span>
         </div>
       </div>
-
+      <h3 className="title-2 mb-4 mt-4">요금제 설정</h3>
       <div className="grid grid-cols-2 gap-4">
         <button className="w-full py-3 rounded-lg bg-card text-card-foreground shadow-sm hover:shadow-md transition-all">
           요금제 해지
@@ -80,7 +81,7 @@ const MyPage: React.FC = () => {
       </div>
 
       <div>
-        <h3 className="title-2 mb-3">
+        <h3 className="title-2 mb-4 mt-4">
           내 활동 <span className="text-red-400 font-bold">4</span>개
         </h3>
         <div className="grid grid-cols-2 gap-4">
