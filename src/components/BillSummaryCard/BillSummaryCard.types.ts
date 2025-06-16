@@ -5,6 +5,7 @@ export interface UsageData {
   variant: UsageVariant;
   current: number;
   total: number;
+  displayText?: string;
 }
 
 export interface BillSummaryCardProps {

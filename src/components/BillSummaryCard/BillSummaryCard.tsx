@@ -48,9 +48,7 @@ const BillSummaryCard = ({
             <div key={idx} className="space-y-2">
               <div className="flex justify-between caption-1 text-gray-700">
                 <span>{item.label}</span>
-                <span>
-                  {item.current} / {item.total}
-                </span>
+                <span>{item.displayText ? ` ${item.displayText}` : ''}</span>
               </div>
               <Progress
                 variant={item.variant}

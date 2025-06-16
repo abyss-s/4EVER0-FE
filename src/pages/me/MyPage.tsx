@@ -20,17 +20,34 @@ const MyPage: React.FC = () => {
   if (error || !plan) return <p className="p-4">요금제를 불러오지 못했습니다.</p>;
 
   return (
-    <div className="p-4">
+    <div className="p-4 mt-12">
       <BillSummaryCard
-        phoneNumber="010-1**4-5**8"
+        phoneNumber={plan.phoneNumber}
         planName={plan.name}
         month={month}
         amount={Number(plan.price)}
         usageData={[
-          { label: '데이터', variant: 'data', current: 6, total: 6 },
-          { label: '통화', variant: 'call', current: 1, total: 1 },
-          { label: '영상', variant: 'video', current: 0.8, total: 1 },
-          { label: '문자', variant: 'sms', current: 1, total: 1 },
+          {
+            label: '데이터',
+            variant: 'data',
+            current: plan.data === '무제한' ? 1 : Number(plan.data.replace('GB', '')),
+            total: 1,
+            displayText: plan.data,
+          },
+          {
+            label: '통화',
+            variant: 'call',
+            current: plan.voice === '무제한' ? 1 : Number(plan.voice.replace('분', '')),
+            total: 1,
+            displayText: plan.voice,
+          },
+          {
+            label: '문자',
+            variant: 'sms',
+            current: plan.sms === '무제한' ? 1 : Number(plan.sms),
+            total: 1,
+            displayText: plan.sms === '무제한' ? '무제한' : `${plan.sms}건`,
+          },
         ]}
       />
       <Outlet />
