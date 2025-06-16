@@ -30,7 +30,7 @@ export function SubscriptionHeader({
   const currentStepIndex = stepOrder.indexOf(currentStep);
 
   return (
-    <div className="bg-white border-b border-gray-200 my-8s py-4 relative">
+    <div className="bg-white border-b border-gray-200 my-8 py-4 relative">
       <div className="relative flex items-center justify-center">
         {/* 이전 버튼 */}
         <Button
