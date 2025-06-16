@@ -13,7 +13,10 @@ export const postSubscription = async (data: SubscribeRequest): Promise<Subscrib
 /**
  * 구독 상품 ID와 브랜드 ID로 간단 가입
  */
-export const subscribeToService = (subscriptionId: number, brandId: number) =>
+export const subscribeToService = (
+  subscriptionId: number,
+  brandId: number,
+): Promise<SubscribeResponse> =>
   postSubscription({
     subscription_id: subscriptionId,
     brand_id: brandId,
