@@ -7,7 +7,9 @@ const TopNav = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const showBack = pathname !== '/';
+
+  const excludedPaths = ['/', '/landing'];
+  const showBack = !excludedPaths.includes(pathname);
 
   return (
     <header
