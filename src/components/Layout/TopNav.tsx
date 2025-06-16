@@ -24,7 +24,11 @@ const TopNav = () => {
             </button>
           )}
           <Link to="/">
-            <img src="/logo.svg" alt="MoonoZ 로고" className="w-16 cursor-pointer" />
+            <img
+              src="/public/images/moonoz_logo.svg"
+              alt="MoonoZ 로고"
+              className="w-30 cursor-pointer"
+            />
           </Link>
         </div>
         <div className="flex items-center gap-2">
