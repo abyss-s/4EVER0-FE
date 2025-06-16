@@ -254,3 +254,24 @@
     --tw-ring-offset-width: 2px;
   }
 }
+
+/* 스크롤바 완전 숨기기 (모바일용) */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* 부드러운 스크롤 */
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* 터치 스크롤 최적화 */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+}
