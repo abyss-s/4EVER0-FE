@@ -3,6 +3,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { fetchCurrentPlan } from '@/apis/plan/getCurrentPlan';
+import { useUserProfile } from '@/stores/useUserProfile';
 
 const MyPage: React.FC = () => {
   const {
@@ -13,6 +14,7 @@ const MyPage: React.FC = () => {
     queryKey: ['currentPlan'],
     queryFn: fetchCurrentPlan,
   });
+  const { data: profile } = useUserProfile();
 
   const month = `${new Date().getMonth() + 1}월`;
 
@@ -22,7 +24,7 @@ const MyPage: React.FC = () => {
   return (
     <div className="p-4 mt-12">
       <BillSummaryCard
-        phoneNumber={plan.phoneNumber}
+        phoneNumber={profile?.phoneNumber ?? '010-****-****'}
         planName={plan.name}
         month={month}
         amount={Number(plan.price)}
