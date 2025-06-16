@@ -13,10 +13,10 @@ export function useNaverMap(options: NaverMapOptions = {}) {
     mapTypeId = naver.maps.MapTypeId.NORMAL,
     minZoom = 6,
     maxZoom = 20,
-    zoomControl = true,
-    mapDataControl = true,
-    scaleControl = true,
-    logoControl = true,
+    zoomControl = false,
+    mapDataControl = false,
+    scaleControl = false,
+    logoControl = false,
   } = options;
 
   const initializeMap = useCallback(() => {
@@ -48,7 +48,9 @@ export function useNaverMap(options: NaverMapOptions = {}) {
   ]);
 
   const addMarker = useCallback((markerOptions: MarkerOptions) => {
-    if (!mapInstanceRef.current) return null;
+    if (!mapInstanceRef.current) {
+      return null;
+    }
 
     const marker = new naver.maps.Marker({
       position: new naver.maps.LatLng(markerOptions.position.lat, markerOptions.position.lng),
