@@ -157,7 +157,15 @@ export const BaseCalendar: React.FC<BaseCalendarProps> = ({
     isToday: boolean,
   ) => (
     <div className="flex flex-col items-center justify-center h-full relative">
-      <span className="relative z-20 drop-shadow-lg">{format(date, 'd')}</span>
+      <span
+        className={`
+        relative z-20 drop-shadow-lg
+        ${isSelected ? 'font-bold' : ''}
+        ${isToday ? 'text-blue-600' : ''}
+      `}
+      >
+        {format(date, 'd')}
+      </span>
       {markedDates?.(date) && isCurrentMonth && (
         <div className="absolute inset-0 flex items-center justify-center z-10">
           <img
