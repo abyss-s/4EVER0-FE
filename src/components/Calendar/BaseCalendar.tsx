@@ -15,8 +15,11 @@ import {
   isToday,
 } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import { ICONS } from '@/constant/iconPath';
 
 export interface BaseCalendarProps {
+  /** 해당 날짜가 출석일인지 판단 */
+  markedDates?: (date: Date) => boolean;
   /** 현재 표시할 월 */
   currentMonth?: Date;
   /** 월 변경 콜백 */
@@ -55,6 +58,7 @@ export const BaseCalendar: React.FC<BaseCalendarProps> = ({
   showHeader = true,
   showOutsideDays = true,
   variant = 'modern',
+  markedDates,
 }) => {
   const [internalMonth, setInternalMonth] = useState(new Date());
 
@@ -146,9 +150,29 @@ export const BaseCalendar: React.FC<BaseCalendarProps> = ({
   const themeStyles = variantStyles[variant];
 
   // 기본 날짜 렌더러
-  const defaultRenderDay = (date: Date) => (
+  const defaultRenderDay = (
+    date: Date,
+    isCurrentMonth: boolean,
+    isSelected: boolean,
+    isToday: boolean,
+  ) => (
     <div className="flex flex-col items-center justify-center h-full relative">
-      <span className="relative z-10">{format(date, 'd')}</span>
+      <span className="relative z-20 drop-shadow-lg">{format(date, 'd')}</span>
+      {markedDates?.(date) && isCurrentMonth && (
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <img
+            src={ICONS.STAMP_V1}
+            alt="출석 스탬프"
+            className="w-[54px] h-[54px] opacity-95 object-contain pointer-events-none"
+            style={{
+              minWidth: '54px',
+              minHeight: '54px',
+              maxWidth: '54px',
+              maxHeight: '54px',
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 
@@ -248,7 +272,7 @@ export const BaseCalendar: React.FC<BaseCalendarProps> = ({
               >
                 {renderDay
                   ? renderDay(date, isCurrentMonthDate, isSelected || false, isTodayDate)
-                  : defaultRenderDay(date)}
+                  : defaultRenderDay(date, isCurrentMonthDate, isSelected || false, isTodayDate)}
               </button>
             );
           })}
