@@ -111,7 +111,7 @@ export const AllVariants: Story = {
       {/* 라이트 모드 팝오버 */}
       <Popover>
         <PopoverTrigger asChild>
-          <FocusableButton variant="outline">Light Variant</FocusableButton>
+          <FocusableButton variant="share">Light Variant</FocusableButton>
         </PopoverTrigger>
         <PopoverContent variant="light" className="w-80">
           {/* 제목 */}
@@ -145,7 +145,7 @@ export const AllVariants: Story = {
           </div>
 
           {/* 버튼 */}
-          <FocusableButton className="w-full" variant="default" size="sm">
+          <FocusableButton className="w-full" variant="share" size="sm">
             확인
           </FocusableButton>
         </PopoverContent>
@@ -154,7 +154,7 @@ export const AllVariants: Story = {
       {/* 다크 모드 팝오버 */}
       <Popover>
         <PopoverTrigger asChild>
-          <FocusableButton variant="outline">Dark Variant</FocusableButton>
+          <FocusableButton variant="share">Dark Variant</FocusableButton>
         </PopoverTrigger>
         <PopoverContent variant="dark" className="w-80">
           {/* 제목 */}
@@ -188,7 +188,7 @@ export const AllVariants: Story = {
           </div>
 
           {/* 버튼 */}
-          <FocusableButton className="w-full" variant="default" size="sm">
+          <FocusableButton className="w-full" variant="share" size="sm">
             확인
           </FocusableButton>
         </PopoverContent>
