@@ -8,6 +8,6 @@ export interface Brand {
 }
 
 export interface Benefit {
-  date: string; // yyyy-MM-dd
-  brand: Brand; // 포함된 브랜드 정보
+  brand: string; // 브랜드 이름
+  date: string; // 날짜 (issuedDate 대신)
 }

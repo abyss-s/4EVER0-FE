@@ -15,12 +15,13 @@ import type {
   CardActionProps,
 } from './Card.types';
 
-export function Card({ className, variant, size, clickable, padding, ...props }: CardProps) {
+export function Card({ className, ...props }: CardProps) {
+  const { variant, size, clickable, padding, ...rest } = props;
   return (
     <div
       data-slot="card"
       className={cn(cardVariants({ variant, size, clickable, padding }), className)}
-      {...props}
+      {...rest} // 여기에는 HTMLAttributes<'div'>에 해당하는 기본 props만 전달됨
     />
   );
 }

@@ -14,7 +14,7 @@ const Mission: React.FC = () => {
           출석 스탬프 북
         </h2>
         <button
-          onClick={() => navigate('/calendar/upick')} // 원하는 경로로 변경 가능
+          onClick={() => navigate('/upltuple')}
           className="text-sm text-[#DD4640] font-medium hover:underline"
         >
           유플투쁠 혜택 더 자세히 보기 &gt;
