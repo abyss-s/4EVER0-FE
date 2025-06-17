@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 import { Message, ChatSession } from '@/types/chat';
+import { PlanRecommendation, SubscriptionRecommendationsResponse } from '@/types/streaming';
 
 interface ChatStore {
   sessions: Record<string, ChatSession>;
@@ -10,6 +11,12 @@ interface ChatStore {
   createSession: () => string;
   addMessage: (sessionId: string, content: string, type: 'user' | 'bot') => string;
   updateLastBotMessage: (sessionId: string, content: string) => void;
+  updateLastBotMessageWithCards: (
+    sessionId: string,
+    content: string,
+    planRecommendations?: PlanRecommendation[],
+    subscriptionRecommendations?: SubscriptionRecommendationsResponse['data'],
+  ) => void;
   incrementUsage: (sessionId: string) => boolean;
   endSession: (sessionId: string) => void;
   getCurrentSession: () => ChatSession | null;
@@ -78,6 +85,50 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
             ...messages[i],
             content,
             timestamp: new Date(),
+          };
+          updated = true;
+          break;
+        }
+      }
+
+      if (!updated) return state;
+
+      return {
+        ...state,
+        sessions: {
+          ...state.sessions,
+          [sessionId]: {
+            ...session,
+            messages,
+          },
+        },
+      };
+    });
+  },
+
+  // 새로 추가된 함수: 카드 정보도 함께 업데이트
+  updateLastBotMessageWithCards: (
+    sessionId,
+    content,
+    planRecommendations,
+    subscriptionRecommendations,
+  ) => {
+    set((state) => {
+      const session = state.sessions[sessionId];
+      if (!session) return state;
+
+      const messages = [...session.messages];
+      let updated = false;
+
+      // 마지막 봇 메시지 찾아서 업데이트
+      for (let i = messages.length - 1; i >= 0; i--) {
+        if (messages[i].type === 'bot') {
+          messages[i] = {
+            ...messages[i],
+            content,
+            timestamp: new Date(),
+            planRecommendations,
+            subscriptionRecommendations,
           };
           updated = true;
           break;

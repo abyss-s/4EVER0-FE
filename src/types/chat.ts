@@ -1,3 +1,5 @@
+import { PlanRecommendation, SubscriptionRecommendationsResponse } from './streaming';
+
 export type MessageType = 'user' | 'bot';
 
 export interface Message {
@@ -5,6 +7,8 @@ export interface Message {
   content: string;
   type: MessageType;
   timestamp: Date;
+  planRecommendations?: PlanRecommendation[];
+  subscriptionRecommendations?: SubscriptionRecommendationsResponse['data'];
 }
 
 export interface ChatSession {
