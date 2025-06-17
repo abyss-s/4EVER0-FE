@@ -23,6 +23,7 @@ export default [
         require: true,
         __dirname: true,
         naver: true,
+        NodeJS: true,
       },
     },
     plugins: {

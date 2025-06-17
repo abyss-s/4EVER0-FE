@@ -7,6 +7,7 @@ import Subscription from './Subscription';
 import { Banner } from '@/components/Banner';
 import { Button } from '@/components/Button';
 import { IMAGES } from '@/constant/imagePath';
+import { sonnerToast } from '@/components/Sooner';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -18,9 +19,10 @@ const Home: React.FC = () => {
     try {
       await apiLogout();
       stateLogout();
+      sonnerToast('로그아웃되었습니다.');
       navigate('/login');
     } catch {
-      alert('로그아웃 실패');
+      sonnerToast.error('로그아웃 실패');
     }
   }, [navigate, stateLogout]);
 
@@ -42,10 +44,9 @@ const Home: React.FC = () => {
             대화 시작하기
           </Button>
         }
-        className="mb-8"
+        className="mb-4"
       />
 
-      {/* 조건부 컨텐츠 */}
       {isLoggedIn ? (
         profileLoading ? (
           <div className="flex justify-center">프로필 정보 로딩 중…</div>
@@ -64,12 +65,20 @@ const Home: React.FC = () => {
           </div>
         )
       ) : (
-        <div className="flex flex-col items-center justify-center flex-1">
-          <h1 className="text-2xl font-bold mb-6">홈</h1>
-          <p className="mb-4">로그인하시면 더 많은 기능을 이용하실 수 있습니다.</p>
+        <div className="flex flex-col items-center justify-center flex-1 px-6 py-12 min-h-[20vh] bg-[#F4DE75] rounded-lg text-center shadow-md mb-4">
+          <img
+            src={IMAGES.MOONER['moonoz-hello']}
+            alt="MoonoZ 인사"
+            className="w-30 cursor-pointer"
+          />
+          <h1 className="text-3xl font-bold text-[#25394B] mb-3">어서오세요!</h1>
+          <p className="text-[#25394B] mb-6">
+            로그인하시면 <span className="font-semibold underline">맞춤 추천</span>과<br />
+            <span className="font-semibold underline">추가 혜택</span>을 이용하실 수 있어요 😊
+          </p>
           <button
             onClick={() => navigate('/login', { state: { from: location } })}
-            className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+            className="px-6 py-2 bg-[#25394B] text-white rounded-full font-semibold shadow hover:brightness-110 transition-all"
           >
             로그인하러 가기
           </button>
