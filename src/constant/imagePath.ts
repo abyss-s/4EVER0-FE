@@ -6,4 +6,9 @@ export const IMAGES = {
     'moonoz-hello': '/images/moonoz-hello.png',
     'mooner-game': '/images/mooner-game.svg',
   },
+  COUPON: {
+    TICKET_RED: '/images/ticket-red.svg',
+    TICKET_YELLOW: '/images/ticket-yellow.svg',
+    TICKET_GRAY: '/images/ticket-gray.svg',
+  },
 } as const;

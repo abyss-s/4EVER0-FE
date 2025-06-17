@@ -6,6 +6,7 @@ import { useUserProfile } from '@/stores/useUserProfile';
 import { Ticket, Coins, Package, FolderHeart, Stamp, ClipboardCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { IMAGES } from '@/constant/imagePath';
+import { fetchUserCoupons } from '@/apis/coupon/getUserCoupons';
 
 const MyPage: React.FC = () => {
   const {
@@ -19,6 +20,11 @@ const MyPage: React.FC = () => {
   const { data: profile } = useUserProfile();
 
   const month = `${new Date().getMonth() + 1}월`;
+
+  const { data: coupons = [] } = useQuery({
+    queryKey: ['userCoupons'],
+    queryFn: fetchUserCoupons,
+  });
 
   if (isLoading) return <p className="p-4">로딩 중...</p>;
   if (error || !plan) return <p className="p-4">요금제를 불러오지 못했습니다.</p>;
@@ -36,7 +42,6 @@ const MyPage: React.FC = () => {
     };
   };
 
-  // ✅ 여기에서 정의해야 함!
   const usageData = [
     formatUsage('데이터', 'data', plan.data),
     formatUsage('통화', 'call', plan.voice),
@@ -64,7 +69,7 @@ const MyPage: React.FC = () => {
         >
           <Ticket className="w-5 h-5 text-yellow-600" />
           <span className="caption-1">보유 쿠폰</span>
-          <span className="caption-1 font-bold ml-1">3개</span>
+          <span className="caption-1 font-bold ml-1">{coupons.length}개</span>
         </Link>
         <div className="w-full py-3 rounded-lg bg-card text-card-foreground shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2">
           <Coins className="w-5 h-5 text-blue-600" />
