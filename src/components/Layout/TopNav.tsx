@@ -1,16 +1,31 @@
-import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ChevronLeftIcon } from '@radix-ui/react-icons';
 import { Button } from '@/components/Button';
 import { IMAGES } from '@/constant/imagePath';
+import { useAuthStore } from '@/stores/useAuthStore';
+import { logout as apiLogout } from '@/utils/auth';
 
 const TopNav = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, logout: stateLogout } = useAuthStore();
 
   const excludedPaths = ['/', '/landing'];
   const showBack = !excludedPaths.includes(pathname);
+
+  const handleClick = async () => {
+    if (isLoggedIn) {
+      try {
+        await apiLogout(); // 서버 측 로그아웃
+        stateLogout(); // Zustand 상태 초기화
+        navigate('/'); // 홈으로 이동
+      } catch {
+        alert('로그아웃 실패');
+      }
+    } else {
+      navigate('/login'); // 로그인 페이지로 이동
+    }
+  };
 
   return (
     <header
@@ -33,15 +48,9 @@ const TopNav = () => {
           </Link>
         </div>
         <div className="flex items-center gap-2">
-          {isLoggedIn ? (
-            <Button variant="outline" size="sm" onClick={() => setIsLoggedIn(false)}>
-              로그아웃
-            </Button>
-          ) : (
-            <Button variant="login" size="sm" onClick={() => setIsLoggedIn(true)}>
-              로그인
-            </Button>
-          )}
+          <Button variant={isLoggedIn ? 'outline' : 'login'} size="sm" onClick={handleClick}>
+            {isLoggedIn ? '로그아웃' : '로그인'}
+          </Button>
         </div>
       </div>
     </header>
