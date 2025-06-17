@@ -1,10 +1,10 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import TopNav from './TopNav';
 import BottomNav from './BottomNav';
+import { Sooner } from '@/components/Sooner';
 
 const Layout = (): React.ReactElement => {
   const location = useLocation();
-
   const isChatPage = location.pathname === '/chat' || location.pathname.includes('/chat');
 
   return (
@@ -25,6 +25,7 @@ const Layout = (): React.ReactElement => {
         <Outlet />
       </main>
       <BottomNav />
+      <Sooner position="top-center" richColors duration={2000} />
     </section>
   );
 };

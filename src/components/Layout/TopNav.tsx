@@ -4,6 +4,7 @@ import { Button } from '@/components/Button';
 import { IMAGES } from '@/constant/imagePath';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { logout as apiLogout } from '@/utils/auth';
+import { sonnerToast } from '@/components/Sooner';
 
 const TopNav = () => {
   const navigate = useNavigate();
@@ -16,14 +17,15 @@ const TopNav = () => {
   const handleClick = async () => {
     if (isLoggedIn) {
       try {
-        await apiLogout(); // 서버 측 로그아웃
-        stateLogout(); // Zustand 상태 초기화
-        navigate('/'); // 홈으로 이동
+        await apiLogout();
+        stateLogout();
+        sonnerToast('로그아웃되었습니다.');
+        navigate('/');
       } catch {
-        alert('로그아웃 실패');
+        sonnerToast.error('로그아웃 실패');
       }
     } else {
-      navigate('/login'); // 로그인 페이지로 이동
+      navigate('/login');
     }
   };
 
