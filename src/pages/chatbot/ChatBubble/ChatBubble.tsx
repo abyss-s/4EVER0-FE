@@ -62,6 +62,10 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, isStreaming = f
     // 14. 앞뒤 공백 제거
     content = content.trim();
 
+    // 15. 개행으로 끊긴 볼드 텍스트 복구 (예: '**\\n디즈니+**' → '**디즈니+**')
+    content = content.replace(/\*\*\s*\n\s*/g, '**'); // 시작 **
+    content = content.replace(/\n\s*\*\*/g, '**'); // 종료 **
+
     return content;
   }, [message.content]);
 
