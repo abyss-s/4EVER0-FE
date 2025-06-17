@@ -9,5 +9,6 @@ export type Coupon = {
     imageUrl: string;
     category?: string | null;
   };
-  color: 'red' | 'yellow' | 'gray' | 'lightblue ';
+  color: 'red' | 'yellow' | 'gray';
+  isUsed: boolean;
 };
