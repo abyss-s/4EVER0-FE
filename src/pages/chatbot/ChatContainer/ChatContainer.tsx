@@ -15,12 +15,16 @@ import { ToneSwitch } from '../ToneSwitch/ToneSwitch';
 import { useModalStore } from '@/stores/useModalStore';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { PremiumFeatureButton } from './PremiumFeatureButton';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { Brain, Heart, Zap, Star, Sparkles } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export const ChatContainer: React.FC = () => {
   const { isLoggedIn } = useAuthStore();
   const [currentUBTIStep, setCurrentUBTIStep] = useState<number>(-1);
   const [ubtiInProgress, setUbtiInProgress] = useState(false);
-  const [isMunerTone, setIsMunerTone] = useState(true);
+  const [isMunerTone, setIsMunerTone] = useState(false);
   const { openModal } = useModalStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fullResponseRef = useRef('');
@@ -90,11 +94,11 @@ export const ChatContainer: React.FC = () => {
         if (ubtiData.question && typeof ubtiData.step === 'number') {
           setCurrentUBTIStep(ubtiData.step);
 
-          // 질문을 마크다운 형식으로 포맷
-          const formattedQuestion = `### UBTI 질문 ${ubtiData.step + 1}/4\n\n**${ubtiData.question}**\n\n답변을 입력해주세요.`;
+          // UBTI 진행 중에는 오버레이에서만 정보를 표시하고, 채팅창에는 간단한 메시지만
+          const simpleMessage = `💭 질문 ${ubtiData.step + 1}: ${ubtiData.question}`;
 
           if (currentSessionId) {
-            updateLastBotMessage(currentSessionId, formattedQuestion);
+            updateLastBotMessage(currentSessionId, simpleMessage);
           }
 
           // 4단계 완료 확인 여부
@@ -103,8 +107,16 @@ export const ChatContainer: React.FC = () => {
             setTimeout(() => {
               setUbtiInProgress(false);
               setCurrentUBTIStep(-1);
-              navigate('/ubti'); // 결과 페이지로 이동
-            }, 2000);
+              // 완료 메시지 추가
+              if (currentSessionId) {
+                addMessage(
+                  currentSessionId,
+                  '🎉 UBTI 분석이 완료되었습니다! 결과 페이지로 이동합니다...',
+                  'bot',
+                );
+              }
+              navigate('/ubti'); // 이 부분 결과 보기 버튼으로 수정해야함
+            }, 5000);
           }
 
           return true;
@@ -114,7 +126,7 @@ export const ChatContainer: React.FC = () => {
       }
       return false;
     },
-    [currentSessionId, updateLastBotMessage, navigate],
+    [currentSessionId, updateLastBotMessage, navigate, addMessage],
   );
 
   // 공통 스트리밍 로직
@@ -155,31 +167,26 @@ export const ChatContainer: React.FC = () => {
 
       return {
         onChunk: (chunk: string) => {
-          // data: 접두사 제거 및 빈 라인 필터링
           const processedChunk = chunk
             .split('\n')
             .map((line) => {
-              // data: 접두사 제거
               if (line.startsWith('data:')) {
-                return line.substring(5); // 'data:' 제거
+                return line.substring(5);
               }
               return line;
             })
-            .filter((line) => line.trim() !== '') // 빈 라인 제거
+            .filter((line) => line.trim() !== '')
             .join('\n');
 
           if (processedChunk.trim()) {
             fullResponseRef.current += processedChunk;
 
             if (isUBTI) {
-              // UBTI인 경우 JSON 파싱 시도
               const isParsed = parseAndDisplayUBTIResponse(fullResponseRef.current);
               if (!isParsed) {
-                // JSON 파싱 실패시 일반 텍스트로 표시
                 updateLastBotMessage(currentSessionId, fullResponseRef.current);
               }
             } else {
-              // 일반 메시지는 그대로 표시
               updateLastBotMessage(currentSessionId, fullResponseRef.current);
             }
           }
@@ -193,7 +200,17 @@ export const ChatContainer: React.FC = () => {
         },
       };
     },
-    [currentSessionId, isSessionEnded, isLoggedIn, openModal, navigate],
+    [
+      currentSessionId,
+      isSessionEnded,
+      isLoggedIn,
+      openModal,
+      navigate,
+      parseAndDisplayUBTIResponse,
+      updateLastBotMessage,
+      addMessage,
+      incrementUsage,
+    ],
   );
 
   // 일반 채팅 메시지 전송
@@ -265,7 +282,7 @@ export const ChatContainer: React.FC = () => {
       console.error('UBTI 시작 에러:', error);
       handlers.onError();
     }
-  }, [processStreamingMessage, ubtiMutation, currentSessionId]);
+  }, [processStreamingMessage, ubtiMutation, currentSessionId, isMunerTone]);
 
   // 좋아요 추천 시작
   const handleLikesRecommendation = useCallback(async () => {
@@ -283,7 +300,7 @@ export const ChatContainer: React.FC = () => {
       console.error('추천 에러:', error);
       handlers.onError();
     }
-  }, [processStreamingMessage, likesRecommendationMutation, currentSessionId]);
+  }, [processStreamingMessage, likesRecommendationMutation, currentSessionId, isMunerTone]);
 
   const resetChat = useCallback(() => {
     if (currentSessionId) {
@@ -293,14 +310,11 @@ export const ChatContainer: React.FC = () => {
     setCurrentUBTIStep(-1);
     const newSessionId = createSession();
     addMessage(newSessionId, '새로운 대화를 시작합니다! 😊 무엇을 도와드릴까요?', 'bot');
-  }, [currentSessionId]);
+  }, [currentSessionId, endSession, createSession, addMessage]);
 
-  const handleToneToggle = useCallback(
-    (isMuner: boolean) => {
-      setIsMunerTone(isMuner);
-    },
-    [isMunerTone],
-  );
+  const handleToneToggle = useCallback((isMuner: boolean) => {
+    setIsMunerTone(isMuner);
+  }, []);
 
   // 버튼 상태
   const buttonDisabled = useMemo(
@@ -331,10 +345,101 @@ export const ChatContainer: React.FC = () => {
     return '메시지를 입력하세요...';
   }, [ubtiInProgress, currentUBTIStep]);
 
+  // UBTI 오버레이 컴포넌트
+  const UBTIOverlay = () => {
+    if (!ubtiInProgress) return null;
+
+    const progress = ((currentUBTIStep + 1) / 4) * 100;
+    const stepIcons = [Heart, Brain, Zap, Star];
+
+    // 현재 질문 텍스트 (마지막 봇 메시지에서 추출)
+    const currentQuestionText = useMemo(() => {
+      const lastBotMessage = messages.filter((m) => m.type === 'bot').pop();
+
+      if (lastBotMessage && lastBotMessage.content.includes('질문')) {
+        // "💭 질문 1: 질문내용" 형태에서 질문 내용만 추출
+        const match = lastBotMessage.content.match(/질문 \d+: (.+)/);
+        return match ? match[1] : '질문을 준비하고 있어요...';
+      }
+
+      return '질문을 준비하고 있어요...';
+    }, [messages]);
+
+    return (
+      <div className="absolute top-0 left-0 right-0 z-10 p-4">
+        <div className="relative w-full max-w-4xl mx-auto">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 rounded-2xl blur-sm"></div>
+
+          <Card className="relative w-full border-0 bg-gradient-to-r from-blue-100/90 via-indigo-100/90 to-purple-100/90 backdrop-blur-sm shadow-xl">
+            <CardHeader className="pb-4">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3 p-2">
+                  <div>
+                    <CardTitle className="text-xl font-bold bg-gradient-to-r from-blue-700 to-purple-600 bg-clip-text text-transparent">
+                      타코시그널 성향 분석💘
+                    </CardTitle>
+                    <p className="text-blue-600 text-sm">아래 채팅창에서 질문에 답변해주세요!</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-xl font-bold text-blue-700">{currentUBTIStep + 1}/4</div>
+                  <div className="text-sm text-blue-600">단계</div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <Progress value={progress} className="w-full h-3 bg-blue-200/50" />
+                <div className="flex justify-between">
+                  {stepIcons.map((Icon, index) => (
+                    <div key={index} className="flex flex-col items-center">
+                      <div
+                        className={cn(
+                          'w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500',
+                          index <= currentUBTIStep
+                            ? 'bg-gradient-to-r from-blue-400 to-purple-500 text-white shadow-lg animate-pulse'
+                            : 'bg-gray-200 text-gray-400',
+                        )}
+                      >
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <span
+                        className={cn(
+                          'text-xs mt-1 font-medium',
+                          index <= currentUBTIStep ? 'text-blue-600' : 'text-gray-400',
+                        )}
+                      >
+                        {index + 1}단계
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardHeader>
+
+            <CardContent className="pt-0">
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-white/20 mb-4">
+                <h3 className="font-lg text-indigo-800 mb-2">현재 질문:</h3>
+                <p className="text-indigo-700 text-medium leading-relaxed">{currentQuestionText}</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="flex flex-col relative h-full">
+      {/* UBTI 진행 상황 오버레이 */}
+      <UBTIOverlay />
+
       {/* 헤더 영역 */}
-      <div className="flex justify-between items-center py-4 bg-white shrink-0">
+      <div
+        className={cn(
+          'flex justify-between items-center py-4 bg-white shrink-0 transition-all duration-300',
+          ubtiInProgress && 'mt-40', // UBTI 진행 중에는 오버레이 공간 확보
+        )}
+      >
         <h1 className="text-lg font-semibold">무너와 대화하기</h1>
         <div className="flex items-center space-x-3">
           <ToneSwitch
@@ -343,9 +448,10 @@ export const ChatContainer: React.FC = () => {
             disabled={buttonDisabled}
           />
           {ubtiInProgress && (
-            <span className="text-xs bg-blue-100 text-brand-darkblue px-2 py-1 rounded">
-              UBTI 진행중
-            </span>
+            <div className="flex items-center gap-2 text-xs bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 px-3 py-1 rounded-full border border-blue-200">
+              <Sparkles className="w-3 h-3 animate-pulse" />
+              <span className="font-medium">UBTI 진행중</span>
+            </div>
           )}
           {/* 사용량 표시 - 로그인 사용자는 무제한 */}
           <div className="flex items-center space-x-1">
@@ -353,7 +459,7 @@ export const ChatContainer: React.FC = () => {
             {!isLoggedIn && (
               <span
                 className={`text-xs font-medium ${
-                  (currentSession?.usageCount || 0) >= 4 ? 'text-brand-red' : 'text-gray-600'
+                  (currentSession?.usageCount || 0) >= 4 ? 'text-red-500' : 'text-gray-600'
                 }`}
               >
                 {usageDisplay}회

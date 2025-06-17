@@ -8,7 +8,7 @@ interface ToneSwitchProps {
 }
 
 export const ToneSwitch: React.FC<ToneSwitchProps> = ({
-  isMunerTone,
+  isMunerTone = false,
   onToggle,
   disabled = false,
 }) => {
