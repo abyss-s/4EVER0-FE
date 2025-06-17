@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ChevronLeftIcon } from '@radix-ui/react-icons';
 import { Button } from '@/components/Button';
+import { IMAGES } from '@/constant/imagePath';
 
 const TopNav = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const TopNav = () => {
           )}
           <Link to="/">
             <img
-              src="/public/images/moonoz_logo.svg"
+              src={IMAGES.MOONER['moonoz-logo']}
               alt="MoonoZ 로고"
               className="w-30 cursor-pointer"
             />
