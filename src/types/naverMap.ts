@@ -13,6 +13,6 @@ export interface NaverMapOptions {
 export interface MarkerOptions {
   position: { lat: number; lng: number };
   title?: string;
-  icon?: string | naver.maps.ImageIcon;
+  icon?: string | naver.maps.ImageIcon | naver.maps.SymbolIcon | naver.maps.HtmlIcon;
   clickable?: boolean;
 }
