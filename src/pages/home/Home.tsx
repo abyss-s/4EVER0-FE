@@ -7,6 +7,7 @@ import Subscription from './Subscription';
 import { Banner } from '@/components/Banner';
 import { Button } from '@/components/Button';
 import { IMAGES } from '@/constant/imagePath';
+import { sonnerToast } from '@/components/Sooner';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -18,9 +19,10 @@ const Home: React.FC = () => {
     try {
       await apiLogout();
       stateLogout();
+      sonnerToast('로그아웃되었습니다.');
       navigate('/login');
     } catch {
-      alert('로그아웃 실패');
+      sonnerToast.error('로그아웃 실패');
     }
   }, [navigate, stateLogout]);
 
