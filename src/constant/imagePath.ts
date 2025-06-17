@@ -1,6 +1,7 @@
 export const IMAGES = {
   MOONER: {
     'mooner-phone': '/images/mooner-phone.svg',
-    'moonoz-logo': '/images/moonoz_logo.svg',
+    'moonoz-logo': '/images/moonoz-logo.svg',
+    'moonoz-hello': '/images/moonoz-hello.png',
   },
 } as const;
