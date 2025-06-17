@@ -1,8 +1,13 @@
 import { useState, useEffect } from 'react';
-
 declare global {
   interface Window {
-    Kakao: Record<string, unknown>;
+    Kakao: {
+      isInitialized: () => boolean;
+      init: (key: string) => void;
+      Link: {
+        sendDefault: (params: unknown) => void; // 필요하면 더 상세 타입 작성
+      };
+    };
   }
 }
 
