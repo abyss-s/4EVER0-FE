@@ -16,6 +16,8 @@ export const cardVariants = cva(
         success: 'border-green-200 bg-green-50',
         warning: 'border-amber-200 bg-amber-50',
         error: 'border-red-200 bg-red-50',
+        // 하이라이트
+        highlight: 'border-yellow-300 bg-yellow-50 ring-2 ring-yellow-300/30',
       },
       size: {
         sm: 'gap-3 py-3',
