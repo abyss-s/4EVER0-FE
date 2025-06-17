@@ -3,9 +3,9 @@ import ReactMarkdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
 import type { Components } from 'react-markdown';
 import { Message } from '@/types/chat';
-import { ICONS } from '@/constant/iconPath';
 import { AvatarComponent } from '@/components/Avatar';
 import { cn } from '@/lib/utils';
+import { IMAGES } from '@/constant/imagePath';
 
 interface ChatBubbleProps {
   message: Message;
@@ -118,14 +118,14 @@ export const ChatBubble: React.FC<ChatBubbleProps> = ({ message, isStreaming = f
     <div className={cn('flex w-full mb-4', isBot ? 'justify-start' : 'justify-end')}>
       {isBot && (
         <div className="w-8 h-8 mr-2 mt-1 flex-shrink-0">
-          <AvatarComponent src={ICONS.PROFILE_ICON} />
+          <AvatarComponent src={IMAGES.MOONER['mooner-chat']} />
         </div>
       )}
       <div
         className={cn(
           'max-w-[80%] px-4 py-2 rounded-lg',
           isBot
-            ? 'bg-brand-red-light text-secondary-foreground rounded-tl-none shadow-sm'
+            ? 'bg-brand-yellow-light text-secondary-foreground rounded-tl-none shadow-sm'
             : 'bg-brand-darkblue-light text-brand-darkblue rounded-tr-none',
         )}
       >

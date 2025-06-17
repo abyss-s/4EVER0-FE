@@ -20,11 +20,11 @@
 
   --color-brand-yellow: #f4de75;
   --color-brand-yellow-hover: #e2cc64;
-  --color-brand-yellow-light: #fcf5d9;
+  --color-brand-yellow-light: rgb(255, 243, 214);
 
   --color-brand-darkblue: #25394b;
   --color-brand-darkblue-hover: #1f2f3e;
-  --color-brand-darkblue-light: #dde3e8;
+  --color-brand-darkblue-light: rgba(237, 237, 237, 0.86);
 
   --color-positive: #22c55e;
   --color-positive-bg: #e8fbe9;
