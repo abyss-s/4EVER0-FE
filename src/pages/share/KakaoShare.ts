@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 declare global {
   interface Window {
-    Kakao: any;
+    Kakao: Record<string, unknown>;
   }
 }
 
