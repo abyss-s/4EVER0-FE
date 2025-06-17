@@ -11,12 +11,12 @@ const PopoverPortal = PopoverPrimitive.Portal;
 const PopoverContent = React.forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Content>,
   PopoverContentProps
->(({ className, variant = 'light', sideOffset = 4, children, ...props }, ref) => (
+>(({ className, variant = 'light', side = 'bottom', sideOffset = 4, children, ...props }, ref) => (
   <PopoverPortal>
     <PopoverPrimitive.Content
       ref={ref}
       sideOffset={sideOffset}
-      className={cn(contentVariants({ variant, className }))}
+      className={cn(contentVariants({ variant, side }), className)}
       {...props}
     >
       {children}

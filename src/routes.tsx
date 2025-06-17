@@ -16,6 +16,7 @@ import Mission from '@/pages/mission/Mission';
 import DesignSystemTest from '@/pages/test/DesignSystemTest';
 import UBTI from '@/pages/ubti/UBTI';
 import UplTuple from '@/pages/upltuple/UplTuple';
+import ShareTest from '@/pages/share/ShareTest';
 import NaverMap from '@/components/NaverMap/NaverMap';
 import Layout from '@/components/Layout/Layout';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -60,6 +61,7 @@ const routes: RouteObject[] = [
       // 테스트용
       { path: 'design-system', element: <DesignSystemTest /> },
       { path: 'map-test', element: <NaverMap /> },
+      { path: 'share-test', element: <ShareTest /> },
 
       // 404
       { path: '*', element: <NotFound /> },
