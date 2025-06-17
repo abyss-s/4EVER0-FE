@@ -13,7 +13,15 @@ export function Progress({
   showFraction = false,
   ...props
 }: ProgressProps) {
-  const progressValue = current && total ? (current / total) * 100 : value;
+  const rawValue =
+    current != null && total != null && total > 0
+      ? (current / total) * 100
+      : typeof value === 'number'
+        ? value
+        : undefined;
+
+  const progressValue =
+    typeof rawValue === 'number' && !Number.isNaN(rawValue) ? Math.min(rawValue, 100) : undefined;
 
   return (
     <div className="relative">
