@@ -39,7 +39,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({ plan, onSelect, className })
           <CardTitle className="text-lg font-bold text-gray-800">{plan.name}</CardTitle>
           <div className="text-right">
             <div className="text-xl font-bold text-blue-600">{plan.price?.toLocaleString()}원</div>
-            <div className="text-sm text-gray-500">월</div>
+            <div className="text-sm text-gray-500">/ 월</div>
           </div>
         </div>
         {plan.description && <p className="text-sm text-gray-600 mt-2">{plan.description}</p>}
@@ -70,7 +70,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({ plan, onSelect, className })
           </div>
         )}
 
-        {/* 데이터 쉐어링 */}
+        {/* 데이터 쉐어링 (공유데이터) */}
         {plan.share_data && (
           <div className="flex items-center gap-2">
             <Share2 className="w-4 h-4 text-purple-500" />
