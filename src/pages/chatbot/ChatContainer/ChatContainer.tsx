@@ -7,12 +7,11 @@ import {
   useLikesRecommendationMutation,
 } from '@/hooks/useChatMutation';
 import { useStreamingChat } from '@/hooks/useStreamingChat';
-
-// 컴포넌트 imports
-import { UBTIOverlay } from '../UBTIOverlay/UBTIOverlay';
-import { ChatHeader } from '../ChatHeader/ChatHeader';
-import { ChatMessages } from '../ChatMessages/ChatMessages';
+import { UBTIOverlay } from '../UBTIOverlay';
+import { ChatHeader } from '../ChatHeader';
+import { ChatMessages } from '../ChatMessages';
 import { ChatInputArea } from '../ChatInputArea/ChatInputArea';
+import { SubscriptionRecommendationsData } from '@/types/streaming';
 
 export const ChatContainer: React.FC = () => {
   const [isMunerTone, setIsMunerTone] = useState(false);
@@ -102,7 +101,7 @@ export const ChatContainer: React.FC = () => {
           });
         } catch (error) {
           console.error('UBTI 답변 에러:', error);
-          handlers.onError();
+          handlers.onError(error as Error);
         }
         return;
       }
@@ -120,7 +119,7 @@ export const ChatContainer: React.FC = () => {
         });
       } catch (error) {
         console.error('채팅 에러:', error);
-        handlers.onError();
+        handlers.onError(error as Error);
       }
     },
     [
@@ -151,7 +150,7 @@ export const ChatContainer: React.FC = () => {
       });
     } catch (error) {
       console.error('UBTI 시작 에러:', error);
-      handlers.onError();
+      handlers.onError(error as Error);
     }
   }, [createStreamingHandlers, ubtiMutation, currentSessionId, isMunerTone, startUBTI]);
 
@@ -169,7 +168,7 @@ export const ChatContainer: React.FC = () => {
       });
     } catch (error) {
       console.error('추천 에러:', error);
-      handlers.onError();
+      handlers.onError(error as Error);
     }
   }, [createStreamingHandlers, likesRecommendationMutation, currentSessionId, isMunerTone]);
 
@@ -248,10 +247,12 @@ export const ChatContainer: React.FC = () => {
       <ChatMessages
         messages={messages}
         isStreaming={isStreaming}
-        streamingState={streamingState} // 🆕
-        expectingCards={expectingCards} // 🆕
+        streamingState={streamingState}
+        expectingCards={expectingCards}
         currentPlanRecommendations={currentPlanRecommendations}
-        currentSubscriptionRecommendations={currentSubscriptionRecommendations}
+        currentSubscriptionRecommendations={
+          currentSubscriptionRecommendations as SubscriptionRecommendationsData
+        }
         messagesEndRef={messagesEndRef}
       />
 
