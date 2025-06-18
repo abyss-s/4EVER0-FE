@@ -1,5 +1,6 @@
 import { BillSummaryCard } from '@/components/ui/billsummarycard';
 import React from 'react';
+import { Card, CardContent } from '@/components/Card';
 import { useQuery } from '@tanstack/react-query';
 import { fetchCurrentPlan } from '@/apis/plan/getCurrentPlan';
 import { useUserProfile } from '@/stores/useUserProfile';
@@ -63,28 +64,37 @@ const MyPage: React.FC = () => {
       />
       <h3 className="title-2 mb-4 mt-4">내 정보</h3>
       <div className="grid grid-cols-2 gap-4">
-        <Link
-          to="coupons"
-          className="w-full py-3 rounded-lg bg-card text-card-foreground shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2"
-        >
-          <Ticket className="w-5 h-5 text-yellow-600" />
-          <span className="caption-1">보유 쿠폰</span>
-          <span className="caption-1 font-bold ml-1">{coupons.length}개</span>
+        <Link to="coupons">
+          <Card clickable>
+            <CardContent className="flex items-center justify-center gap-1.5 py-2.5 leading-none">
+              <Ticket className="w-[18px] h-[18px] text-yellow-600 shrink-0" />
+              <span className="caption-1 whitespace-nowrap">보유 쿠폰</span>
+              <span className="caption-1 font-bold ml-1 whitespace-nowrap">{coupons.length}개</span>
+            </CardContent>
+          </Card>
         </Link>
-        <div className="w-full py-3 rounded-lg bg-card text-card-foreground shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2">
-          <Coins className="w-5 h-5 text-blue-600" />
-          <span className="caption-1">보유 포인트</span>
-          <span className="caption-1 font-bold ml-1">1,250P</span>
-        </div>
+
+        <Card clickable>
+          <CardContent className="flex items-center justify-center gap-1.5 py-2.5 leading-none">
+            <Coins className="w-[18px] h-[18px] text-blue-600 shrink-0" />
+            <span className="caption-1 whitespace-nowrap">보유 포인트</span>
+            <span className="caption-1 font-bold ml-1 whitespace-nowrap">1,250P</span>
+          </CardContent>
+        </Card>
       </div>
+
       <h3 className="title-2 mb-4 mt-4">요금제 설정</h3>
       <div className="grid grid-cols-2 gap-4">
-        <button className="w-full py-3 rounded-lg bg-card text-card-foreground shadow-sm hover:shadow-md transition-all caption-1">
-          요금제 해지
-        </button>
-        <button className="w-full py-3 rounded-lg bg-card text-card-foreground shadow-sm hover:shadow-md transition-all caption-1">
-          요금제 변경
-        </button>
+        <Card clickable>
+          <CardContent className="text-center py-2.5 caption-1  leading-tight">
+            요금제 해지
+          </CardContent>
+        </Card>
+        <Card clickable>
+          <CardContent className="text-center py-2.5 caption-1  leading-tight">
+            요금제 변경
+          </CardContent>
+        </Card>
       </div>
 
       <div>
@@ -92,22 +102,32 @@ const MyPage: React.FC = () => {
           내 활동 <span className="text-red-400 font-bold">4</span>개
         </h3>
         <div className="grid grid-cols-2 gap-4">
-          <button className="bg-card text-card-foreground flex flex-col items-center justify-center gap-1 rounded-xl py-4 shadow-sm cursor-pointer transition-all border border-gray-50 hover:shadow-md">
-            <Package className="w-6 h-6" />
-            <span className="caption-1">구독상품 목록</span>
-          </button>
-          <button className="bg-card text-card-foreground flex flex-col items-center justify-center gap-1 rounded-xl py-4 shadow-sm cursor-pointer transition-all border border-gray-50 hover:shadow-md">
-            <ClipboardCheck className="w-6 h-6" />
-            <span className="caption-1">미션 목록</span>
-          </button>
-          <button className="bg-card text-card-foreground flex flex-col items-center justify-center gap-1 rounded-xl py-4 shadow-sm cursor-pointer transition-all border border-gray-50 hover:shadow-md">
-            <Stamp className="w-6 h-6" />
-            <span className="caption-1">이번달 출석 기록</span>
-          </button>
-          <button className="bg-card text-card-foreground flex flex-col items-center justify-center gap-1 rounded-xl py-4 shadow-sm cursor-pointer transition-all border border-gray-50 hover:shadow-md">
-            <FolderHeart className="w-6 h-6" />
-            <span className="caption-1">좋아요한 쿠폰 목록</span>
-          </button>
+          <Link to="subscriptions">
+            <Card clickable>
+              <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
+                <Package className="w-6 h-6" />
+                <span className="caption-1">구독상품 목록</span>
+              </CardContent>
+            </Card>
+          </Link>
+          <Card clickable>
+            <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
+              <ClipboardCheck className="w-6 h-6" />
+              <span className="caption-1">미션 목록</span>
+            </CardContent>
+          </Card>
+          <Card clickable>
+            <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
+              <Stamp className="w-6 h-6" />
+              <span className="caption-1">이번달 출석 기록</span>
+            </CardContent>
+          </Card>
+          <Card clickable>
+            <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
+              <FolderHeart className="w-6 h-6" />
+              <span className="caption-1">좋아요한 쿠폰 목록</span>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
