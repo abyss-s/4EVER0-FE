@@ -26,6 +26,8 @@ export const useStreamingChat = () => {
   const { openModal } = useModalStore();
   const navigate = useNavigate();
   const fullResponseRef = useRef('');
+  const [currentUBTIQuestionText, setCurrentUBTIQuestionText] = useState<string | null>(null);
+  const [ubtiReadyToSubmit, setUbtiReadyToSubmit] = useState(false);
 
   // 카드 데이터를 스트리밍 세션 동안 유지하는 ref 추가
   const cardDataRef = useRef<{
@@ -117,31 +119,24 @@ export const useStreamingChat = () => {
       try {
         const parsed: UBTIStreamingMessage = JSON.parse(chunk);
 
-        if (parsed.type === 'question_content') {
-          setCurrentUBTIStep(parsed.step);
-
-          const simpleMessage = `💭 질문 ${parsed.step + 1}: ${parsed.question}`;
-          if (currentSessionId) {
-            updateLastBotMessage(currentSessionId, simpleMessage);
-          }
-
-          // TODO: 결과 보기 누르면 이동하도록 수정
+        if (parsed.type === 'question_start') {
           return true;
         }
 
-        if (parsed.type === 'ubti_complete') {
-          setTimeout(() => {
-            setUbtiInProgress(false);
-            setCurrentUBTIStep(-1);
-            if (currentSessionId) {
-              addMessage(
-                currentSessionId,
-                '🎉 UBTI 분석이 완료되었습니다! 결과 페이지로 이동합니다...',
-                'bot',
-              );
-            }
-            navigate('/ubti');
-          }, 5000);
+        if (parsed.type === 'question_content') {
+          setCurrentUBTIStep(parsed.step);
+          setCurrentUBTIQuestionText(parsed.question);
+          return true;
+        }
+
+        if (parsed.type === 'question_end') {
+          return true;
+        }
+
+        if (parsed.type === 'questions_complete') {
+          console.log('[DEBUG] 질문 모두 완료, 결과 준비');
+          setCurrentUBTIQuestionText(null);
+          setUbtiReadyToSubmit(true);
           return true;
         }
       } catch (error) {
@@ -348,8 +343,21 @@ export const useStreamingChat = () => {
                 break;
               }
 
+              case 'question_start':
+              case 'question_content':
+              case 'question_end':
+              case 'questions_complete':
+              case 'ubti_complete': {
+                if (isUBTI) {
+                  const handled = parseAndDisplayUBTIResponse(JSON.stringify(parsedResponse));
+                  if (!handled) {
+                    updateLastBotMessage(currentSessionId, JSON.stringify(parsedResponse));
+                  }
+                }
+                break;
+              }
+
               default:
-                console.warn('[WARN] Unknown response type:', parsedResponse.type);
                 break;
             }
           } else {
@@ -437,6 +445,9 @@ export const useStreamingChat = () => {
     ubtiInProgress,
     streamingState,
     expectingCards,
+    currentUBTIQuestionText,
+    ubtiReadyToSubmit,
+    currentSessionId,
     createStreamingHandlers,
     startUBTI,
     resetUBTI,
