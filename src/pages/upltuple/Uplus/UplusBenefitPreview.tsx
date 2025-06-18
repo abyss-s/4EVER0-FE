@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Benefit } from '@/types/uplus';
 import { getMonthlyBenefits } from '@/apis/uplus/benefit';
-import { Card, CardContent } from '@/components/Card';
+// import { Card, CardContent } from '@/components/Card';
 import { calcDday } from '@/utils/calcDday';
 
 export const UplusBenefitPreview = () => {
@@ -21,21 +21,65 @@ export const UplusBenefitPreview = () => {
     return <p className="text-sm text-gray-400 px-2">혜택을 불러오는 중입니다...</p>;
   }
 
+  // 브랜드별 배경색 매핑
+  const getBrandBackgroundColor = (brand: string) => {
+    const colorMap: { [key: string]: string } = {
+      MIXXO: 'bg-gray-400',
+      CGV: 'bg-red-500',
+      LG생활건강: 'bg-pink-400',
+      GS25: 'bg-blue-500',
+      리디셀렉트: 'bg-blue-400',
+      배스킨라빈스: 'bg-pink-500',
+      CU: 'bg-green-400',
+      교보문고: 'bg-blue-600',
+      이디야커피: 'bg-blue-800',
+      뚜레쥬르: 'bg-green-800',
+      맘스터치: 'bg-yellow-300',
+      올리브영: 'bg-green-500',
+      무신사: 'bg-slate-400',
+      티빙: 'bg-red-500',
+    };
+    return colorMap[brand] || 'bg-gray-400';
+  };
+
   return (
-    <div className="flex gap-2 overflow-x-auto pb-1">
-      {benefits.map((b) => {
+    <div className="flex gap-3 overflow-x-auto pb-2 px-1">
+      {benefits.map((benefit, index) => {
+        const dday = calcDday(benefit.date ?? '');
+
         return (
-          <Card
-            key={`${b.brand}-${b.date}`}
-            variant="ghost"
-            size="sm"
-            className="min-w-[100px] h-[100px] bg-pink-50"
+          <div
+            key={`${benefit.brand}-${benefit.date}-${index}`}
+            className={`min-w-[100px] h-[100px] ${getBrandBackgroundColor(benefit.brand)} flex-shrink-0 rounded-3xl relative overflow-hidden`}
           >
-            <CardContent className="flex flex-col items-center justify-center gap-1">
-              <span className="text-xs font-semibold">{calcDday(b.date ?? '')}</span>
-              <span className="text-[11px] font-medium text-center truncate">{b.brand}</span>
-            </CardContent>
-          </Card>
+            {/* D-day - 왼쪽 상단 */}
+            <div className="absolute top-2.5 left-4 text-white font-semibold text-base z-10 tracking-wider">
+              {dday}
+            </div>
+
+            {/* 브랜드 로고 - 오른쪽 하단, 원형 */}
+            <div className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg z-10">
+              <img
+                src={benefit.imageUrl}
+                alt={benefit.brand}
+                className="w-8 h-8 object-contain"
+                onError={(e) => {
+                  // 이미지 로드 실패 시 브랜드명 첫 2글자로 대체
+                  const target = e.currentTarget;
+                  target.style.display = 'none';
+                  const fallbackElement = target.parentElement?.querySelector(
+                    '.fallback-text',
+                  ) as HTMLElement;
+                  if (fallbackElement) {
+                    fallbackElement.style.display = 'flex';
+                  }
+                }}
+              />
+              <div className="fallback-text w-full h-full rounded-full bg-gray-100 items-center justify-center text-xs font-bold text-gray-600 hidden">
+                {benefit.brand.slice(0, 2)}
+              </div>
+            </div>
+          </div>
         );
       })}
     </div>
