@@ -107,19 +107,14 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center pt-4">
+    <div className="flex items-center justify-center min-h-full">
       <div className="w-full max-w-lg">
         {/* Alert 표시 영역 */}
         {alert && (
-          <Alert
-            title={alert.title}
-            description={alert.description}
-            variant={alert.variant}
-            className="mb-4"
-          />
+          <Alert title={alert.title} description={alert.description} variant={alert.variant} />
         )}
         {/* 카드 제거, 그림자 제거 */}
-        <div className="bg-white/90 backdrop-blur rounded-xl border-0 p-8">
+        <div className="bg-white/90 backdrop-blur rounded-xl border-0 px-4">
           <div className="text-center pt-4 pb-6">
             <div className="text-xl font-bold text-slate-800">
               Moono<span className="text-brand-red">Z</span>에 오신 걸 환영해요!

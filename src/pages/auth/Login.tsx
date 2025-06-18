@@ -47,7 +47,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="flex items-center justify-center px-4 min-h-full">
-      <div className="w-full max-w-sm bg-white/80 backdrop-blur-sm rounded-xl p-8">
+      <div className="w-full max-w-sm bg-white/80 backdrop-blur-sm rounded-xl">
         {/* Header Message */}
         <div className="text-center">
           <div className="inline-block bg-white/90 px-4 py-2 rounded-full shadow-sm mb-2">
