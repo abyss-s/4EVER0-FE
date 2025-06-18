@@ -26,7 +26,7 @@ export const UBTIOverlay: React.FC<UBTIOverlayProps> = ({
     const lastBotMessage = messages.filter((m) => m.type === 'bot').pop();
 
     if (lastBotMessage && lastBotMessage.content.includes('질문')) {
-      // "💭 질문 1: 질문내용" 형태에서 질문 내용만 추출
+      // "질문 1: 질문내용" 형태에서 질문 내용만 추출
       const match = lastBotMessage.content.match(/질문 \d+: (.+)/);
       return match ? match[1] : '질문을 준비하고 있어요...';
     }
@@ -87,7 +87,7 @@ export const UBTIOverlay: React.FC<UBTIOverlayProps> = ({
 
           <CardContent className="pt-0">
             <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-white/20 mb-4">
-              <h3 className="font-lg text-indigo-800 mb-2">현재 질문:</h3>
+              <h3 className="font-lg text-indigo-800 mb-2">질문</h3>
               <p className="text-indigo-700 text-medium leading-relaxed">{currentQuestionText}</p>
             </div>
           </CardContent>

@@ -99,15 +99,6 @@ export const LikesRecommendation: React.FC<LikesRecommendationProps> = ({
         <p className="text-xs text-gray-500 mt-1">톤: {isMunerTone ? '무너' : '일반'}</p>
       </div>
 
-      {/* 디버깅 정보 */}
-      <div className="p-2 bg-gray-100 rounded text-xs w-full">
-        <p>세션 ID: {currentSessionId || '없음'}</p>
-        <p>로딩 상태: {isLoading ? '로딩 중' : '대기'}</p>
-        <p>추천 완료: {recommendationComplete ? '완료' : '미완료'}</p>
-        <p>응답 길이: {fullResponseRef.current.length}</p>
-        <p>톤 설정: {isMunerTone ? '무너' : '일반'}</p>
-      </div>
-
       {!recommendationComplete ? (
         <Button
           onClick={handleGetRecommendation}
@@ -122,16 +113,6 @@ export const LikesRecommendation: React.FC<LikesRecommendationProps> = ({
         <Button onClick={handleComplete} className="w-full">
           처음으로 돌아가기
         </Button>
-      )}
-
-      {/* 실시간 응답 미리보기 */}
-      {fullResponseRef.current && (
-        <div className="w-full p-3 bg-green-50 rounded-lg">
-          <h4 className="font-semibold mb-2">실시간 응답:</h4>
-          <div className="text-sm whitespace-pre-wrap max-h-40 overflow-y-auto">
-            {fullResponseRef.current}
-          </div>
-        </div>
       )}
     </div>
   );

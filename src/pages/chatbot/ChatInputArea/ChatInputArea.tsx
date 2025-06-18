@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChatInput } from '../ChatInput/ChatInput';
+import { ChatInput } from './ChatInput';
 import { PremiumFeatureButton } from '../ChatContainer/PremiumFeatureButton';
 import { Button } from '@/components/Button';
 
@@ -36,7 +36,7 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
             disabled={buttonDisabled}
             featureName="UBTI 분석"
           >
-            UBTI 분석하기
+            타코시그널 검사하기
           </PremiumFeatureButton>
           <PremiumFeatureButton
             className="flex-1"
@@ -44,7 +44,7 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
             disabled={buttonDisabled}
             featureName="서비스 추천"
           >
-            서비스 추천받기
+            브랜드 케미 분석
           </PremiumFeatureButton>
         </div>
       )}

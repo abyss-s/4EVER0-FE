@@ -1,5 +1,5 @@
 import React from 'react';
-import { ToneSwitch } from '../ToneSwitch/ToneSwitch';
+import { ToneSwitch } from './ToneSwitch';
 import { Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/stores/useAuthStore';
@@ -46,7 +46,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
           </div>
         )}
 
-        {/* 사용량 표시 - 로그인 사용자는 무제한 */}
+        {/* 채팅 사용횟수 */}
         <div className="flex items-center space-x-1">
           {!isLoggedIn && <span className="text-xs font-medium text-gray-400">채팅</span>}
           {!isLoggedIn && (
