@@ -84,11 +84,28 @@ interface UBTIStreamingQuestion {
   total_steps: number;
 }
 
+interface UBTIStreamingQuestionStart {
+  type: 'question_start';
+}
+
+interface UBTIStreamingQuestionEnd {
+  type: 'question_end';
+}
+
 interface UBTIStreamingComplete {
   type: 'ubti_complete';
 }
 
-export type UBTIStreamingMessage = UBTIStreamingQuestion | UBTIStreamingComplete;
+interface UBTIStreamingQuestionsComplete {
+  type: 'questions_complete';
+}
+
+export type UBTIStreamingMessage =
+  | UBTIStreamingQuestionStart
+  | UBTIStreamingQuestion
+  | UBTIStreamingQuestionEnd
+  | UBTIStreamingQuestionsComplete
+  | UBTIStreamingComplete;
 
 export type StreamingResponse =
   | PlanRecommendationsResponse
