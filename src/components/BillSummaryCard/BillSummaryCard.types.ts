@@ -1,4 +1,4 @@
-export type UsageVariant = 'data' | 'call' | 'video' | 'sms';
+export type UsageVariant = 'data' | 'call' | 'sharedData' | 'sms';
 
 export interface UsageData {
   label: string;
