@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Benefit } from '@/types/uplus';
 import { getMonthlyBenefits } from '@/apis/uplus/benefit';
-// import { Card, CardContent } from '@/components/Card';
 import { calcDday } from '@/utils/calcDday';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
+// import styles from './UplusBenefit.module.css';
+// import { Card, CardContent } from '@/components/Card';
 
 export const UplusBenefitPreview = () => {
   const [benefits, setBenefits] = useState<Benefit[] | null>(null);
@@ -59,6 +60,9 @@ export const UplusBenefitPreview = () => {
         }}
         modules={[FreeMode, Pagination]}
         className="benefit-swiper"
+        style={{
+          paddingBottom: '30px', // 페이지네이션 공간 확보
+        }}
       >
         {benefits.map((benefit, index) => {
           const dday = calcDday(benefit.date ?? '');
@@ -74,7 +78,7 @@ export const UplusBenefitPreview = () => {
                 </div>
 
                 {/* 브랜드 로고 - 오른쪽 하단, 원형 */}
-                <div className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg z-10">
+                <div className="absolute bottom-3 right-3 w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg z-10">
                   <img
                     src={benefit.imageUrl}
                     alt={benefit.brand}
