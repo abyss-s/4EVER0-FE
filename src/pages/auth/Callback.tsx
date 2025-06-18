@@ -1,5 +1,5 @@
 // src/pages/oauth/OAuthCallback.tsx
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { apiWithToken } from '@/lib/api/apiconfig';
@@ -10,6 +10,33 @@ const OAuthCallback: React.FC = () => {
   const navigate = useNavigate();
   const login = useAuthStore((s) => s.login);
   const queryClient = useQueryClient();
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const loadingSteps = [
+    {
+      imageUrl: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_1.png',
+      title: '로그인 정보 확인 중...',
+    },
+    {
+      imageUrl: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_2.png',
+      title: '사용자 정보 받아오는 중...',
+    },
+    {
+      imageUrl: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_3.png',
+      title: '로그인 정보 확인 중...',
+    },
+    {
+      imageUrl: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_4.png',
+      title: '사용자 정보 받아오는 중...',
+    },
+  ];
+
+  useEffect(() => {
+    const stepInterval = setInterval(() => {
+      setCurrentStep((prev) => (prev + 1) % loadingSteps.length);
+    }, 250);
+    return () => clearInterval(stepInterval);
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -31,7 +58,38 @@ const OAuthCallback: React.FC = () => {
     })();
   }, [login, navigate, queryClient]);
 
-  return null;
+  const currentLoadingStep = loadingSteps[currentStep]; // 추가
+
+  return (
+    <div className="flex flex-col items-center justify-center">
+      <div className="text-center mb-8">
+        <h1 className="text-2xl font-bold">
+          <span className="text-red-500">M</span>
+          <span className="text-slate-800">oono</span>
+          <span className="text-red-500">Z</span>
+        </h1>
+      </div>
+
+      {/* 이미지 + 타이틀 */}
+      <div className="relative mb-8 flex flex-col items-center">
+        <img
+          src={currentLoadingStep.imageUrl}
+          alt={currentLoadingStep.title}
+          className="w-64 h-42 mx-auto transition-transform duration-300 transform hover:scale-105"
+          style={{ animation: 'bounce 1s infinite' }}
+        />
+        <h2 className="mt-4 text-xl font-semibold text-slate-800 transition-colors duration-300">
+          {currentLoadingStep.title}
+        </h2>
+      </div>
+
+      {/* 새로고침 경고 메시지 */}
+      <div className="text-xs text-slate-400 space-y-1 text-center">
+        <p>잠시만 기다려주세요...</p>
+        <p>로딩 중 절대 새로 고침을 하지 마세요! ✨</p>
+      </div>
+    </div>
+  );
 };
 
 export default OAuthCallback;
