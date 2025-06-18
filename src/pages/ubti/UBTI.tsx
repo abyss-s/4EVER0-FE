@@ -19,18 +19,29 @@ const UBTI: React.FC = () => {
   const [isRevealed, setIsRevealed] = useState(false);
   const [ubtiType, setUbtiType] = useState<UbtiType | null>(null);
 
-  useEffect(() => {
-    const fetchUBTI = async () => {
-      try {
-        const res = await fetch('/api/ubti/result');
-        const json = await res.json();
-        setUbtiType(json.data.ubti_type);
-      } catch (err) {
-        console.error('UBTI API 에러:', err);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUBTI = async () => {
+  //     try {
+  //       const res = await fetch('/api/ubti/result');
+  //       const json = await res.json();
+  //       setUbtiType(json.data.ubti_type);
+  //     } catch (err) {
+  //       console.error('UBTI API 에러:', err);
+  //     }
+  //   };
+  //
+  // fetchUBTI();
 
-    fetchUBTI();
+  useEffect(() => {
+    // 👉 테스트용 더미 데이터
+    setUbtiType({
+      code: 'TK-Berry',
+      name: '꾸안꾸 소셜타코',
+      emoji: '🍓',
+      description: 'SNS, 채팅, 숏폼 다 하는 FOMO 끝판왕!',
+      image_url: IMAGES.TACO['taco-spicy-front'],
+      image_back_url: IMAGES.TACO['taco-spicy-back'],
+    });
 
     const flipTimer = setTimeout(() => setIsFlipped(true), 2000); // 2초 뒤 뒤집기 시작
     const bakeTimer = setTimeout(() => setIsBaked(true), 4000); // 4초 뒤 구워짐 표시
