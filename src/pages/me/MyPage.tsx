@@ -125,12 +125,14 @@ const MyPage: React.FC = () => {
           내 활동 <span className="text-red-400 font-bold">4</span>개
         </h3>
         <div className="grid grid-cols-2 gap-4">
-          <Card clickable>
-            <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
-              <Package className="w-6 h-6" />
-              <span className="caption-1">구독상품 목록</span>
-            </CardContent>
-          </Card>
+          <Link to="subscriptions">
+            <Card clickable>
+              <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
+                <Package className="w-6 h-6" />
+                <span className="caption-1">구독상품 목록</span>
+              </CardContent>
+            </Card>
+          </Link>
 
           <Card clickable>
             <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
