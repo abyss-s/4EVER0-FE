@@ -1,5 +1,5 @@
 import { apiWithoutToken } from '@/lib/api/apiconfig';
-import { Benefit } from '@/types/uplus';
+import { Benefit, BenefitDetail } from '@/types/uplus';
 import { BaseResponse } from '@/types/common';
 import { AxiosError } from 'axios';
 
@@ -21,9 +21,13 @@ export const getMonthlyBenefits = async (): Promise<Benefit[]> => {
  * 특정 날짜의 U+ 혜택 조회
  * yyyy-MM-dd 형식
  */
-export const getBenefitByDate = async (date: string): Promise<Benefit> => {
-  const res = await apiWithoutToken.get(`/uplus-benefits/${date}`);
-  return res.data.data;
+export const getBenefitByDate = async (date: string): Promise<BenefitDetail[]> => {
+  try {
+    const res = await apiWithoutToken.get<BaseResponse<BenefitDetail[]>>(`/uplus-benefits/${date}`);
+    return res.data.data ?? [];
+  } catch (err) {
+    const error = err as AxiosError;
+    console.error('❌ 특정 날짜 혜택 조회 실패:', error.response?.data || error.message);
+    throw error;
+  }
 };
-
-// 조건부 랜더링으로 배네핏이 있을 때만 보여주기
