@@ -6,7 +6,7 @@ export const progressVariants = cva('relative w-full overflow-hidden rounded-ful
       // 요금제용 variants
       data: 'bg-gray-100 dark:bg-gray-900/30 [&>*]:bg-orange-400 dark:[&>*]:bg-blue-400',
       call: 'bg-gray-100 dark:bg-gray-900/30 [&>*]:bg-green-400 dark:[&>*]:bg-green-400',
-      video: 'bg-gray-100 dark:bg-gray-900/30 [&>*]:bg-purple-400 dark:[&>*]:bg-purple-400',
+      sharedData: 'bg-gray-100 dark:bg-gray-900/30 [&>*]:bg-purple-400 dark:[&>*]:bg-purple-400',
       sms: 'bg-gray-100 dark:bg-gray-900/30 [&>*]:bg-pink-400 dark:[&>*]:bg-orange-400',
 
       // 미션용 variant

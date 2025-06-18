@@ -16,6 +16,14 @@ export const bannerVariants = cva(
           'bg-gradient-to-r from-[var(--color-brand-darkblue)] via-purple-600 to-[var(--color-brand-red)] text-white hover:from-[var(--color-brand-darkblue-hover)] hover:to-[var(--color-brand-red-hover)]',
         gradient:
           'bg-gradient-to-br from-[var(--color-brand-darkblue)] to-[var(--color-brand-red)] text-white hover:from-[var(--color-brand-darkblue-hover)] hover:to-[var(--color-brand-red-hover)]',
+        sky: 'bg-sky-100 text-sky-900 hover:bg-sky-200 dark:bg-sky-800 dark:text-white dark:hover:bg-sky-700',
+        peach:
+          'bg-[#ffe5d4] text-[#6b3e26] hover:bg-[#ffd2b8] dark:bg-[#8b4f32] dark:text-white dark:hover:bg-[#a35f42]',
+        mint: 'bg-[#d4fbe8] text-[#245c46] hover:bg-[#baf6dc] dark:bg-[#2c6b55] dark:text-white dark:hover:bg-[#388367]',
+        lavender:
+          'bg-[#ece4fb] text-[#5f4b8b] hover:bg-[#e2d7fa] dark:bg-[#67508a] dark:text-white dark:hover:bg-[#7b64a1]',
+        lemon:
+          'bg-[#fff9c4] text-[#7a7200] hover:bg-[#fff59d] dark:bg-[#827d1a] dark:text-white dark:hover:bg-[#9a922b]',
       },
       size: {
         sm: 'p-4 min-h-[80px]',

@@ -18,10 +18,12 @@ export function Progress({
       ? (current / total) * 100
       : typeof value === 'number'
         ? value
-        : undefined;
+        : 0;
 
   const progressValue =
-    typeof rawValue === 'number' && !Number.isNaN(rawValue) ? Math.min(rawValue, 100) : undefined;
+    typeof rawValue === 'number' && !Number.isNaN(rawValue)
+      ? Math.min(Math.max(rawValue, 0), 100)
+      : undefined;
 
   return (
     <div className="relative">

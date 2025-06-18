@@ -4,11 +4,11 @@ import { FocusableButton } from '@/components/Popover/FocusableButton';
 import { Copy, MoreHorizontal } from 'lucide-react';
 import { AvatarComponent } from '@/components/Avatar';
 import { useKakaoInit, kakaoShare, KakaoShareParams } from '@/pages/share/KakaoShare';
-import { KAKAO_JS_KEY } from '@/pages/share/apikey';
 import { useFacebookShare } from '@/pages/share/useFacebookShare';
 import { useTwitterShare } from '@/pages/share/useTwitterShare';
 import { useShare } from '@/pages/share/useShare';
 import { Share2 } from 'lucide-react';
+import { ICONS } from '@/constant/iconPath';
 
 interface SharePopoverProps {
   content_title: string;
@@ -28,7 +28,7 @@ const SharePopover: React.FC<SharePopoverProps> = ({
   sharedescription,
 }) => {
   // 카카오톡 SDK 초기화 훅
-  const kakaoInitialized = useKakaoInit(KAKAO_JS_KEY);
+  const kakaoInitialized = useKakaoInit(import.meta.env.KAKAO_JS_KEY);
 
   const shareData: KakaoShareParams = {
     title: sharetitle, // 공유 게시물 제목
@@ -63,19 +63,19 @@ const SharePopover: React.FC<SharePopoverProps> = ({
       name: '카카오톡',
       onClick: handleKakaoShare,
       fallback: 'KK',
-      src: 'https://d3e0ocbonj571p.cloudfront.net/KakaoTalk.png',
+      src: ICONS.KAKAO_ICON,
     },
     {
       name: 'Facebook',
       onClick: handleFacebookShare,
       fallback: 'FB',
-      src: 'https://d3e0ocbonj571p.cloudfront.net/Facebook.png',
+      src: ICONS.FACEBOOK_ICON,
     },
     {
       name: 'X',
       onClick: handleTwitterShare,
       fallback: 'X',
-      src: 'https://d3e0ocbonj571p.cloudfront.net/X.png',
+      src: ICONS.X_ICON,
     },
     { name: '더보기', onClick: handleMoreShare, icon: <MoreHorizontal className="h-8 w-8" /> },
   ];
