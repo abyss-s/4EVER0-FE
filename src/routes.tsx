@@ -21,7 +21,6 @@ import NaverMap from '@/components/NaverMap/NaverMap';
 import Layout from '@/components/Layout/Layout';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import OAuthCallback from './pages/login/Callback';
-import { Subscript } from 'lucide-react';
 import Subscriptions from '@/pages/me/subscriptions/Subscriptions';
 
 const routes: RouteObject[] = [
