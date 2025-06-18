@@ -21,7 +21,7 @@ const Signup: React.FC = () => {
     email: '',
     phoneNumber: '',
     name: '',
-    birthDate: '', // ISO yyyy-MM-dd 형식 문자열 저장
+    birthDate: '',
   });
 
   const [errors, setErrors] = useState<{
@@ -67,7 +67,6 @@ const Signup: React.FC = () => {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
 
-      // 오류 메시지 중 첫 번째만 Alert에 표시
       const firstErrorField = ['email', 'phoneNumber', 'name', 'birthDate'].find(
         (field) => newErrors[field as keyof typeof newErrors],
       );
@@ -120,128 +119,116 @@ const Signup: React.FC = () => {
             className="mb-4"
           />
         )}
-        <Card className="shadow-xl border-0 bg-white/90 backdrop-blur">
-          <CardHeader className="text-center pt-4 pb-6">
-            <CardTitle className="text-xl font-bold text-slate-800">
-              Moono<span className="text-pink-500">Z</span>에 오신 걸 환영해요!
-            </CardTitle>
-            <CardDescription className="text-slate-600">
-              서비스 이용을 위해 필요한 정보를 입력해주세요!
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent className="space-y-6">
-            <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-              {/* Email */}
-              <div className="space-y-2">
-                <Label
-                  htmlFor="email"
-                  className="text-slate-700 font-medium flex items-center gap-2"
-                >
-                  <Mail className="w-4 h-4 text-slate-500" />
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
-                  placeholder="이메일을 입력해주세요"
-                  className="h-12 border-slate-200 focus:border-yellow-400 focus:ring-yellow-400"
-                  required
-                  autoComplete="email"
-                />
-              </div>
-
-              {/* Phone Number */}
-              <div className="space-y-2">
-                <Label
-                  htmlFor="phone"
-                  className="text-slate-700 font-medium flex items-center gap-2"
-                >
-                  <Phone className="w-4 h-4 text-slate-500" />
-                  전화번호
-                </Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  value={formData.phoneNumber}
-                  onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                  placeholder="전화번호를 입력해주세요"
-                  className="h-12 border-slate-200 focus:border-yellow-400 focus:ring-yellow-400"
-                  required
-                  autoComplete="tel"
-                />
-              </div>
-
-              {/* Name */}
-              <div className="space-y-2">
-                <Label
-                  htmlFor="name"
-                  className="text-slate-700 font-medium flex items-center gap-2"
-                >
-                  <User className="w-4 h-4 text-slate-500" />
-                  이름
-                </Label>
-                <Input
-                  id="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
-                  placeholder="이름을 입력해주세요"
-                  className="h-12 border-slate-200 focus:border-yellow-400 focus:ring-yellow-400"
-                  required
-                  autoComplete="name"
-                />
-              </div>
-
-              {/* Birth Date */}
-              <div className="space-y-2">
-                <Calendar28
-                  value={formData.birthDate ? new Date(formData.birthDate) : null}
-                  onChange={(date) => {
-                    handleInputChange('birthDate', date ? date.toISOString().substring(0, 10) : '');
-                  }}
-                  label="생년월일"
-                  placeholder="YYYY-MM-DD"
-                />
-              </div>
-
-              {/* Submit */}
-              <Button
-                type="submit"
-                className="w-full h-12 bg-slate-700 hover:bg-slate-800 text-white font-medium rounded-lg transition-colors duration-200"
-              >
-                회원가입 완료
-              </Button>
-            </form>
-
-            {/* Footer */}
-            <div className="text-center pt-4">
-              <p className="text-sm text-slate-500">
-                이미 계정이 있으신가요?{' '}
-                <button
-                  className="text-yellow-600 hover:text-yellow-700 font-medium"
-                  type="button"
-                  onClick={() => navigate('/login')}
-                >
-                  로그인하기
-                </button>
-              </p>
+        {/* 카드 제거, 그림자 제거 */}
+        <div className="bg-white/90 backdrop-blur rounded-xl border-0 p-8">
+          <div className="text-center pt-4 pb-6">
+            <div className="text-xl font-bold text-slate-800">
+              Moono<span className="text-brand-red">Z</span>에 오신 걸 환영해요!
             </div>
-          </CardContent>
-        </Card>
+            <div className="text-slate-600">서비스 이용을 위해 필요한 정보를 입력해주세요!</div>
+          </div>
 
+          <div className="space-y-6"></div>
+          <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+            {/* Email */}
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-slate-700 font-medium flex items-center gap-2">
+                <Mail className="w-4 h-4 text-slate-500" />
+                Email
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                value={formData.email}
+                onChange={(e) => handleInputChange('email', e.target.value)}
+                placeholder="이메일을 입력해주세요"
+                className="h-12 border-slate-200 focus:border-yellow-400 focus:ring-yellow-400"
+                required
+                autoComplete="email"
+              />
+            </div>
+
+            {/* Phone Number */}
+            <div className="space-y-2">
+              <Label htmlFor="phone" className="text-slate-700 font-medium flex items-center gap-2">
+                <Phone className="w-4 h-4 text-slate-500" />
+                전화번호
+              </Label>
+              <Input
+                id="phone"
+                type="tel"
+                value={formData.phoneNumber}
+                onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+                placeholder="전화번호를 입력해주세요"
+                className="h-12 border-slate-200 focus:border-yellow-400 focus:ring-yellow-400"
+                required
+                autoComplete="tel"
+              />
+            </div>
+
+            {/* Name */}
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-slate-700 font-medium flex items-center gap-2">
+                <User className="w-4 h-4 text-slate-500" />
+                이름
+              </Label>
+              <Input
+                id="name"
+                type="text"
+                value={formData.name}
+                onChange={(e) => handleInputChange('name', e.target.value)}
+                placeholder="이름을 입력해주세요"
+                className="h-12 border-slate-200 focus:border-yellow-400 focus:ring-yellow-400"
+                required
+                autoComplete="name"
+              />
+            </div>
+
+            {/* Birth Date */}
+            <div className="space-y-2">
+              <Calendar28
+                value={formData.birthDate ? new Date(formData.birthDate) : null}
+                onChange={(date) => {
+                  handleInputChange('birthDate', date ? date.toISOString().substring(0, 10) : '');
+                }}
+                label="생년월일"
+                placeholder="YYYY-MM-DD"
+              />
+            </div>
+
+            {/* Submit */}
+            <Button
+              type="submit"
+              className="w-full h-12 bg-slate-700 hover:bg-slate-800 text-white font-medium rounded-lg transition-colors duration-200"
+            >
+              회원가입 완료
+            </Button>
+          </form>
+
+          {/* Footer */}
+          <div className="text-center pt-4">
+            <p className="text-sm text-slate-500">
+              이미 계정이 있으신가요?{' '}
+              <button
+                className="text-yellow-600 hover:text-yellow-700 font-medium"
+                type="button"
+                onClick={() => navigate('/login')}
+              >
+                로그인하기
+              </button>
+            </p>
+          </div>
+        </div>
         {/* Bottom Message */}
         <div className="text-center mt-6 text-sm text-slate-500">
           가입하시면 MoonoZ의{' '}
           <button className="text-yellow-600 hover:underline" type="button">
             이용약관
-          </button>{' '}
+          </button>
           과{' '}
           <button className="text-yellow-600 hover:underline" type="button">
             개인정보처리방침
-          </button>{' '}
+          </button>
           에 동의하게 됩니다.
         </div>
       </div>

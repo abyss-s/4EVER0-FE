@@ -8,6 +8,7 @@ import { useFacebookShare } from '@/pages/share/useFacebookShare';
 import { useTwitterShare } from '@/pages/share/useTwitterShare';
 import { useShare } from '@/pages/share/useShare';
 import { Share2 } from 'lucide-react';
+import { ICONS } from '@/constant/iconPath';
 
 interface SharePopoverProps {
   content_title: string;
@@ -62,19 +63,19 @@ const SharePopover: React.FC<SharePopoverProps> = ({
       name: '카카오톡',
       onClick: handleKakaoShare,
       fallback: 'KK',
-      src: 'https://d3e0ocbonj571p.cloudfront.net/KakaoTalk.png',
+      src: ICONS.KAKAO_ICON,
     },
     {
       name: 'Facebook',
       onClick: handleFacebookShare,
       fallback: 'FB',
-      src: 'https://d3e0ocbonj571p.cloudfront.net/Facebook.png',
+      src: ICONS.FACEBOOK_ICON,
     },
     {
       name: 'X',
       onClick: handleTwitterShare,
       fallback: 'X',
-      src: 'https://d3e0ocbonj571p.cloudfront.net/X.png',
+      src: ICONS.X_ICON,
     },
     { name: '더보기', onClick: handleMoreShare, icon: <MoreHorizontal className="h-8 w-8" /> },
   ];

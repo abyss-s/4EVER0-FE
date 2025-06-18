@@ -5,6 +5,7 @@ import { useAuthStore } from '@/stores/useAuthStore';
 import { apiWithToken } from '@/lib/api/apiconfig';
 import { useQueryClient } from '@tanstack/react-query';
 import { UserResponse } from '@/types/user';
+import { IMAGES } from '@/constant/imagePath';
 
 const OAuthCallback: React.FC = () => {
   const navigate = useNavigate();
@@ -14,19 +15,19 @@ const OAuthCallback: React.FC = () => {
 
   const loadingSteps = [
     {
-      imageUrl: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_1.png',
+      imageUrl: IMAGES.MOONER.rotation_1,
       title: '로그인 정보 확인 중...',
     },
     {
-      imageUrl: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_2.png',
+      imageUrl: IMAGES.MOONER.rotation_2,
       title: '사용자 정보 받아오는 중...',
     },
     {
-      imageUrl: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_3.png',
+      imageUrl: IMAGES.MOONER.rotation_3,
       title: '로그인 정보 확인 중...',
     },
     {
-      imageUrl: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_4.png',
+      imageUrl: IMAGES.MOONER.rotation_4,
       title: '사용자 정보 받아오는 중...',
     },
   ];
