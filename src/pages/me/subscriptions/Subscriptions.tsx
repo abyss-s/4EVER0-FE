@@ -4,6 +4,7 @@ import { fetchUserSubscriptions } from '@/apis/subscription/getUserSubscriptions
 import { getMainSubscriptions } from '@/apis/subscription/getMainSubscriptions';
 import { Card, CardContent } from '@/components/Card';
 import { Package } from 'lucide-react';
+import { formatPrice } from '@/utils/priceUtils';
 
 const Subscriptions: React.FC = () => {
   const { data: userSubscriptions = [], isLoading: loadingUser } = useQuery({
@@ -50,9 +51,7 @@ const Subscriptions: React.FC = () => {
                 )}
                 <h3 className="font-medium text-sm mb-1">{sub.main_title.split('+')[0].trim()}</h3>{' '}
                 <p className="text-xs text-gray-600 mb-2">{sub.brand_title}</p>
-                <div className="text-pink-600 font-semibold text-sm">
-                  {sub.price.toLocaleString()}원
-                </div>
+                <div className="text-pink-600 font-semibold text-sm">{formatPrice(sub.price)}</div>
               </CardContent>
             </Card>
           ))}
