@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Brain, Heart, Zap, Star } from 'lucide-react';
@@ -8,31 +8,26 @@ import { Message } from '@/types/chat';
 interface UBTIOverlayProps {
   ubtiInProgress: boolean;
   currentUBTIStep: number;
+  currentUBTIQuestionText?: string | null;
   messages: Message[];
+  ubtiReadyToSubmit: boolean;
+  onResultClick: () => void;
 }
 
 export const UBTIOverlay: React.FC<UBTIOverlayProps> = ({
   ubtiInProgress,
   currentUBTIStep,
-  messages,
+  currentUBTIQuestionText,
+  ubtiReadyToSubmit,
+  onResultClick,
 }) => {
   if (!ubtiInProgress) return null;
 
   const progress = ((currentUBTIStep + 1) / 4) * 100;
   const stepIcons = [Heart, Brain, Zap, Star];
 
-  // 현재 질문 텍스트 (마지막 봇 메시지에서 추출)
-  const currentQuestionText = useMemo(() => {
-    const lastBotMessage = messages.filter((m) => m.type === 'bot').pop();
-
-    if (lastBotMessage && lastBotMessage.content.includes('질문')) {
-      // "질문 1: 질문내용" 형태에서 질문 내용만 추출
-      const match = lastBotMessage.content.match(/질문 \d+: (.+)/);
-      return match ? match[1] : '질문을 준비하고 있어요...';
-    }
-
-    return '질문을 준비하고 있어요...';
-  }, [messages]);
+  const questionTextToShow =
+    currentUBTIQuestionText !== null ? currentUBTIQuestionText : '질문을 준비하고 있어요...';
 
   return (
     <div className="absolute top-0 left-0 right-0 z-10 p-4">
@@ -88,8 +83,18 @@ export const UBTIOverlay: React.FC<UBTIOverlayProps> = ({
           <CardContent className="pt-0">
             <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-white/20 mb-4">
               <h3 className="font-lg text-indigo-800 mb-2">질문</h3>
-              <p className="text-indigo-700 text-medium leading-relaxed">{currentQuestionText}</p>
+              <p className="text-indigo-700 text-medium leading-relaxed">{questionTextToShow}</p>
             </div>
+
+            {/* 결과 보기 버튼 조건부 렌더링 */}
+            {ubtiReadyToSubmit && (
+              <button
+                onClick={onResultClick} // ✅ 전달받은 콜백 실행
+                className="mt-4 px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-blue-500 text-white font-semibold shadow-md hover:shadow-lg transition"
+              >
+                🎉 결과 보기
+              </button>
+            )}
           </CardContent>
         </Card>
       </div>

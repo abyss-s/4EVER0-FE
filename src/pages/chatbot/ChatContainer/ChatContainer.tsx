@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useCallback, useMemo, useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useChatStore } from '@/stores/useChatStore';
 import {
   useChatMutation,
@@ -12,12 +12,33 @@ import { ChatHeader } from '../ChatHeader';
 import { ChatMessages } from '../ChatMessages';
 import { ChatInputArea } from '../ChatInputArea/ChatInputArea';
 import { SubscriptionRecommendationsData } from '@/types/streaming';
+import { fetchUBTIResult } from '@/apis/ubti/ubti';
 
 export const ChatContainer: React.FC = () => {
   const [isMunerTone, setIsMunerTone] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const isInitializedRef = useRef(false);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  // Zustand store에서 상태와 액션 분리
+  const sessions = useChatStore((state) => state.sessions);
+  const currentSessionId = useChatStore((state) => state.currentSessionId);
+  const createSession = useChatStore.getState().createSession;
+  const addMessage = useChatStore.getState().addMessage;
+  const endSession = useChatStore.getState().endSession;
+
+  const handleUBTIResultClick = async () => {
+    if (!currentSessionId) return;
+
+    try {
+      const result = await fetchUBTIResult(currentSessionId, isMunerTone ? 'muneoz' : 'general');
+
+      navigate('/ubti', { state: result });
+    } catch (error) {
+      console.error('UBTI 결과 불러오기 실패:', error);
+      // 예외 처리 UI 나 로딩 추가?
+    }
+  };
 
   const {
     currentPlanRecommendations,
@@ -26,6 +47,8 @@ export const ChatContainer: React.FC = () => {
     ubtiInProgress,
     streamingState,
     expectingCards,
+    currentUBTIQuestionText,
+    ubtiReadyToSubmit,
     createStreamingHandlers,
     startUBTI,
     resetUBTI,
@@ -33,12 +56,7 @@ export const ChatContainer: React.FC = () => {
     resetStreamingState,
   } = useStreamingChat();
 
-  // Zustand store에서 상태와 액션 분리
-  const sessions = useChatStore((state) => state.sessions);
-  const currentSessionId = useChatStore((state) => state.currentSessionId);
-  const createSession = useChatStore.getState().createSession;
-  const addMessage = useChatStore.getState().addMessage;
-  const endSession = useChatStore.getState().endSession;
+  console.log('[DEBUG] currentUBTIQuestionText:', currentUBTIQuestionText);
 
   // Mutations
   const chatMutation = useChatMutation();
@@ -135,6 +153,9 @@ export const ChatContainer: React.FC = () => {
 
   // UBTI 시작
   const handleUBTIStart = useCallback(async () => {
+    // sessionId가 없으면 새로 생성
+    const sessionId = currentSessionId ?? useChatStore.getState().createSession();
+
     startUBTI();
 
     const message = 'UBTI 분석을 시작해주세요';
@@ -143,7 +164,7 @@ export const ChatContainer: React.FC = () => {
 
     try {
       await ubtiMutation.mutateAsync({
-        sessionId: currentSessionId!,
+        sessionId, // ← 여기서 보장된 sessionId 사용
         message,
         onChunk: handlers.onChunk,
         tone: isMunerTone ? 'muneoz' : 'general',
@@ -231,6 +252,9 @@ export const ChatContainer: React.FC = () => {
       <UBTIOverlay
         ubtiInProgress={ubtiInProgress}
         currentUBTIStep={currentUBTIStep}
+        currentUBTIQuestionText={currentUBTIQuestionText}
+        ubtiReadyToSubmit={ubtiReadyToSubmit}
+        onResultClick={handleUBTIResultClick}
         messages={messages}
       />
 
