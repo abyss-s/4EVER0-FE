@@ -4,7 +4,6 @@ import { FocusableButton } from '@/components/Popover/FocusableButton';
 import { Copy, MoreHorizontal } from 'lucide-react';
 import { AvatarComponent } from '@/components/Avatar';
 import { useKakaoInit, kakaoShare, KakaoShareParams } from '@/pages/share/KakaoShare';
-import { KAKAO_JS_KEY } from '@/pages/share/apikey';
 import { useFacebookShare } from '@/pages/share/useFacebookShare';
 import { useTwitterShare } from '@/pages/share/useTwitterShare';
 import { useShare } from '@/pages/share/useShare';
@@ -28,7 +27,7 @@ const SharePopover: React.FC<SharePopoverProps> = ({
   sharedescription,
 }) => {
   // 카카오톡 SDK 초기화 훅
-  const kakaoInitialized = useKakaoInit(KAKAO_JS_KEY);
+  const kakaoInitialized = useKakaoInit(import.meta.env.KAKAO_JS_KEY);
 
   const shareData: KakaoShareParams = {
     title: sharetitle, // 공유 게시물 제목
