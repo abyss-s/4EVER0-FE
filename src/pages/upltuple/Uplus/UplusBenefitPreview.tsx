@@ -7,6 +7,8 @@ import { FreeMode, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
+import { getBrandBackgroundColor } from '@/utils/brandColor';
+
 // import styles from './UplusBenefit.module.css';
 // import { Card, CardContent } from '@/components/Card';
 
@@ -26,27 +28,6 @@ export const UplusBenefitPreview = () => {
   if (benefits === null) {
     return <p className="text-sm text-gray-400 px-2">혜택을 불러오는 중입니다...</p>;
   }
-
-  // 브랜드별 배경색 매핑
-  const getBrandBackgroundColor = (brand: string) => {
-    const colorMap: { [key: string]: string } = {
-      MIXXO: 'bg-gray-400',
-      CGV: 'bg-red-500',
-      LG생활건강: 'bg-pink-400',
-      GS25: 'bg-blue-500',
-      리디셀렉트: 'bg-blue-400',
-      배스킨라빈스: 'bg-pink-500',
-      CU: 'bg-green-400',
-      교보문고: 'bg-blue-600',
-      이디야커피: 'bg-blue-800',
-      뚜레쥬르: 'bg-green-800',
-      맘스터치: 'bg-yellow-300',
-      올리브영: 'bg-green-500',
-      무신사: 'bg-slate-400',
-      티빙: 'bg-red-500',
-    };
-    return colorMap[brand] || 'bg-gray-400';
-  };
 
   return (
     <div className="w-full">
