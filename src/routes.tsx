@@ -20,7 +20,7 @@ import ShareTest from '@/pages/share/ShareTest';
 import NaverMap from '@/components/NaverMap/NaverMap';
 import Layout from '@/components/Layout/Layout';
 import ProtectedRoute from '@/components/ProtectedRoute';
-import OAuthCallback from './pages/login/Callback';
+import OAuthCallback from '@/pages/auth/Callback';
 import Subscriptions from '@/pages/me/subscriptions/Subscriptions';
 
 const routes: RouteObject[] = [
