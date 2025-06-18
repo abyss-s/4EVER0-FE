@@ -1,5 +1,6 @@
 import React from 'react';
 import SharePopover from '@/pages/share/SharePopover';
+import { IMAGES } from '@/constant/imagePath';
 
 const ShareTest: React.FC = () => {
   return (
@@ -9,7 +10,7 @@ const ShareTest: React.FC = () => {
         content_title="당신의 컨텐츠를 공유해보세요!" // 앱에서 공유 팝오버에 띄울 메시지
         shareUrl="https://example.com"
         sharemUrl="https://example.com"
-        shareimage="https://d3e0ocbonj571p.cloudfront.net/MoonoZ.png"
+        shareimage={IMAGES.MOONER['mooner-share']}
         sharetitle="깜짝 선물 등장!"
         sharedescription="선물을 열어보세요!"
       />

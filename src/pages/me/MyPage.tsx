@@ -30,15 +30,37 @@ const MyPage: React.FC = () => {
   if (isLoading) return <p className="p-4">로딩 중...</p>;
   if (error || !plan) return <p className="p-4">요금제를 불러오지 못했습니다.</p>;
 
-  const formatUsage = (label: string, variant: 'data' | 'call' | 'sms', value: string) => {
-    const isUnlimited = value === '무제한';
-    const numeric = isUnlimited ? 1 : Number(value.replace(/GB|분/g, ''));
-
+  const formatUsage = (
+    label: string,
+    variant: 'data' | 'call' | 'sharedData' | 'sms',
+    value: string,
+  ) => {
+    if (!value) {
+      return {
+        label,
+        variant,
+        current: 0,
+        total: 1,
+        displayText: '0',
+      };
+    }
+    const isUnlimited = value.includes('무제한');
+    const total =
+      variant === 'data'
+        ? 30
+        : variant === 'sharedData'
+          ? 60
+          : variant === 'sms'
+            ? 200
+            : variant === 'call'
+              ? 1000
+              : 1;
+    const numeric = isUnlimited ? total : Number(value.replace(/[^0-9.]/g, ''));
     return {
       label,
       variant,
       current: numeric,
-      total: 1,
+      total,
       displayText: isUnlimited ? '무제한' : variant === 'sms' ? `${numeric}건` : value,
     };
   };
@@ -46,6 +68,7 @@ const MyPage: React.FC = () => {
   const usageData = [
     formatUsage('데이터', 'data', plan.data),
     formatUsage('통화', 'call', plan.voice),
+    formatUsage('공유데이터', 'sharedData', plan.share_data),
     formatUsage('문자', 'sms', plan.sms),
   ];
   return (
@@ -110,6 +133,7 @@ const MyPage: React.FC = () => {
               </CardContent>
             </Card>
           </Link>
+
           <Card clickable>
             <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
               <ClipboardCheck className="w-6 h-6" />
