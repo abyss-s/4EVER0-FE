@@ -1,26 +1,6 @@
 import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
-import { Message, ChatSession } from '@/types/chat';
-import { PlanRecommendation, SubscriptionRecommendationsResponse } from '@/types/streaming';
-
-interface ChatStore {
-  sessions: Record<string, ChatSession>;
-  currentSessionId: string | null;
-
-  // Actions
-  createSession: () => string;
-  addMessage: (sessionId: string, content: string, type: 'user' | 'bot') => string;
-  updateLastBotMessage: (sessionId: string, content: string) => void;
-  updateLastBotMessageWithCards: (
-    sessionId: string,
-    content: string,
-    planRecommendations?: PlanRecommendation[],
-    subscriptionRecommendations?: SubscriptionRecommendationsResponse['data'],
-  ) => void;
-  incrementUsage: (sessionId: string) => boolean;
-  endSession: (sessionId: string) => void;
-  getCurrentSession: () => ChatSession | null;
-}
+import { Message, ChatSession, ChatStore } from '@/types/chat';
 
 export const useChatStore = create<ChatStore>()((set, get) => ({
   sessions: {},
@@ -28,15 +8,18 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
 
   createSession: () => {
     const sessionId = uuidv4();
+    const newSession: ChatSession = {
+      sessionId,
+      messages: [],
+      usageCount: 0,
+      isCompleted: false,
+      createdAt: Date.now(),
+    };
+
     set((state) => ({
       sessions: {
         ...state.sessions,
-        [sessionId]: {
-          sessionId,
-          messages: [],
-          usageCount: 0,
-          isCompleted: false,
-        },
+        [sessionId]: newSession,
       },
       currentSessionId: sessionId,
     }));
@@ -106,7 +89,7 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
     });
   },
 
-  // 새로 추가된 함수: 카드 정보도 함께 업데이트
+  // 카드 정보도 함께 업데이트
   updateLastBotMessageWithCards: (
     sessionId,
     content,
@@ -210,5 +193,76 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
     const id = state.currentSessionId;
     if (!id) return null;
     return state.sessions[id] || null;
+  },
+
+  addPlanRecommendationsToMessage: (sessionId, messageId, plans) => {
+    set((state) => {
+      const session = state.sessions[sessionId];
+      if (!session) return state;
+
+      const updatedMessages = session.messages.map((msg) =>
+        msg.id === messageId ? { ...msg, planRecommendations: plans } : msg,
+      );
+
+      return {
+        sessions: {
+          ...state.sessions,
+          [sessionId]: {
+            ...session,
+            messages: updatedMessages,
+          },
+        },
+      };
+    });
+  },
+
+  addSubscriptionRecommendationsToMessage: (sessionId, messageId, subscriptions) => {
+    set((state) => {
+      const session = state.sessions[sessionId];
+      if (!session) return state;
+
+      const updatedMessages = session.messages.map((msg) =>
+        msg.id === messageId ? { ...msg, subscriptionRecommendations: subscriptions } : msg,
+      );
+
+      return {
+        sessions: {
+          ...state.sessions,
+          [sessionId]: {
+            ...session,
+            messages: updatedMessages,
+          },
+        },
+      };
+    });
+  },
+
+  markMessageAsRecommendation: (sessionId, messageId) => {
+    set((state) => {
+      const session = state.sessions[sessionId];
+      if (!session) return state;
+
+      const updatedMessages = session.messages.map((msg) =>
+        msg.id === messageId ? { ...msg, isRecommendationMessage: true } : msg,
+      );
+
+      return {
+        sessions: {
+          ...state.sessions,
+          [sessionId]: {
+            ...session,
+            messages: updatedMessages,
+          },
+        },
+      };
+    });
+  },
+
+  getLatestBotMessageId: (sessionId) => {
+    const session = get().sessions[sessionId];
+    if (!session) return null;
+
+    const botMessages = session.messages.filter((msg) => msg.type === 'bot');
+    return botMessages.length > 0 ? botMessages[botMessages.length - 1].id : null;
   },
 }));
