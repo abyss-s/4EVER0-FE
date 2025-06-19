@@ -42,7 +42,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
     <form onSubmit={handleSubmit} className="flex w-full items-center space-x-2">
       <Input
         type="text"
-        placeholder={disabled ? '대화가 종료되었습니다' : placeholder}
+        placeholder={disabled ? '무너가 답변을 생각 중...' : placeholder}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         onKeyPress={handleKeyPress}
