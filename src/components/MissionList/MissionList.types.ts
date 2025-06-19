@@ -1,27 +1,3 @@
-// MissionList.types.ts
-// import { ReactNode } from 'react';
-
-// export interface Mission {
-//   id?: string;
-//   title: string;
-//   description?: string;
-//   hasProgress: boolean;
-//   current?: number;
-//   total?: number;
-//   reward: number;
-//   icon?: string | ReactNode;
-//   isCompleted?: boolean;
-//   onClick?: () => void;
-// }
-
-// export interface MissionListProps {
-//   missions: Mission[];
-//   className?: string;
-//   onMissionClick?: (mission: Mission) => void;
-// }
-
-// MissionList.types.ts
-
 export type MissionType = 'SHARE' | 'ATTENDANCE' | 'INVITE';
 
 export interface Mission {

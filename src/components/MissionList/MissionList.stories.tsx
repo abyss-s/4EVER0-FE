@@ -1,7 +1,3 @@
-// MissionList.stories.tsx
-//
-// 스토리북에서도 완료 기한 관련 부분 제거
-// MissionList.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { MissionList } from './MissionList';
 import type { Mission } from './MissionList.types';
