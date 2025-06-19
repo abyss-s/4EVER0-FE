@@ -160,7 +160,7 @@ const Tutorial = () => {
                 text={
                   <>
                     출석 및 <span className="text-green-300">미션</span>
-                    {'\n'}이번 달 <span className="text-green-300">유플튜플</span>
+                    {'\n'}이번 달 <span className="text-green-300">유플투쁠</span>
                   </>
                 }
               />
