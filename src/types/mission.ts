@@ -30,6 +30,7 @@ export interface RawUserMission {
   reward_point: number;
   status: 'INP' | 'COM' | 'REC';
   is_completed: boolean;
+  type: MissionType;
   image_url?: string;
   description?: string;
   completed_at?: string;
