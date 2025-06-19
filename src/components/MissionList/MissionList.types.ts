@@ -1,17 +1,4 @@
-export type MissionType = 'SHARE' | 'ATTENDANCE' | 'INVITE';
-
-export interface Mission {
-  id: number;
-  name: string;
-  description?: string;
-  type: MissionType;
-  target_count: number;
-  reward_point: number;
-  completed_at: string; // ISO date string
-  image_url: string;
-  current_progress?: number; // 현재 진행률 (API에서 추가로 받아올 데이터)
-  is_completed?: boolean; // 완료 여부 (API에서 추가로 받아올 데이터)
-}
+import type { Mission } from '@/types/mission';
 
 export interface MissionListProps {
   missions: Mission[];
