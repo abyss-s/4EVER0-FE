@@ -7,7 +7,7 @@ import HotPlace from '@/pages/hotplace/HotPlace';
 import Landing from '@/pages/landing/Landing';
 import Login from '@/pages/auth/Login';
 import Singup from '@/pages/auth/Signup';
-import ChangePlans from '@/pages/me/change-plans/ChangePlans';
+import Plan from '@/pages/plan/Plan';
 import Coupons from '@/pages/me/coupons/Coupons';
 import Events from '@/pages/me/events/Events';
 import Likes from '@/pages/me/likes/Likes';
@@ -46,10 +46,10 @@ const routes: RouteObject[] = [
               { path: 'coupons', element: <Coupons /> },
               { path: 'likes', element: <Likes /> },
               { path: 'events', element: <Events /> },
-              { path: 'change-plans', element: <ChangePlans /> },
               { path: 'subscriptions', element: <Subscriptions /> },
             ],
           },
+          { path: 'plan', element: <Plan /> },
         ],
       },
 

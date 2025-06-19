@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ChangePlans: React.FC = () => {
+const Plan: React.FC = () => {
   return (
     <div>
       <h1>요금제 변경 및 해지 페이지</h1>
@@ -8,4 +8,4 @@ const ChangePlans: React.FC = () => {
   );
 };
 
-export default ChangePlans;
+export default Plan;
