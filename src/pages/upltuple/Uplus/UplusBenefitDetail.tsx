@@ -1,7 +1,6 @@
 // 선택된 날짜의 상세 혜택 내용 표시
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import {
   Modal,
   ModalContent,
@@ -11,7 +10,9 @@ import {
 } from '@/components/Modal/Modal';
 import { getBenefitByDate } from '@/apis/uplus/benefit';
 import { BenefitDetail } from '@/types/uplus';
-import { calcDday } from '@/utils/calcDday';
+import { getCategoryEmoji } from '@/utils/emoji/getCategoryEmoji';
+import { formatDateWithDay } from '@/utils/format/formatDateWithDay';
+import { getDday } from '@/utils/format/getDday';
 
 interface BenefitDetailModalProps {
   isOpen: boolean;
@@ -23,21 +24,6 @@ export const BenefitDetailModal = ({ isOpen, onClose, selectedDate }: BenefitDet
   const [benefits, setBenefits] = useState<BenefitDetail[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // 카테고리별 이모지
-  const getCategoryEmoji = (category: string) => {
-    const emojiMap: { [key: string]: string } = {
-      '도서/콘텐츠': '📖',
-      식음료: '🍽️',
-      편의점: '🏪',
-      '뷰티/생활': '💄',
-      패션: '👕',
-      카페: '☕',
-      치킨: '🍗',
-      베이커리: '🥐',
-    };
-    return emojiMap[category] || '🎁';
-  };
 
   useEffect(() => {
     if (isOpen && selectedDate) {
@@ -63,8 +49,8 @@ export const BenefitDetailModal = ({ isOpen, onClose, selectedDate }: BenefitDet
 
   if (!selectedDate) return null;
 
-  const formattedDate = format(selectedDate, 'yyyy년 M월 d일 (EEEE)', { locale: ko });
-  const dday = calcDday(format(selectedDate, 'yyyy-MM-dd'));
+  const formattedDate = formatDateWithDay(selectedDate);
+  const dday = getDday(selectedDate);
 
   return (
     <Modal open={isOpen} onOpenChange={onClose}>
