@@ -1,12 +1,13 @@
+import { apiWithToken } from '@/lib/api/apiconfig';
+import type { UBTIResultResponse } from '@/types/ubti';
 import { API_BASE_URL } from '@/lib/api/apiconfig';
 import { StreamingThrottle } from '@/lib/streaming/StreamingThrottle';
 import { processStreamWithThrottle } from '@/lib/streaming/streamProcessor';
 import { createStreamingHeaders, STREAMING_PRESETS } from '@/lib/streaming/utils';
 import type { SendUBTIRequest, UBTIChunk } from '@/lib/streaming/types';
-export type { SendUBTIRequest, UBTIChunk } from '@/lib/streaming/types';
 
 /**
- * UBTI 답변 스트리밍
+ * UBTI 질문하기
  * @param req UBTI 요청 데이터
  * @param onChunk 청크 처리 콜백
  */
@@ -19,8 +20,14 @@ export async function sendUBTIAnswerStreaming(
       method: 'POST',
       headers: createStreamingHeaders(),
       body: JSON.stringify(req),
-      credentials: 'include', // 로그인 필수
+      credentials: 'include',
     });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('UBTI fetch failed:', response.status, errorText);
+      throw new Error(`HTTP error ${response.status}: ${errorText}`);
+    }
 
     const throttle = new StreamingThrottle(STREAMING_PRESETS.UBTI);
     await processStreamWithThrottle(response, onChunk, throttle);
@@ -29,3 +36,19 @@ export async function sendUBTIAnswerStreaming(
     throw new Error('UBTI 질문 처리 실패');
   }
 }
+
+/**
+ * UBTI 결과 조회
+ * POST /ubti/result
+ */
+export const fetchUBTIResult = async (
+  sessionId: string,
+  tone: 'general' | 'muneoz' = 'general',
+): Promise<UBTIResultResponse> => {
+  const response = await apiWithToken.post('/ubti/result', {
+    session_id: sessionId,
+    tone,
+    message: '',
+  });
+  return response.data;
+};

@@ -57,15 +57,19 @@ export const useUBTIMutation = () =>
       onChunk,
     }: {
       sessionId: string;
-      message: string;
+      message?: string;
       tone: 'muneoz' | 'general';
       onChunk: (chunk: string) => void;
     }) => {
+      if (!sessionId) {
+        throw new Error('세션 ID가 없습니다.');
+      }
+
       return await sendUBTIAnswerStreaming(
         {
           session_id: sessionId,
-          message,
-          tone: tone === 'muneoz' ? 'muneoz' : 'general',
+          message: message ?? '',
+          tone,
         },
         (chunk) => onChunk(chunk.data),
       );

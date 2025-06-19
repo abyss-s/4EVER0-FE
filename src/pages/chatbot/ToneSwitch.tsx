@@ -24,7 +24,7 @@ export const ToneSwitch: React.FC<ToneSwitchProps> = ({
         className="data-[state=checked]:bg-brand-yellow data-[state=unchecked]:bg-slate-200"
       />
       <span className={`text-xs font-medium ${isMunerTone ? 'text-gray-900' : 'text-gray-400'}`}>
-        무너
+        MZ
       </span>
     </div>
   );
