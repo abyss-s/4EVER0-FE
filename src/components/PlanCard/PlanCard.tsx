@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 interface Plan {
   id: number;
   name: string;
-  price: number;
+  price: number | string;
   data: string;
   voice: string;
   speed?: string;
@@ -38,8 +38,11 @@ export const PlanCard: React.FC<PlanCardProps> = ({ plan, onSelect, className })
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-bold text-gray-800">{plan.name}</CardTitle>
           <div className="text-right">
-            <div className="text-xl font-bold text-blue-600">{plan.price?.toLocaleString()}원</div>
-            <div className="text-sm text-gray-500">/ 월</div>
+            <div className="text-xl font-bold text-blue-600 flex items-baseline gap-1">
+              {Number(plan.price).toLocaleString()}
+              <span className="text-base">원</span>
+              <span className="text-sm text-gray-500">/ 월</span>
+            </div>
           </div>
         </div>
         {plan.description && <p className="text-sm text-gray-600 mt-2">{plan.description}</p>}
