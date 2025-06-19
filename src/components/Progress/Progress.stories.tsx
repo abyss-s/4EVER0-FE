@@ -18,7 +18,7 @@ const meta: Meta<typeof Progress> = {
         // s
         'data',
         'call',
-        'video',
+        'sharedData',
         'sms',
         'mission',
       ],
@@ -64,7 +64,7 @@ export const PlanVariants: Story = {
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span>데이터 사용량</span>
-            <span>7.2GB / 10GB</span>
+            <span>4GB / 8GB</span>
           </div>
           <Progress variant="data" value={72} />
         </div>
@@ -72,17 +72,17 @@ export const PlanVariants: Story = {
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
             <span>통화 시간</span>
-            <span>850분 / 1000분</span>
+            <span>무제한 + 부가통화 300분</span>
           </div>
           <Progress variant="call" value={85} />
         </div>
 
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
-            <span>영상통화</span>
-            <span>45분 / 60분</span>
+            <span>공유데이터</span>
+            <span>테더링+쉐어링 55GB</span>
           </div>
-          <Progress variant="video" value={75} />
+          <Progress variant="sharedData" value={75} />
         </div>
 
         <div className="space-y-2">
@@ -137,7 +137,7 @@ export const AllVariants: Story = {
           { variant: 'secondary', label: 'Secondary' },
           { variant: 'data', label: '데이터' },
           { variant: 'call', label: '음성통화' },
-          { variant: 'video', label: '영상' },
+          { variant: 'sharedData', label: '공유데이터' },
           { variant: 'sms', label: '문자메시지' },
           { variant: 'mission', label: '미션 진행도' },
         ].map((item) => (
