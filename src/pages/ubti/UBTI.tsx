@@ -14,7 +14,6 @@ import { UBTITypeCard } from './UBTITypeCard';
 import { RecommendationCard } from './RecommendationCard';
 import { MatchingTypeCard } from './MatchingTypeCard';
 import { ActionButtons } from './ActionButtons';
-import { error } from 'console';
 
 interface TacoCardType {
   front_image: string;
@@ -79,7 +78,7 @@ export const UBTIResultPage: React.FC = () => {
       });
       setIsDataReady(true);
     } else {
-      console.log('데이터 로딩 실패', error);
+      console.log('데이터 로딩 실패');
     }
 
     setIsLoading(false);
