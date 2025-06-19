@@ -135,7 +135,7 @@ const Tutorial = () => {
                   className="absolute -top-16 -right-15 w-22 h-auto"
                 />
                 <div className="absolute -top-13 -right-14 w-20 h-10 flex items-center justify-center caption-1 text-black text-center pointer-events-none">
-                  문어 등장
+                  무너 등장
                 </div>
 
                 <img
