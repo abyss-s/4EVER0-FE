@@ -82,7 +82,7 @@ const Signup: React.FC = () => {
     }
 
     try {
-      await apiWithoutToken.post('/users', {
+      await apiWithoutToken.post('/user', {
         userId: oauthId,
         email: formData.email,
         phoneNumber: formData.phoneNumber,
@@ -95,7 +95,6 @@ const Signup: React.FC = () => {
         title: '회원가입 완료',
         description: '환영합니다! 서비스 이용을 시작하세요.',
       });
-
       loginViaProvider(provider);
     } catch (error: unknown) {
       setAlert({

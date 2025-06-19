@@ -2,8 +2,12 @@ import { API_BASE_URL, apiWithToken, apiWithoutToken } from '@/lib/api/apiconfig
 
 export function loginViaProvider(provider: string, redirectPath?: string) {
   // 1) 돌아갈 경로 결정
-  const from = redirectPath ?? window.location.pathname + window.location.search;
-  sessionStorage.setItem('redirectPath', from);
+  let from = redirectPath ?? window.location.pathname + window.location.search;
+
+  // redirectPath가 signup 페이지면 루트로 변경
+  if (!from.startsWith('/signup')) {
+    sessionStorage.setItem('redirectPath', from);
+  }
   // 2) OAuth 엔드포인트로 리다이렉트
   window.location.href = `${API_BASE_URL}/auth/${provider}`;
 }

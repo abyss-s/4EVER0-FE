@@ -2,10 +2,15 @@ import { useEffect, useState } from 'react';
 import { getTopCoupons, TopCoupon } from '@/apis/coupon/getTopCoupons';
 import TopCouponCard from '@/components/Card/TopCouponCard';
 import PopupMap from './PopupMap/PopupMap';
+import StoreMap from './StoreMap/StoreMap';
 
 const HotPlace = () => {
   const [bestDeals, setBestDeals] = useState<TopCoupon[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [option, setOption] = useState<'popup' | 'store'>('popup');
+  const allBrandIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const selectedBrandIds: number[] = [];
 
   useEffect(() => {
     const fetchCoupons = async () => {
@@ -36,7 +41,30 @@ const HotPlace = () => {
         </div>
       </div>
 
-      <PopupMap />
+      <div className="flex justify-center py-4 gap-4">
+        <button
+          className={`px-4 py-2 rounded-full text-sm ${
+            option === 'popup' ? 'bg-blue-600 text-white' : 'bg-gray-200'
+          }`}
+          onClick={() => setOption('popup')}
+        >
+          팝업맵 보기
+        </button>
+        <button
+          className={`px-4 py-2 rounded-full text-sm ${
+            option === 'store' ? 'bg-blue-600 text-white' : 'bg-gray-200'
+          }`}
+          onClick={() => setOption('store')}
+        >
+          스토어맵 보기
+        </button>
+      </div>
+
+      {option === 'popup' ? (
+        <PopupMap />
+      ) : (
+        <StoreMap allBrandIds={allBrandIds} selectedIds={selectedBrandIds} />
+      )}
 
       {/* 인기 쿠폰 TOP 3 */}
       <div className="px-4">
