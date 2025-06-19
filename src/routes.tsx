@@ -49,16 +49,17 @@ const routes: RouteObject[] = [
               { path: 'subscriptions', element: <Subscriptions /> },
             ],
           },
-          { path: 'plan', element: <Plan /> },
+          {},
         ],
       },
 
-      // 선택형 or  로그인 필요 없는는 페이지
+      // 선택형 or  로그인 필요 없는 페이지
       { path: 'chatbot', element: <Chatbot /> },
       { path: 'landing', element: <Landing /> },
       { path: 'login', element: <Login /> },
       { path: 'signup', element: <Singup /> },
       { path: 'authcallback', element: <OAuthCallback /> },
+      { path: 'plans', element: <Plan /> },
 
       // 테스트용
       { path: 'design-system', element: <DesignSystemTest /> },
