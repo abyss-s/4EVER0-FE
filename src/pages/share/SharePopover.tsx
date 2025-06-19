@@ -7,7 +7,6 @@ import { useKakaoInit, kakaoShare, KakaoShareParams } from '@/pages/share/KakaoS
 import { useFacebookShare } from '@/pages/share/useFacebookShare';
 import { useTwitterShare } from '@/pages/share/useTwitterShare';
 import { useShare } from '@/pages/share/useShare';
-import { Share2 } from 'lucide-react';
 import { ICONS } from '@/constant/iconPath';
 
 interface SharePopoverProps {
@@ -28,7 +27,7 @@ const SharePopover: React.FC<SharePopoverProps> = ({
   sharedescription,
 }) => {
   // 카카오톡 SDK 초기화 훅
-  const kakaoInitialized = useKakaoInit(import.meta.env.KAKAO_JS_KEY);
+  const kakaoInitialized = useKakaoInit(import.meta.env.VITE_KAKAO_JS_KEY);
 
   const shareData: KakaoShareParams = {
     title: sharetitle, // 공유 게시물 제목
@@ -95,8 +94,14 @@ const SharePopover: React.FC<SharePopoverProps> = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <FocusableButton variant="share" size="sm" className="w-8.5">
-          <Share2 size={15} color="#ffffff" />
+        <FocusableButton
+          variant="gradient-pink"
+          size="xl"
+          className="w-full touch-manipulation flex items-center justify-center gap-3"
+          style={{ WebkitTapHighlightColor: 'transparent' }}
+        >
+          <span className="inline-block text-xl">📤</span>
+          <span>친구들에게 공유하기</span>
         </FocusableButton>
       </PopoverTrigger>
 

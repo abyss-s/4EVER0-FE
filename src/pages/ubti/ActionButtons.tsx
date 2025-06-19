@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import SharePopover from '../share/SharePopover';
+import { FocusableButton } from '@/components/Popover/FocusableButton';
 import { IMAGES } from '@/constant/imagePath';
 import type { UBTIResultData } from '@/types/ubti';
 
@@ -18,16 +19,13 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({ result }) => {
     >
       {/* 공유 버튼 */}
       <motion.div
-        className="w-full sm:w-auto bg-gradient-to-r from-pink-500 to-orange-500 text-white px-6 py-4 rounded-2xl font-bold text-base sm:text-lg shadow-xl touch-manipulation flex items-center justify-center gap-3"
+        className="w-full sm:w-auto"
         whileHover={{
           scale: 1.05,
           boxShadow: '0 15px 35px rgba(236, 72, 153, 0.4)',
         }}
         whileTap={{ scale: 0.95 }}
-        style={{ WebkitTapHighlightColor: 'transparent' }}
       >
-        <span className="inline-block">📤</span>
-        <span>친구들에게 공유하기</span>
         <SharePopover
           content_title={`나는 ${result.ubti_type.emoji} ${result.ubti_type.name}! 타코시그널 테스트 결과를 공유해보세요 💕`}
           shareUrl={window.location.href}
@@ -39,19 +37,41 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({ result }) => {
       </motion.div>
 
       {/* 다시 테스트하기 버튼 */}
-      <motion.button
-        onClick={() => window.location.reload()}
-        className="w-full sm:w-auto bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-6 py-4 rounded-2xl font-bold text-base sm:text-lg shadow-xl touch-manipulation"
+      <motion.div
+        className="w-full sm:w-auto"
         whileHover={{
           scale: 1.05,
           boxShadow: '0 15px 35px rgba(147, 51, 234, 0.4)',
         }}
         whileTap={{ scale: 0.95 }}
-        style={{ WebkitTapHighlightColor: 'transparent' }}
       >
-        <span className="inline-block mr-2">🔄</span>
-        다시 테스트하기
-      </motion.button>
+        <FocusableButton
+          onClick={() => window.location.reload()}
+          variant="gradient-purple"
+          size="xl"
+          className="w-full touch-manipulation"
+          style={{ WebkitTapHighlightColor: 'transparent' }}
+        >
+          <motion.span
+            className="inline-block text-xl mr-2"
+            animate={{ rotate: [0, 360] }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+          >
+            🔄
+          </motion.span>
+          <span>다시 테스트하기</span>
+        </FocusableButton>
+      </motion.div>
+
+      {/* 키보드 접근성 안내 */}
+      <motion.div
+        className="text-center text-xs text-gray-500 mt-2 opacity-75"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.75 }}
+        transition={{ delay: 1.5 }}
+      >
+        <p>💡 키보드 Tab키로 버튼 이동, Enter/Space로 선택 가능</p>
+      </motion.div>
     </motion.div>
   );
 };
