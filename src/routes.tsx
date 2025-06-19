@@ -22,6 +22,7 @@ import Layout from '@/components/Layout/Layout';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import OAuthCallback from '@/pages/auth/Callback';
 import Subscriptions from '@/pages/me/subscriptions/Subscriptions';
+import PlanDetail from './pages/plan/PlanDetail';
 
 const routes: RouteObject[] = [
   {
@@ -60,6 +61,7 @@ const routes: RouteObject[] = [
       { path: 'signup', element: <Singup /> },
       { path: 'authcallback', element: <OAuthCallback /> },
       { path: 'plans', element: <Plan /> },
+      { path: 'plans/:id', element: <PlanDetail /> },
 
       // 테스트용
       { path: 'design-system', element: <DesignSystemTest /> },
