@@ -15,13 +15,11 @@ const Intro = () => {
     }
   };
 
-  useEffect(() => {
-    // Intro는 항상 보여줌, 추가 동작 없음
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <video
-      src="/intro.MP4"
+      src="/intropop.MP4"
       autoPlay
       muted
       playsInline
