@@ -82,7 +82,7 @@ const Signup: React.FC = () => {
     }
 
     try {
-      await apiWithoutToken.post('/users', {
+      await apiWithoutToken.post('/user', {
         userId: oauthId,
         email: formData.email,
         phoneNumber: formData.phoneNumber,
