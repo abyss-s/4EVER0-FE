@@ -14,6 +14,7 @@ import { UBTITypeCard } from './UBTITypeCard';
 import { RecommendationCard } from './RecommendationCard';
 import { MatchingTypeCard } from './MatchingTypeCard';
 import { ActionButtons } from './ActionButtons';
+import { error } from 'console';
 
 interface TacoCardType {
   front_image: string;
@@ -34,20 +35,26 @@ const stepMessages = [
     '사랑스러운 결과를 확인해보세요! 💖',
   ],
 ];
-
 export const UBTIResultPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const markdownComponents = useMarkdownComponents();
+
+  // 상태 관리
   const [result, setResult] = useState<UBTIResultData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [ubtiType, setUbtiType] = useState<TacoCardType | null>(null);
+  const [isDataReady, setIsDataReady] = useState(false); // 데이터 준비 상태
+
+  // 애니메이션 상태 및 훅
   const { currentStep, isFlipped, isBaked, isRevealed, showResults, updateState } =
     useAnimationState();
-  const { clearAllTimers } = useUBTIAnimationSequence(updateState);
+
+  // 데이터가 준비되면 애니메이션 시작
+  const { clearAllTimers } = useUBTIAnimationSequence(updateState, isDataReady);
   const messageIndex = useMessageRotation(currentStep, stepMessages);
 
-  // TODO: 추후 수정 필요
+  // 이벤트 핸들러
   const handlePlanClick = () => {
     navigate('plans');
   };
@@ -60,16 +67,21 @@ export const UBTIResultPage: React.FC = () => {
     navigate(-1);
   };
 
-  // 초기 로딩
+  // 초기 데이터 로딩
   useEffect(() => {
     const state = location.state as UBTIResultResponse | undefined;
+
     if (state?.data) {
       setResult(state.data);
       setUbtiType({
         front_image: IMAGES.TACO['taco-spicy-front'],
         back_image: IMAGES.TACO['taco-spicy-back'],
       });
+      setIsDataReady(true);
+    } else {
+      console.log('데이터 로딩 실패', error);
     }
+
     setIsLoading(false);
   }, [location.state]);
 
@@ -80,10 +92,9 @@ export const UBTIResultPage: React.FC = () => {
     };
   }, [clearAllTimers]);
 
-  // 로딩 상태
   if (isLoading) {
     return (
-      <div className="bg-gradient-to-br from-pink-100 via-orange-100 to-yellow-100 flex items-center justify-center">
+      <div className="bg-gradient-to-br from-pink-100 via-orange-100 to-yellow-100 flex items-center justify-center min-h-screen">
         <motion.div
           className="text-center bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-2xl"
           animate={{
@@ -136,6 +147,7 @@ export const UBTIResultPage: React.FC = () => {
 
   return (
     <div className="min-h-full bg-gradient-to-br from-pink-50 via-orange-50 via-yellow-50 to-red-50 relative">
+      {/* 애니메이션 배경 요소들 */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(12)].map((_, i) => (
           <motion.div

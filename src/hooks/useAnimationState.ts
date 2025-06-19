@@ -17,15 +17,28 @@ export const useAnimationState = () => {
     showResults: false,
   });
 
+  // useCallback으로 함수 참조
   const updateState = useCallback((updates: Partial<AnimationState>) => {
-    setState((prevState) => ({
-      ...prevState,
-      ...updates,
-    }));
+    setState((prevState) => {
+      const newState = { ...prevState, ...updates };
+
+      return newState;
+    });
+  }, []);
+
+  const resetState = useCallback(() => {
+    setState({
+      currentStep: 0,
+      isFlipped: false,
+      isBaked: false,
+      isRevealed: false,
+      showResults: false,
+    });
   }, []);
 
   return {
     ...state,
     updateState,
+    resetState,
   };
 };
