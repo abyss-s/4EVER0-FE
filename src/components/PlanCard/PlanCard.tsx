@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/Button';
-import { Smartphone, Wifi, Phone, MessageSquare, Zap, Share2 } from 'lucide-react';
+import { Smartphone, Wifi, Phone, MessageSquare, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Plan {
@@ -11,7 +11,7 @@ interface Plan {
   data: string;
   voice: string;
   speed?: string;
-  share_data?: string;
+  // share_data?: string;
   sms?: string;
   description: string;
 }
@@ -33,34 +33,46 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     onSelect?.(plan);
   };
 
-  // 요금제별 색상 테마 (price 기준으로 분류)
-  const getThemeColor = (price: number | string) => {
+  // 요금제별 색상 테마
+  const getThemeColor = (price: number | string): 'red' | 'yellow' | 'blue' => {
     const numPrice = Number(price);
-    if (numPrice <= 50000) return 'green';
-    if (numPrice <= 70000) return 'purple';
+    if (numPrice <= 30000) return 'yellow';
+    if (numPrice <= 50000) return 'red';
     return 'blue';
   };
 
-  const themeColor = getThemeColor(plan.price);
-  const themes = {
-    green: {
-      bg: 'bg-green-100',
-      circle: 'bg-green-400',
-      text: 'text-green-800',
+  // 타입 정의 추가
+  type ThemeColor = 'red' | 'yellow' | 'blue';
+
+  const themeColor: ThemeColor = getThemeColor(plan.price);
+  const themes: Record<
+    ThemeColor,
+    {
+      bg: string;
+      circle: string;
+      text: string;
+      price: string;
+      button: string;
+    }
+  > = {
+    red: {
+      bg: 'bg-[#DD4640]/10',
+      circle: 'bg-[#DD4640]',
+      text: 'text-[#DD4640]',
       price: 'text-purple-600',
       button: 'bg-gray-100 text-gray-700 hover:bg-gray-200',
     },
-    purple: {
-      bg: 'bg-purple-100',
-      circle: 'bg-purple-400',
-      text: 'text-purple-800',
+    yellow: {
+      bg: 'bg-[#F4DE75]/20',
+      circle: 'bg-[#F4DE75]',
+      text: 'text-[#7a7200]',
       price: 'text-purple-600',
       button: 'bg-gray-100 text-gray-700 hover:bg-gray-200',
     },
     blue: {
-      bg: 'bg-blue-100',
-      circle: 'bg-blue-400',
-      text: 'text-blue-800',
+      bg: 'bg-[#25394B]/20',
+      circle: 'bg-[#25394B]',
+      text: 'text-[#25394B]',
       price: 'text-purple-600',
       button: 'bg-gray-100 text-gray-700 hover:bg-gray-200',
     },
@@ -81,7 +93,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-bold text-gray-800">{plan.name}</h3>
             <div className="text-right">
-              <div className="text-xl font-bold text-blue-600 flex items-baseline gap-1">
+              <div className="text-xl font-bold text-[#DD4640] flex items-baseline gap-1">
                 {Number(plan.price).toLocaleString()}
                 <span className="text-base">원</span>
                 <span className="text-sm text-gray-500">/ 월</span>
@@ -112,12 +124,12 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               </div>
             )}
 
-            {plan.share_data && (
+            {/* {plan.share_data && (
               <div className="flex items-center gap-2">
                 <Share2 className="w-4 h-4 text-purple-500" />
                 <span className="text-sm">쉐어링: {plan.share_data}</span>
               </div>
-            )}
+            )} */}
 
             {plan.sms && (
               <div className="flex items-center gap-2">
@@ -177,11 +189,11 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                   <span className="text-xl font-bold text-purple-600">
                     월 {Number(plan.price).toLocaleString()}원
                   </span>
-                  {plan.share_data && (
+                  {/* {plan.share_data && (
                     <div className="border border-blue-100 bg-blue-50 text-blue-600 rounded-md px-2 py-1 text-sm w-fit mt-2">
                       유심 혜택 +-
                     </div>
-                  )}
+                  )} */}
                 </div>
 
                 <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -217,7 +229,11 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             {/* 자세히 보기 버튼 */}
             <Button
               className={cn(
-                'px-4 py-1.5 rounded-full text-sm font-medium border transition-colors',
+                'px-6 py-2 rounded-full text-sm font-medium transition-all duration-300',
+                'bg-white/20 border border-white/30 text-gray-700 backdrop-blur-sm',
+                'hover:bg-white/30 hover:scale-[1.02] hover:shadow-lg',
+                'active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/50',
+                'drop-shadow-sm',
                 theme.button,
               )}
               onClick={(e) => {
