@@ -19,7 +19,7 @@ export function BaseSwiper<T>({ items, renderItem, slideWidth = 280 }: BaseSwipe
       spaceBetween={16}
       slidesPerView={'auto'}
       pagination={{ clickable: true }}
-      className="w-full px-2"
+      className="w-full px-2 !pb-9"
     >
       {items.map((item, idx) => (
         <SwiperSlide
