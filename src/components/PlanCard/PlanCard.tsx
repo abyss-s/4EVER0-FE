@@ -124,13 +124,6 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               </div>
             )}
 
-            {/* {plan.share_data && (
-              <div className="flex items-center gap-2">
-                <Share2 className="w-4 h-4 text-purple-500" />
-                <span className="text-sm">쉐어링: {plan.share_data}</span>
-              </div>
-            )} */}
-
             {plan.sms && (
               <div className="flex items-center gap-2">
                 <MessageSquare className="w-4 h-4 text-gray-500" />
@@ -189,11 +182,6 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                   <span className="text-xl font-bold text-purple-600">
                     월 {Number(plan.price).toLocaleString()}원
                   </span>
-                  {/* {plan.share_data && (
-                    <div className="border border-blue-100 bg-blue-50 text-blue-600 rounded-md px-2 py-1 text-sm w-fit mt-2">
-                      유심 혜택 +-
-                    </div>
-                  )} */}
                 </div>
 
                 <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -234,6 +222,8 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                 'hover:bg-white/30 hover:scale-[1.02] hover:shadow-lg',
                 'active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/50',
                 'drop-shadow-sm',
+                '-mt-2',
+                'cursor-pointer',
                 theme.button,
               )}
               onClick={(e) => {

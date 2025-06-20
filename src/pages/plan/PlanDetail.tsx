@@ -49,15 +49,21 @@ const PlanDetail: React.FC = () => {
             <Button
               variant="outline"
               size="default"
-              className="flex-1 bg-white/20 border-gray-300 text-gray-700 hover:bg-[#25394B] hover:text-white py-2 rounded-full"
+              className="flex-1 bg-white/20 border-gray-300 text-gray-700 hover:bg-[#25394B] hover:text-white py-2 rounded-full !cursor-pointer"
             >
               신청하기
             </Button>
 
-            <Button variant="outline" className="p-3 border-gray-300 hover:bg-gray-50 rounded-xl">
+            <Button
+              variant="outline"
+              className="p-3 border-gray-300 hover:bg-gray-50 rounded-xl cursor-pointer"
+            >
               <Share2 className="w-5 h-5" />
             </Button>
-            <Button variant="outline" className="p-3 border-gray-300 hover:bg-gray-50 rounded-xl">
+            <Button
+              variant="outline"
+              className="p-3 border-gray-300 hover:bg-gray-50 rounded-xl cursor-pointer"
+            >
               <Heart className="w-5 h-5" />
             </Button>
           </div>

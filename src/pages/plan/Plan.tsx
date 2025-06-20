@@ -145,21 +145,21 @@ const Plan: React.FC = () => {
 
           {/* 페이지네이션 */}
           {totalPages > 1 && (
-            <div className="flex flex-col items-center space-y-6 py-8">
+            <div className="flex flex-col items-center space-y-3 py-4">
               {/* MoonoZ 로고 */}
-              <div className="flex items-center space-x-1">
+              {/* <div className="flex items-center space-x-1">
                 <span className="text-3xl font-bold text-[#DD4640]">M</span>
                 <span className="text-3xl font-bold text-[#25394B]">oono</span>
                 <span className="text-3xl font-bold text-[#DD4640]">Z</span>
-              </div>
+              </div> */}
 
               {/* 페이지 버튼들 */}
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1">
                 {/* 이전 페이지 */}
                 {currentPage > 1 && (
                   <button
                     onClick={() => handlePageChange(currentPage - 1)}
-                    className="flex items-center px-3 py-2 text-[#25394B] hover:bg-yellow-50 rounded-lg transition-colors"
+                    className="flex items-center px-3 py-2 text-[#25394B] hover:bg-yellow-50 rounded-lg transition-colors cursor-pointer"
                   >
                     <ChevronLeft className="w-4 h-4 mr-1" />
                     이전
@@ -177,8 +177,8 @@ const Plan: React.FC = () => {
                           onClick={() => handlePageChange(page as number)}
                           className={`w-10 h-10 rounded-full text-sm font-medium transition-colors ${
                             currentPage === page
-                              ? 'bg-[#F4DE75] text-white'
-                              : 'text-[#25394B] hover:bg-yellow-50'
+                              ? 'bg-[#F4DE75] text-white cursor-pointer'
+                              : 'text-[#25394B] hover:bg-yellow-50 cursor-pointer'
                           }`}
                         >
                           {page}
@@ -192,7 +192,7 @@ const Plan: React.FC = () => {
                 {currentPage < totalPages && (
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
-                    className="flex items-center px-3 py-2 text-[#25394B] hover:bg-yello-50 rounded-lg transition-colors"
+                    className="flex items-center px-3 py-2 text-[#25394B] hover:bg-yellow-50 rounded-lg transition-colors cursor-pointer"
                   >
                     다음
                     <ChevronRight className="w-4 h-4 ml-1" />
@@ -218,19 +218,6 @@ const Plan: React.FC = () => {
   if (id && planDetail) {
     return (
       <div className="min-h-screen bg-white">
-        {/* 네비게이션
-        <div className="bg-white shadow-sm border-b">
-          <div className="container mx-auto px-4 py-4">
-            <button
-              onClick={() => navigate('/plans')}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              전체 요금제로 돌아가기
-            </button>
-          </div>
-        </div> */}
-
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-md mx-auto">
             <PlanCard plan={planDetail} variant="detail" />
