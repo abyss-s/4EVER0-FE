@@ -11,9 +11,11 @@ import { useUBTIAnimationSequence } from '@/hooks/useUBTIAnimationSequence';
 import { useMessageRotation } from '@/hooks/useMessageRotation';
 import { TacoCookingAnimation } from './TacoCookingAnimation';
 import { UBTITypeCard } from './UBTITypeCard';
-import { RecommendationCard } from './RecommendationCard';
 import { MatchingTypeCard } from './MatchingTypeCard';
 import { ActionButtons } from './ActionButtons';
+import type { Plan } from '@/types/plan';
+import PlanCard from '@/components/PlanCard/PlanCard';
+import SubscriptionCard from '@/components/SubscriptionCard/SubscriptionCard';
 
 interface TacoCardType {
   front_image: string;
@@ -34,6 +36,7 @@ const stepMessages = [
     '사랑스러운 결과를 확인해보세요! 💖',
   ],
 ];
+
 export const UBTIResultPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -43,23 +46,21 @@ export const UBTIResultPage: React.FC = () => {
   const [result, setResult] = useState<UBTIResultData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [ubtiType, setUbtiType] = useState<TacoCardType | null>(null);
-  const [isDataReady, setIsDataReady] = useState(false); // 데이터 준비 상태
+  const [isDataReady, setIsDataReady] = useState(false);
 
   // 애니메이션 상태 및 훅
   const { currentStep, isFlipped, isBaked, isRevealed, showResults, updateState } =
     useAnimationState();
 
-  // 데이터가 준비되면 애니메이션 시작
   const { clearAllTimers } = useUBTIAnimationSequence(updateState, isDataReady);
   const messageIndex = useMessageRotation(currentStep, stepMessages);
 
-  // 이벤트 핸들러
-  const handlePlanClick = () => {
-    navigate('plans');
+  const handlePlanSelect = (plan: Plan) => {
+    navigate(`/plans/${plan.id}`);
   };
 
-  const handleServiceClick = () => {
-    navigate('/');
+  const handleSubscriptionSelect = () => {
+    navigate('/home');
   };
 
   const handleBackClick = () => {
@@ -90,6 +91,35 @@ export const UBTIResultPage: React.FC = () => {
       clearAllTimers();
     };
   }, [clearAllTimers]);
+
+  const convertToPlanCards = (plans: UBTIResultData['recommendation']['plans']): Plan[] => {
+    return plans.map((plan) => ({
+      id: plan.id,
+      name: plan.name,
+      price: 0,
+      data: '-',
+      voice: '-',
+      speed: '-',
+      share_data: '-',
+      sms: '-',
+      description: plan.description,
+    }));
+  };
+
+  const convertToSubscriptionCard = (
+    subscription: UBTIResultData['recommendation']['subscription'],
+  ) => {
+    return {
+      main_subscription: {
+        id: subscription.id,
+        title: subscription.name,
+        category: '추천 구독',
+        price: 0,
+        image_url: IMAGES.MOONER['mooner-login'],
+      },
+      life_brand: undefined,
+    };
+  };
 
   if (isLoading) {
     return (
@@ -245,12 +275,68 @@ export const UBTIResultPage: React.FC = () => {
                 <ReactMarkdown components={markdownComponents}>{summary}</ReactMarkdown>
               </motion.div>
 
-              {/* 추천 요금제 및 구독 서비스 */}
-              <RecommendationCard
-                recommendation={recommendation}
-                onPlanClick={handlePlanClick}
-                onServiceClick={handleServiceClick}
-              />
+              <div className="space-y-8 px-4">
+                {/* 추천 요금제 섹션 */}
+                <motion.div
+                  initial={{ opacity: 0, x: 100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5, type: 'spring' }}
+                >
+                  <div className="flex items-center mb-6">
+                    <motion.span
+                      className="text-xl mr-4"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    >
+                      📱
+                    </motion.span>
+                    <h3 className="text-xl font-bold text-blue-700">맞춤 요금제 추천</h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center">
+                    {convertToPlanCards(recommendation.plans).map((plan, index) => (
+                      <motion.div
+                        key={plan.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6 + index * 0.1 }}
+                      >
+                        <PlanCard
+                          plan={plan}
+                          onSelect={handlePlanSelect}
+                          className="w-full max-w-sm"
+                        />
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+
+                {/* 추천 구독 서비스 섹션 */}
+                <motion.div
+                  initial={{ opacity: 0, y: 100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6, type: 'spring' }}
+                >
+                  <div className="flex items-center mb-6">
+                    <motion.span
+                      className="text-xl mr-4"
+                      animate={{ rotate: [0, 360] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+                    >
+                      🎵
+                    </motion.span>
+                    <h3 className="text-xl font-bold text-purple-700">특별 구독 서비스</h3>
+                  </div>
+
+                  <div className="flex justify-center">
+                    <SubscriptionCard
+                      data={convertToSubscriptionCard(recommendation.subscription)}
+                      onSubscribe={handleSubscriptionSelect}
+                      className="w-full max-w-sm"
+                    />
+                  </div>
+                </motion.div>
+              </div>
 
               {/* 잘 맞는 타입 */}
               <MatchingTypeCard matchingType={matching_type} />

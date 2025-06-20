@@ -10,10 +10,12 @@ export interface UBTIResultData {
   summary: string;
   recommendation: {
     plans: {
+      id: number;
       name: string;
       description: string;
     }[];
     subscription: {
+      id: number;
       name: string;
       description: string;
     };
