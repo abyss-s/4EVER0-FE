@@ -6,7 +6,7 @@ import NotFound from '@/pages/common/NotFound';
 import HotPlace from '@/pages/hotplace/HotPlace';
 import Login from '@/pages/auth/Login';
 import Singup from '@/pages/auth/Signup';
-import ChangePlans from '@/pages/me/change-plans/ChangePlans';
+import Plan from '@/pages/plan/Plan';
 import Coupons from '@/pages/me/coupons/Coupons';
 import Events from '@/pages/me/events/Events';
 import Likes from '@/pages/me/likes/Likes';
@@ -24,6 +24,7 @@ import Subscriptions from '@/pages/me/subscriptions/Subscriptions';
 import Intro from '@/pages/intro/Intro';
 import Tutorial from '@/pages/intro/Tutorial';
 import IntroRedirect from '@/pages/intro/IntroRedirect';
+import PlanDetail from './pages/plan/PlanDetail';
 
 const routes: RouteObject[] = [
   {
@@ -60,10 +61,10 @@ const routes: RouteObject[] = [
               { path: 'coupons', element: <Coupons /> },
               { path: 'likes', element: <Likes /> },
               { path: 'events', element: <Events /> },
-              { path: 'change-plans', element: <ChangePlans /> },
               { path: 'subscriptions', element: <Subscriptions /> },
             ],
           },
+          {},
         ],
       },
 
@@ -72,6 +73,8 @@ const routes: RouteObject[] = [
       { path: 'login', element: <Login /> },
       { path: 'signup', element: <Singup /> },
       { path: 'authcallback', element: <OAuthCallback /> },
+      { path: 'plans', element: <Plan /> },
+      { path: 'plans/:id', element: <PlanDetail /> },
 
       // 테스트용
       { path: 'design-system', element: <DesignSystemTest /> },
