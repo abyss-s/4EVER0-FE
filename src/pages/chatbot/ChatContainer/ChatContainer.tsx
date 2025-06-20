@@ -11,11 +11,13 @@ import { UBTIOverlay } from '../UBTIOverlay';
 import { ChatHeader } from '../ChatHeader';
 import { ChatMessages } from '../ChatMessages';
 import { ChatInputArea } from '../ChatInputArea/ChatInputArea';
+import { LoadingOverlay } from '../../ubti/LoadingOverlay';
 import { SubscriptionRecommendationsData } from '@/types/streaming';
 import { fetchUBTIResult } from '@/apis/ubti/ubti';
 
 export const ChatContainer: React.FC = () => {
   const [isMunerTone, setIsMunerTone] = useState(false);
+  const [isLoadingResult, setIsLoadingResult] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const isInitializedRef = useRef(false);
   const navigate = useNavigate();
@@ -29,14 +31,17 @@ export const ChatContainer: React.FC = () => {
 
   const handleUBTIResultClick = async () => {
     if (!currentSessionId) return;
+    setIsLoadingResult(true); // 로딩 시작
 
     try {
       const result = await fetchUBTIResult(currentSessionId, isMunerTone ? 'muneoz' : 'general');
 
+      // 결과 페이지로 이동
       navigate('/ubti', { state: result });
     } catch (error) {
       console.error('UBTI 결과 불러오기 실패:', error);
-      // 예외 처리 UI 나 로딩 추가?
+      setIsLoadingResult(false); // 에러 시 로딩 해제
+      // TODO: 에러 토스트 메시지 표시?
     }
   };
 
@@ -223,12 +228,14 @@ export const ChatContainer: React.FC = () => {
       isSessionEnded ||
       chatMutation.isPending ||
       ubtiMutation.isPending ||
-      likesRecommendationMutation.isPending,
+      likesRecommendationMutation.isPending ||
+      isLoadingResult, // 결과 로딩 중에도 비활성화
     [
       isSessionEnded,
       chatMutation.isPending,
       ubtiMutation.isPending,
       likesRecommendationMutation.isPending,
+      isLoadingResult,
     ],
   );
 
@@ -248,6 +255,14 @@ export const ChatContainer: React.FC = () => {
 
   return (
     <div className="flex flex-col relative h-full">
+      {/* 결과 로딩 오버레이 */}
+      <LoadingOverlay
+        isVisible={isLoadingResult}
+        message="타코시그널 결과를 불러오고 있어요!"
+        submessage="당신만의 특별한 결과를 준비중이에요 ✨"
+        type="processing"
+      />
+
       {/* UBTI 진행 상황 오버레이 */}
       <UBTIOverlay
         ubtiInProgress={ubtiInProgress}
