@@ -86,7 +86,7 @@ const Home: React.FC = () => {
       {isLoggedIn ? (
         profileLoading || planLoading ? (
           <div className="flex justify-center">프로필 정보 로딩 중…</div>
-        ) : (
+        ) : plan ? (
           <div className="mb-4">
             <h1 className="text-xl font-bold">내 요금제</h1>
             <BillSummaryCard
@@ -96,6 +96,10 @@ const Home: React.FC = () => {
               amount={Number(plan.price)}
               usageData={usageData}
             />
+          </div>
+        ) : (
+          <div className="text-center text-red-500 font-semibold py-4">
+            요금제 정보를 불러올 수 없습니다.
           </div>
         )
       ) : (

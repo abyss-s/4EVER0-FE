@@ -29,9 +29,10 @@ const PlanCard: React.FC<PlanCardProps> = ({ plan, onSelect, className, variant 
 
   type ThemeColor = 'red' | 'yellow' | 'blue';
 
-  const getThemeColor = (price: number): ThemeColor => {
-    if (price <= 30000) return 'yellow';
-    if (price <= 50000) return 'red';
+  const getThemeColor = (price: number | string): ThemeColor => {
+    const numericPrice = typeof price === 'string' ? Number(price) : price;
+    if (numericPrice <= 30000) return 'yellow';
+    if (numericPrice <= 50000) return 'red';
     return 'blue';
   };
 

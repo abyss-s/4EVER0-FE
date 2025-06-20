@@ -5,7 +5,7 @@ import type { Components } from 'react-markdown';
 import { Message } from '@/types/chat';
 import { PlanRecommendation } from '@/types/streaming';
 import { AvatarComponent } from '@/components/Avatar';
-import { PlanCard } from '@/components/PlanCard/PlanCard';
+import PlanCard from '@/components/PlanCard/PlanCard';
 import { SubscriptionCard } from '@/components/SubscriptionCard/SubscriptionCard';
 import { cn } from '@/lib/utils';
 import { IMAGES } from '@/constant/imagePath';
