@@ -4,6 +4,14 @@ import { usePlanDetail } from '@/hooks/usePlanDetail';
 import PlanCard from '@/components/PlanCard/PlanCard';
 import { Share2, Heart } from 'lucide-react';
 import { Button } from '@/components/Button';
+import { PlanResponse, Plan } from '@/types/plans';
+
+// PlanResponse → Plan 변환 함수
+const normalizePlan = (raw: PlanResponse): Plan => ({
+  ...raw,
+  price: typeof raw.price === 'string' ? Number(raw.price) : raw.price,
+  data: raw.data ?? '',
+});
 
 const PlanDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -42,15 +50,11 @@ const PlanDetail: React.FC = () => {
     <div className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-4">
         <div className="max-w-md mx-auto space-y-6">
-          <PlanCard plan={plan} variant="detail" />
+          <PlanCard plan={normalizePlan(plan)} variant="detail" />
 
           {/* 액션 버튼들 */}
           <div className="flex gap-3">
-            <Button
-              variant="outline"
-              size="default"
-              className="flex-1 bg-white/20 border-gray-300 text-gray-700 hover:bg-[#25394B] hover:text-white py-2 rounded-full !cursor-pointer"
-            >
+            <Button className="flex-1 border border-gray-300 bg-white text-gray-700 hover:bg-[#25394B] hover:text-white py-2 rounded-full transition-colors">
               신청하기
             </Button>
 

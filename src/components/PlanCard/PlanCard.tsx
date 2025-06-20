@@ -7,11 +7,10 @@ import { cn } from '@/lib/utils';
 interface Plan {
   id: number;
   name: string;
-  price: number | string;
+  price: number;
   data: string;
   voice: string;
   speed?: string;
-  // share_data?: string;
   sms?: string;
   description: string;
 }
@@ -23,26 +22,18 @@ interface PlanCardProps {
   variant?: 'list' | 'detail';
 }
 
-export const PlanCard: React.FC<PlanCardProps> = ({
-  plan,
-  onSelect,
-  className,
-  variant = 'list',
-}) => {
+const PlanCard: React.FC<PlanCardProps> = ({ plan, onSelect, className, variant = 'list' }) => {
   const handleSelect = () => {
     onSelect?.(plan);
   };
 
-  // 요금제별 색상 테마
-  const getThemeColor = (price: number | string): 'red' | 'yellow' | 'blue' => {
-    const numPrice = Number(price);
-    if (numPrice <= 30000) return 'yellow';
-    if (numPrice <= 50000) return 'red';
+  type ThemeColor = 'red' | 'yellow' | 'blue';
+
+  const getThemeColor = (price: number): ThemeColor => {
+    if (price <= 30000) return 'yellow';
+    if (price <= 50000) return 'red';
     return 'blue';
   };
-
-  // 타입 정의 추가
-  type ThemeColor = 'red' | 'yellow' | 'blue';
 
   const themeColor: ThemeColor = getThemeColor(plan.price);
   const themes: Record<
@@ -60,28 +51,30 @@ export const PlanCard: React.FC<PlanCardProps> = ({
       circle: 'bg-[#DD4640]',
       text: 'text-[#DD4640]',
       price: 'text-purple-600',
-      button: 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+      button: 'bg-[#DD4640] text-white hover:bg-[#c93e39]',
     },
     yellow: {
       bg: 'bg-[#F4DE75]/20',
       circle: 'bg-[#F4DE75]',
       text: 'text-[#7a7200]',
       price: 'text-purple-600',
-      button: 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+      button: 'bg-[#F4DE75] text-white hover:bg-yellow-400',
     },
     blue: {
       bg: 'bg-[#25394B]/20',
       circle: 'bg-[#25394B]',
       text: 'text-[#25394B]',
       price: 'text-purple-600',
-      button: 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+      button: 'bg-[#25394B] text-white hover:bg-[#1b2b3a]',
     },
   };
 
   const theme = themes[themeColor];
 
+  // ==========================
+  // 상세 페이지 View
+  // ==========================
   if (variant === 'detail') {
-    // 상세 페이지용
     return (
       <Card
         className={cn(
@@ -94,7 +87,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             <h3 className="text-lg font-bold text-gray-800">{plan.name}</h3>
             <div className="text-right">
               <div className="text-xl font-bold text-[#DD4640] flex items-baseline gap-1">
-                {Number(plan.price).toLocaleString()}
+                {plan.price.toLocaleString()}
                 <span className="text-base">원</span>
                 <span className="text-sm text-gray-500">/ 월</span>
               </div>
@@ -109,35 +102,28 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                 <span className="text-sm font-medium">데이터: {plan.data}</span>
               </div>
             )}
-
             {plan.voice && (
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-green-500" />
                 <span className="text-sm">{plan.voice}</span>
               </div>
             )}
-
             {plan.speed && (
               <div className="flex items-center gap-2">
                 <Zap className="w-4 h-4 text-yellow-500" />
                 <span className="text-sm">속도: {plan.speed}</span>
               </div>
             )}
-
             {plan.sms && (
               <div className="flex items-center gap-2">
                 <MessageSquare className="w-4 h-4 text-gray-500" />
                 <span className="text-sm">문자: {plan.sms}</span>
               </div>
             )}
-
             {onSelect && (
-              <Button
-                onClick={handleSelect}
-                className="w-full mt-4 bg-blue-600 text-white hover:bg-blue-700"
-              >
+              <Button onClick={handleSelect} className={cn('w-full mt-4', theme.button)}>
                 <Smartphone className="w-4 h-4 mr-2" />
-                선택하기
+                신청하기
               </Button>
             )}
           </div>
@@ -146,7 +132,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     );
   }
 
-  // 전체 목록용
+  // ==========================
+  // 목록 카드 View
+  // ==========================
   return (
     <Card
       className={cn(
@@ -158,7 +146,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     >
       <CardContent className="p-5">
         <div className="flex items-start gap-4">
-          {/* 왼쪽 아이콘 영역 */}
+          {/* 왼쪽 아이콘 */}
           <div
             className={cn(
               'flex-shrink-0 w-16 h-16 rounded-2xl flex flex-col items-center justify-center text-center',
@@ -171,7 +159,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             <div className={cn('text-lg font-bold', theme.text)}>{plan.data}</div>
           </div>
 
-          {/* 중앙 정보 영역 */}
+          {/* 중앙 정보 */}
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between mb-3">
               <div>
@@ -179,11 +167,10 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                   {plan.description || `네이버페이 ${plan.data} 혜택`}
                 </h3>
                 <div className="flex items-baseline gap-2 mb-2">
-                  <span className="text-xl font-bold text-purple-600">
-                    월 {Number(plan.price).toLocaleString()}원
+                  <span className={cn('text-xl font-bold', theme.price)}>
+                    월 {plan.price.toLocaleString()}원
                   </span>
                 </div>
-
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <span>{plan.data}</span>
                   {plan.speed && (
@@ -196,7 +183,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               </div>
             </div>
 
-            {/* 추가 혜택 표시 */}
+            {/* 혜택 태그 */}
             {(plan.voice === '무제한' || plan.sms) && (
               <div className="flex items-center gap-2 mb-3">
                 {plan.voice === '무제한' && (
@@ -214,16 +201,15 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                 </span>
               </div>
             )}
-            {/* 자세히 보기 버튼 */}
+
+            {/* 자세히 보기 */}
             <Button
               className={cn(
                 'px-6 py-2 rounded-full text-sm font-medium transition-all duration-300',
                 'bg-white/20 border border-white/30 text-gray-700 backdrop-blur-sm',
                 'hover:bg-white/30 hover:scale-[1.02] hover:shadow-lg',
                 'active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/50',
-                'drop-shadow-sm',
-                '-mt-2',
-                'cursor-pointer',
+                'drop-shadow-sm -mt-2 cursor-pointer',
                 theme.button,
               )}
               onClick={(e) => {

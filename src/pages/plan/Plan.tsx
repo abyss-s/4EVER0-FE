@@ -2,11 +2,18 @@ import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAllPlan } from '@/hooks/useAllPlan';
 import { usePlanDetail } from '@/hooks/usePlanDetail';
-import { PlanResponse } from '@/types/plans';
+import { PlanResponse, Plan } from '@/types/plans';
 import PlanCard from '@/components/PlanCard/PlanCard';
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const ITEMS_PER_PAGE = 3;
+
+// PlanResponse → Plan 변환 함수
+const normalizePlan = (raw: PlanResponse): Plan => ({
+  ...raw,
+  price: typeof raw.price === 'string' ? Number(raw.price) : raw.price,
+  data: raw.data ?? '',
+});
 
 const Plan: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -22,7 +29,6 @@ const Plan: React.FC = () => {
 
   const { data: planList = [], isLoading: isListLoading, error: listError } = useAllPlan();
 
-  // 검색 필터링
   const filteredPlans = useMemo(() => {
     return planList.filter(
       (plan: PlanResponse) =>
@@ -31,25 +37,21 @@ const Plan: React.FC = () => {
     );
   }, [planList, searchTerm]);
 
-  // 페이지네이션 계산
   const totalPages = Math.ceil(filteredPlans.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentPlans = filteredPlans.slice(startIndex, endIndex);
 
-  // 페이지 변경 시 맨 위로 스크롤
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // 검색 시 첫 페이지로 리셋
   const handleSearch = (value: string) => {
     setSearchTerm(value);
     setCurrentPage(1);
   };
 
-  // 페이지 번호 생성
   const getPageNumbers = () => {
     const pages = [];
     const visiblePages = 4;
@@ -86,11 +88,9 @@ const Plan: React.FC = () => {
     );
   }
 
-  // 전체 목록
   if (!id && planList.length > 0) {
     return (
       <div className="min-h-screen bg-white">
-        {/* 검색 영역 */}
         <div className="container mx-auto px-4 py-4">
           <div className="bg-white rounded-xl shadow-sm p-4 mb-6 border border-gray-200">
             <div className="relative">
@@ -105,7 +105,6 @@ const Plan: React.FC = () => {
             </div>
           </div>
 
-          {/* 요금제 카드 목록 */}
           <div className="space-y-4 mb-8">
             {currentPlans.map((plan: PlanResponse, index) => (
               <div
@@ -114,7 +113,7 @@ const Plan: React.FC = () => {
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <PlanCard
-                  plan={plan}
+                  plan={normalizePlan(plan)}
                   onSelect={() => navigate(`/plans/${plan.id}`)}
                   variant="list"
                 />
@@ -122,19 +121,9 @@ const Plan: React.FC = () => {
             ))}
           </div>
 
-          {/* 페이지네이션 */}
           {totalPages > 1 && (
             <div className="flex flex-col items-center space-y-3 py-4">
-              {/* MoonoZ 로고 */}
-              {/* <div className="flex items-center space-x-1">
-                <span className="text-3xl font-bold text-[#DD4640]">M</span>
-                <span className="text-3xl font-bold text-[#25394B]">oono</span>
-                <span className="text-3xl font-bold text-[#DD4640]">Z</span>
-              </div> */}
-
-              {/* 페이지 버튼들 */}
               <div className="flex items-center space-x-1">
-                {/* 이전 페이지 */}
                 {currentPage > 1 && (
                   <button
                     onClick={() => handlePageChange(currentPage - 1)}
@@ -144,29 +133,23 @@ const Plan: React.FC = () => {
                   </button>
                 )}
 
-                {/* 페이지 번호들 */}
                 <div className="flex items-center space-x-1">
                   {getPageNumbers().map((page, index) => (
                     <React.Fragment key={index}>
-                      {page === '...' ? (
-                        <span className="px-3 py-2 text-gray-400">...</span>
-                      ) : (
-                        <button
-                          onClick={() => handlePageChange(page as number)}
-                          className={`w-10 h-10 rounded-full text-sm font-medium transition-colors ${
-                            currentPage === page
-                              ? 'bg-[#F4DE75] text-white'
-                              : 'text-[#25394B] hover:bg-yellow-50'
-                          }`}
-                        >
-                          {page}
-                        </button>
-                      )}
+                      <button
+                        onClick={() => handlePageChange(page)}
+                        className={`w-10 h-10 rounded-full text-sm font-medium transition-colors ${
+                          currentPage === page
+                            ? 'bg-[#F4DE75] text-white'
+                            : 'text-[#25394B] hover:bg-yellow-50'
+                        }`}
+                      >
+                        {page}
+                      </button>
                     </React.Fragment>
                   ))}
                 </div>
 
-                {/* 다음 페이지 */}
                 {currentPage < totalPages && (
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
@@ -191,13 +174,12 @@ const Plan: React.FC = () => {
     );
   }
 
-  // 상세 페이지
   if (id && planDetail) {
     return (
       <div className="min-h-screen bg-white">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-md mx-auto">
-            <PlanCard plan={planDetail} variant="detail" />
+            <PlanCard plan={normalizePlan(planDetail)} variant="detail" />
           </div>
         </div>
       </div>
