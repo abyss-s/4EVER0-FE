@@ -56,7 +56,6 @@ const Home: React.FC = () => {
     };
   };
 
-  // 3. usageData 가공
   const usageData = [
     formatUsage('데이터', 'data', plan?.data),
     formatUsage('통화', 'call', plan?.voice),
