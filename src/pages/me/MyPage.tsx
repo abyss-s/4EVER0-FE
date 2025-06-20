@@ -104,7 +104,9 @@ const MyPage: React.FC = () => {
           <CardContent className="flex items-center justify-center gap-1.5 py-2.5 leading-none">
             <Coins className="w-[18px] h-[18px] text-blue-600 shrink-0" />
             <span className="caption-1 whitespace-nowrap">보유 포인트</span>
-            <span className="caption-1 font-bold ml-1 whitespace-nowrap">1,250P</span>
+            <span className="caption-1 font-bold ml-1 whitespace-nowrap">
+              {profile?.point?.toLocaleString() ?? '0'}P
+            </span>
           </CardContent>
         </Card>
       </div>
