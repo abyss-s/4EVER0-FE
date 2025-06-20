@@ -58,7 +58,7 @@ const Login: React.FC = () => {
         {/* MoonoZ Logo and Mascot */}
         <div className="text-center">
           <img
-            src={IMAGES.MOONER['mooner-login']}
+            src={IMAGES.MOONER['moonoz-hello']}
             alt="MoonoZ Logo"
             className="h-50 w-50 mx-auto"
           />

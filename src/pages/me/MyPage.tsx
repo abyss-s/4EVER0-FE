@@ -26,6 +26,7 @@ const MyPage: React.FC = () => {
     queryKey: ['userCoupons'],
     queryFn: fetchUserCoupons,
   });
+  const availableCoupons = coupons.filter((c) => c.isUsed === false);
 
   if (isLoading) return <p className="p-4">로딩 중...</p>;
   if (error || !plan) return <p className="p-4">요금제를 불러오지 못했습니다.</p>;
@@ -92,16 +93,20 @@ const MyPage: React.FC = () => {
             <CardContent className="flex items-center justify-center gap-1.5 py-2.5 leading-none">
               <Ticket className="w-[18px] h-[18px] text-yellow-600 shrink-0" />
               <span className="caption-1 whitespace-nowrap">보유 쿠폰</span>
-              <span className="caption-1 font-bold ml-1 whitespace-nowrap">{coupons.length}개</span>
+              <span className="caption-1 font-bold ml-1 whitespace-nowrap">
+                {availableCoupons.length}개
+              </span>
             </CardContent>
           </Card>
         </Link>
 
-        <Card clickable>
+        <Card className="cursor-default hover:bg-transparent">
           <CardContent className="flex items-center justify-center gap-1.5 py-2.5 leading-none">
             <Coins className="w-[18px] h-[18px] text-blue-600 shrink-0" />
             <span className="caption-1 whitespace-nowrap">보유 포인트</span>
-            <span className="caption-1 font-bold ml-1 whitespace-nowrap">1,250P</span>
+            <span className="caption-1 font-bold ml-1 whitespace-nowrap">
+              {profile?.point?.toLocaleString() ?? '0'}P
+            </span>
           </CardContent>
         </Card>
       </div>
@@ -133,19 +138,23 @@ const MyPage: React.FC = () => {
               </CardContent>
             </Card>
           </Link>
+          <Link to="/mission" state={{ scrollTo: 'mission-list' }}>
+            <Card clickable>
+              <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
+                <ClipboardCheck className="w-6 h-6" />
+                <span className="caption-1">미션 목록</span>
+              </CardContent>
+            </Card>
+          </Link>
+          <Link to="/mission" state={{ scrollTo: 'attendance' }}>
+            <Card clickable>
+              <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
+                <Stamp className="w-6 h-6" />
+                <span className="caption-1">이번달 출석 기록</span>
+              </CardContent>
+            </Card>
+          </Link>
 
-          <Card clickable>
-            <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
-              <ClipboardCheck className="w-6 h-6" />
-              <span className="caption-1">미션 목록</span>
-            </CardContent>
-          </Card>
-          <Card clickable>
-            <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
-              <Stamp className="w-6 h-6" />
-              <span className="caption-1">이번달 출석 기록</span>
-            </CardContent>
-          </Card>
           <Card clickable>
             <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
               <FolderHeart className="w-6 h-6" />

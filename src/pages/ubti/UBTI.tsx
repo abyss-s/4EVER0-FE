@@ -148,7 +148,7 @@ export const UBTIResultPage: React.FC = () => {
         title: matchedBrand?.title || subscription.name,
         category: matchedBrand?.category || '추천 구독',
         price: 0,
-        image_url: matchedBrand?.image_url || IMAGES.MOONER['mooner-login'],
+        image_url: matchedBrand?.image_url || IMAGES.MOONER['moonoz-hello'],
       },
       life_brand: undefined,
     };
