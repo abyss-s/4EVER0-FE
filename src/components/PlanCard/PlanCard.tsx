@@ -9,9 +9,15 @@ interface PlanCardProps {
   plan: Plan;
   onSelect?: (plan: Plan) => void;
   className?: string;
+  hideDescription?: boolean;
 }
 
-export const PlanCard: React.FC<PlanCardProps> = ({ plan, onSelect, className }) => {
+export const PlanCard: React.FC<PlanCardProps> = ({
+  plan,
+  onSelect,
+  className,
+  hideDescription,
+}) => {
   const handleSelect = () => {
     onSelect?.(plan);
   };
@@ -31,7 +37,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({ plan, onSelect, className })
             <div className="text-sm text-gray-500">/ 월</div>
           </div>
         </div>
-        {plan.description && <p className="text-sm text-gray-600 mt-2">{plan.description}</p>}
+        {!hideDescription && plan.description && (
+          <p className="text-sm text-gray-600 mt-2">{plan.description}</p>
+        )}
       </CardHeader>
 
       <CardContent className="space-y-3">
