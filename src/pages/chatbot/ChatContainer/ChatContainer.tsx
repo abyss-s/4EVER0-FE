@@ -61,8 +61,6 @@ export const ChatContainer: React.FC = () => {
     resetStreamingState,
   } = useStreamingChat();
 
-  console.log('[DEBUG] currentUBTIQuestionText:', currentUBTIQuestionText);
-
   // Mutations
   const chatMutation = useChatMutation();
   const ubtiMutation = useUBTIMutation();

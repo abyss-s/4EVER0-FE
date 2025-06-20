@@ -214,24 +214,23 @@ export const useStreamingChat = () => {
         currentSubscriptions || undefined,
       );
 
-      // 저장 후 확인 - 더 상세하게
       setTimeout(() => {
         const session = useChatStore.getState().sessions[currentSessionId];
         if (session && session.messages.length > 0) {
           const lastMessage = session.messages[session.messages.length - 1];
-          console.log('[DEBUG] 저장된 메시지 확인:', {
-            id: lastMessage.id,
-            content: lastMessage.content?.slice(0, 50) + '...',
-            hasPlans: !!lastMessage.planRecommendations,
-            planCount: lastMessage.planRecommendations?.length || 0,
-            hasSubscriptions: !!lastMessage.subscriptionRecommendations,
-            subscriptionKeys: lastMessage.subscriptionRecommendations
-              ? Object.keys(lastMessage.subscriptionRecommendations)
-              : [],
-            mainSub: !!lastMessage.subscriptionRecommendations?.main_subscription,
-            lifeBrand: !!lastMessage.subscriptionRecommendations?.life_brand,
-            timestamp: lastMessage.timestamp,
-          });
+          // console.log('[DEBUG] 저장된 메시지 확인:', {
+          //   id: lastMessage.id,
+          //   content: lastMessage.content?.slice(0, 50) + '...',
+          //   hasPlans: !!lastMessage.planRecommendations,
+          //   planCount: lastMessage.planRecommendations?.length || 0,
+          //   hasSubscriptions: !!lastMessage.subscriptionRecommendations,
+          //   subscriptionKeys: lastMessage.subscriptionRecommendations
+          //     ? Object.keys(lastMessage.subscriptionRecommendations)
+          //     : [],
+          //   mainSub: !!lastMessage.subscriptionRecommendations?.main_subscription,
+          //   lifeBrand: !!lastMessage.subscriptionRecommendations?.life_brand,
+          //   timestamp: lastMessage.timestamp,
+          // });
 
           // 카드 데이터 손실 확인
           const shouldHavePlans = cardDataRef.current.plans.length > 0;
