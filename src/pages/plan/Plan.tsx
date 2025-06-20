@@ -52,34 +52,13 @@ const Plan: React.FC = () => {
   // 페이지 번호 생성
   const getPageNumbers = () => {
     const pages = [];
-    const maxVisiblePages = 7;
+    const visiblePages = 4;
 
-    if (totalPages <= maxVisiblePages) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      if (currentPage <= 4) {
-        for (let i = 1; i <= 5; i++) {
-          pages.push(i);
-        }
-        pages.push('...');
-        pages.push(totalPages);
-      } else if (currentPage >= totalPages - 3) {
-        pages.push(1);
-        pages.push('...');
-        for (let i = totalPages - 4; i <= totalPages; i++) {
-          pages.push(i);
-        }
-      } else {
-        pages.push(1);
-        pages.push('...');
-        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-          pages.push(i);
-        }
-        pages.push('...');
-        pages.push(totalPages);
-      }
+    const startPage = Math.floor((currentPage - 1) / visiblePages) * visiblePages + 1;
+    const endPage = Math.min(startPage + visiblePages - 1, totalPages);
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
     }
 
     return pages;
@@ -159,10 +138,9 @@ const Plan: React.FC = () => {
                 {currentPage > 1 && (
                   <button
                     onClick={() => handlePageChange(currentPage - 1)}
-                    className="flex items-center px-3 py-2 text-[#25394B] hover:bg-yellow-50 rounded-lg transition-colors cursor-pointer"
+                    className="flex items-center justify-center w-10 h-10 text-[#25394B] hover:bg-yellow-50 rounded-full transition-colors cursor-pointer"
                   >
-                    <ChevronLeft className="w-4 h-4 mr-1" />
-                    이전
+                    <ChevronLeft className="w-4 h-4" />
                   </button>
                 )}
 
@@ -177,8 +155,8 @@ const Plan: React.FC = () => {
                           onClick={() => handlePageChange(page as number)}
                           className={`w-10 h-10 rounded-full text-sm font-medium transition-colors ${
                             currentPage === page
-                              ? 'bg-[#F4DE75] text-white cursor-pointer'
-                              : 'text-[#25394B] hover:bg-yellow-50 cursor-pointer'
+                              ? 'bg-[#F4DE75] text-white'
+                              : 'text-[#25394B] hover:bg-yellow-50'
                           }`}
                         >
                           {page}
@@ -192,10 +170,9 @@ const Plan: React.FC = () => {
                 {currentPage < totalPages && (
                   <button
                     onClick={() => handlePageChange(currentPage + 1)}
-                    className="flex items-center px-3 py-2 text-[#25394B] hover:bg-yellow-50 rounded-lg transition-colors cursor-pointer"
+                    className="flex items-center justify-center w-10 h-10 text-[#25394B] hover:bg-yellow-50 rounded-full transition-colors cursor-pointer"
                   >
-                    다음
-                    <ChevronRight className="w-4 h-4 ml-1" />
+                    <ChevronRight className="w-4 h-4" />
                   </button>
                 )}
               </div>
