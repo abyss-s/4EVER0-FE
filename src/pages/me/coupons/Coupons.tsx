@@ -5,7 +5,7 @@ import { getTicketBackground } from '@/utils/getTicketBackground';
 import { fetchUserCoupons } from '@/apis/coupon/getUserCoupons';
 import type { Coupon } from '@/types/coupon';
 import { Ticket } from 'lucide-react';
-import NotFound from '@/pages/common/NotFound';
+import Empty from '@/pages/common/Empty';
 import { IMAGES } from '@/constant/imagePath';
 
 const formatDiscount = (value?: number, type?: string) => {
@@ -47,7 +47,7 @@ const Coupons: React.FC = () => {
       </div>
 
       {availableCoupons.length === 0 ? (
-        <NotFound
+        <Empty
           imageSrc={IMAGES.MOONER['mooner-sad']}
           altText="보유 쿠폰 없음"
           message="보유한 쿠폰이 없습니다."
