@@ -19,7 +19,7 @@ const Intro = () => {
 
   return (
     <video
-      src="/intropop.MP4"
+      src="/videos/intropop.MP4"
       autoPlay
       muted
       playsInline
