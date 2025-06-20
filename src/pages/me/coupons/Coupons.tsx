@@ -5,6 +5,8 @@ import { getTicketBackground } from '@/utils/getTicketBackground';
 import { fetchUserCoupons } from '@/apis/coupon/getUserCoupons';
 import type { Coupon } from '@/types/coupon';
 import { Ticket } from 'lucide-react';
+import Empty from '@/pages/common/Empty';
+import { IMAGES } from '@/constant/imagePath';
 
 const formatDiscount = (value?: number, type?: string) => {
   if (!value || !type) return '';
@@ -44,9 +46,16 @@ const Coupons: React.FC = () => {
         </div>
       </div>
 
-      {coupons
-        .filter((coupon) => !coupon.isUsed)
-        .map((coupon, index) => (
+      {availableCoupons.length === 0 ? (
+        <Empty
+          imageSrc={IMAGES.MOONER['mooner-sad']}
+          altText="보유 쿠폰 없음"
+          message="보유한 쿠폰이 없습니다."
+          buttonText="유독 라이프 혜택 PICK 하러가기"
+          buttonLink="/home"
+        />
+      ) : (
+        availableCoupons.map((coupon, index) => (
           <CouponTicket
             key={coupon.couponId}
             brand={coupon.brand.name}
@@ -55,7 +64,8 @@ const Coupons: React.FC = () => {
             background={getTicketBackground(colorCycle[index % colorCycle.length])}
             logoUrl={coupon.brand.imageUrl}
           />
-        ))}
+        ))
+      )}
     </div>
   );
 };

@@ -32,9 +32,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-bold text-gray-800">{plan.name}</CardTitle>
-          <div className="text-right">
+          <div className="flex items-center gap-1">
             <div className="text-xl font-bold text-blue-600">{plan.price?.toLocaleString()}원</div>
-            <div className="text-sm text-gray-500">/ 월</div>
+            <div className="text-sm text-gray-500 items0">/ 월</div>
           </div>
         </div>
         {!hideDescription && plan.description && (
