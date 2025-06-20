@@ -14,8 +14,11 @@ import { UBTITypeCard } from './UBTITypeCard';
 import { MatchingTypeCard } from './MatchingTypeCard';
 import { ActionButtons } from './ActionButtons';
 import type { Plan } from '@/types/plan';
+import type { Brand } from '@/types/brand';
 import PlanCard from '@/components/PlanCard/PlanCard';
 import SubscriptionCard from '@/components/SubscriptionCard/SubscriptionCard';
+import { fetchPlanDetail } from '@/apis/plan/getPlanDetail';
+import { getBrands } from '@/apis/subscription/getLifeSubscriptions';
 
 interface TacoCardType {
   front_image: string;
@@ -48,6 +51,11 @@ export const UBTIResultPage: React.FC = () => {
   const [ubtiType, setUbtiType] = useState<TacoCardType | null>(null);
   const [isDataReady, setIsDataReady] = useState(false);
 
+  // 상세 데이터 상태
+  const [detailedPlans, setDetailedPlans] = useState<Plan[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [isLoadingDetails, setIsLoadingDetails] = useState(true);
+
   // 애니메이션 상태 및 훅
   const { currentStep, isFlipped, isBaked, isRevealed, showResults, updateState } =
     useAnimationState();
@@ -67,6 +75,27 @@ export const UBTIResultPage: React.FC = () => {
     navigate(-1);
   };
 
+  const loadDetailedData = async (resultData: UBTIResultData) => {
+    try {
+      setIsLoadingDetails(true);
+      // 요금제 상세 정보 병렬 로딩
+      const planPromises = resultData.recommendation.plans.map((plan) =>
+        fetchPlanDetail(plan.id.toString()),
+      );
+      // 브랜드 전체 조회
+      const [planDetails, brandsResponse] = await Promise.all([
+        Promise.all(planPromises),
+        getBrands(),
+      ]);
+      setDetailedPlans(planDetails);
+      setBrands(brandsResponse.data);
+    } catch (error) {
+      setDetailedPlans(convertToPlanCards(resultData.recommendation.plans));
+    } finally {
+      setIsLoadingDetails(false);
+    }
+  };
+
   // 초기 데이터 로딩
   useEffect(() => {
     const state = location.state as UBTIResultResponse | undefined;
@@ -78,6 +107,7 @@ export const UBTIResultPage: React.FC = () => {
         back_image: IMAGES.TACO['taco-spicy-back'],
       });
       setIsDataReady(true);
+      loadDetailedData(state.data);
     } else {
       console.log('데이터 로딩 실패');
     }
@@ -109,13 +139,16 @@ export const UBTIResultPage: React.FC = () => {
   const convertToSubscriptionCard = (
     subscription: UBTIResultData['recommendation']['subscription'],
   ) => {
+    // 브랜드 목록에서 해당 ID 찾기
+    const matchedBrand = brands.find((brand) => brand.id === subscription.id);
+
     return {
       main_subscription: {
         id: subscription.id,
-        title: subscription.name,
-        category: '추천 구독',
+        title: matchedBrand?.title || subscription.name,
+        category: matchedBrand?.category || '추천 구독',
         price: 0,
-        image_url: IMAGES.MOONER['mooner-login'],
+        image_url: matchedBrand?.image_url || IMAGES.MOONER['mooner-login'],
       },
       life_brand: undefined,
     };
@@ -293,22 +326,35 @@ export const UBTIResultPage: React.FC = () => {
                     <h3 className="text-xl font-bold text-blue-700">맞춤 요금제 추천</h3>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center">
-                    {convertToPlanCards(recommendation.plans).map((plan, index) => (
+                  {isLoadingDetails ? (
+                    <div className="text-center py-8">
                       <motion.div
-                        key={plan.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.6 + index * 0.1 }}
+                        className="text-4xl mb-4"
+                        animate={{ rotate: 360 }}
+                        transition={{ repeat: Infinity, duration: 2 }}
                       >
-                        <PlanCard
-                          plan={plan}
-                          onSelect={handlePlanSelect}
-                          className="w-full max-w-sm"
-                        />
+                        📱
                       </motion.div>
-                    ))}
-                  </div>
+                      <p className="text-gray-600">최적의 요금제를 찾고 있어요...</p>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-4 justify-items-center">
+                      {detailedPlans.map((plan, index) => (
+                        <motion.div
+                          key={plan.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.6 + index * 0.1 }}
+                        >
+                          <PlanCard
+                            plan={plan}
+                            onSelect={handlePlanSelect}
+                            className="w-full max-w-sm"
+                          />
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
                 </motion.div>
 
                 {/* 추천 구독 서비스 섹션 */}
@@ -328,13 +374,26 @@ export const UBTIResultPage: React.FC = () => {
                     <h3 className="text-xl font-bold text-purple-700">특별 구독 서비스</h3>
                   </div>
 
-                  <div className="flex justify-center">
-                    <SubscriptionCard
-                      data={convertToSubscriptionCard(recommendation.subscription)}
-                      onSubscribe={handleSubscriptionSelect}
-                      className="w-full max-w-sm"
-                    />
-                  </div>
+                  {isLoadingDetails ? (
+                    <div className="text-center py-8">
+                      <motion.div
+                        className="text-4xl mb-4"
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ repeat: Infinity, duration: 1.5 }}
+                      >
+                        🎵
+                      </motion.div>
+                      <p className="text-gray-600">구독 서비스 추천을 준비중이에요...</p>
+                    </div>
+                  ) : (
+                    <div className="flex justify-center">
+                      <SubscriptionCard
+                        data={convertToSubscriptionCard(recommendation.subscription)}
+                        onSubscribe={handleSubscriptionSelect}
+                        className="w-full max-w-sm"
+                      />
+                    </div>
+                  )}
                 </motion.div>
               </div>
 
