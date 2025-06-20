@@ -50,7 +50,12 @@ const TopNav = () => {
           </Link>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant={isLoggedIn ? 'outline' : 'login'} size="sm" onClick={handleClick}>
+          <Button
+            variant={isLoggedIn ? 'outline' : 'login'}
+            size="sm"
+            onClick={handleClick}
+            className="cursor-pointer"
+          >
             {isLoggedIn ? '로그아웃' : '로그인'}
           </Button>
         </div>

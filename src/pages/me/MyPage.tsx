@@ -26,6 +26,7 @@ const MyPage: React.FC = () => {
     queryKey: ['userCoupons'],
     queryFn: fetchUserCoupons,
   });
+  const availableCoupons = coupons.filter((c) => c.isUsed === false);
 
   if (isLoading) return <p className="p-4">로딩 중...</p>;
   if (error || !plan) return <p className="p-4">요금제를 불러오지 못했습니다.</p>;
@@ -92,7 +93,9 @@ const MyPage: React.FC = () => {
             <CardContent className="flex items-center justify-center gap-1.5 py-2.5 leading-none">
               <Ticket className="w-[18px] h-[18px] text-yellow-600 shrink-0" />
               <span className="caption-1 whitespace-nowrap">보유 쿠폰</span>
-              <span className="caption-1 font-bold ml-1 whitespace-nowrap">{coupons.length}개</span>
+              <span className="caption-1 font-bold ml-1 whitespace-nowrap">
+                {availableCoupons.length}개
+              </span>
             </CardContent>
           </Card>
         </Link>
