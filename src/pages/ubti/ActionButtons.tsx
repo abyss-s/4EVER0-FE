@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import SharePopover from '../share/SharePopover';
 import { FocusableButton } from '@/components/Popover/FocusableButton';
 import { IMAGES } from '@/constant/imagePath';
+import { useUserProfile } from '@/stores/useUserProfile';
 import type { UBTIResultData } from '@/types/ubti';
 
 interface ActionButtonsProps {
@@ -10,8 +11,11 @@ interface ActionButtonsProps {
 }
 
 export const ActionButtons: React.FC<ActionButtonsProps> = ({ result }) => {
-  // 타코타입 id 기반 공유용 URL 생성
-  const shareUrl = `${window.location.origin}/share/${result.ubti_type.id}`;
+  const { data: profile } = useUserProfile();
+  // 로그인한 검사자의 사용자 이름 가져오기
+  const userName = profile?.name || '무너즈';
+  // 공유용 URL 생성 - 사용자 이름을 쿼리 파라미터로 포함
+  const shareUrl = `${window.location.origin}/share/${result.ubti_type.id}?user=${encodeURIComponent(userName)}`;
 
   return (
     <motion.div
@@ -30,12 +34,12 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({ result }) => {
         whileTap={{ scale: 0.95 }}
       >
         <SharePopover
-          content_title={`나는 ${result.ubti_type.emoji} ${result.ubti_type.name}! 타코시그널 테스트 결과를 공유해보세요 💕`}
+          content_title={`${userName}님은 ${result.ubti_type.emoji} ${result.ubti_type.name}! 타코시그널 테스트 결과를 공유해보세요 💕`}
           shareUrl={shareUrl}
           sharemUrl={shareUrl}
           shareimage={IMAGES.MOONER['mooner-share']}
-          sharetitle={`나는 ${result.ubti_type.emoji} ${result.ubti_type.name}!`}
-          sharedescription={`타코시그널 테스트로 나의 통신 유형을 알아봤어요! ${result.ubti_type.description}`}
+          sharetitle={`${userName}님은 ${result.ubti_type.emoji} ${result.ubti_type.name}!`}
+          sharedescription={`타코시그널 테스트로 ${userName}님의 통신 유형을 알아봤어요! ${result.ubti_type.description}`}
         />
       </motion.div>
 
