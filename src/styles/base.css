@@ -71,20 +71,20 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 10;
-  width: 24px; /* ← 줄임 */
-  height: 24px; /* ← 줄임 */
-  opacity: 0.9; /* ← 약간 흐리게 */
+  width: 24px;
+  height: 24px;
+  opacity: 0.9;
 }
 
 .swiper-button-prev {
-  left: 2px; /* ← 왼쪽 바깥으로 더 밀기 (기본: 0px) */
+  left: 2px; /* 왼쪽 네비게이션 위치 바깥쪽으로 벌리기 */
 }
 
 .swiper-button-next {
-  right: 2px; /* → 오른쪽도 맞춰줌 */
+  right: 2px;
 }
 
 .swiper-button-next::after,
 .swiper-button-prev::after {
-  font-size: 15px;
+  font-size: 15px; /* 네비게이션 버튼 크기 */
 }
