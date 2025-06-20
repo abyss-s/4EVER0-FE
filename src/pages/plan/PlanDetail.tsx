@@ -25,7 +25,7 @@ const PlanDetail: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-full bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-3 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600">로딩 중...</p>
@@ -36,7 +36,7 @@ const PlanDetail: React.FC = () => {
 
   if (error || !plan) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-full bg-white flex items-center justify-center">
         <div className="text-center p-6 bg-white rounded-xl shadow-lg">
           <div className="text-red-500 text-4xl mb-4">⚠️</div>
           <p className="text-red-600 font-medium mb-4">요금제를 불러올 수 없습니다.</p>
@@ -52,10 +52,10 @@ const PlanDetail: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-full bg-white">
       <div className="container mx-auto px-4 py-4">
         <div className="max-w-md mx-auto space-y-6">
-          <PlanCard plan={normalizePlan(plan)} variant="detail" />
+          <PlanCard plan={normalizePlan(plan)} />
 
           {/* 액션 버튼들 */}
           <div className="flex gap-3">
