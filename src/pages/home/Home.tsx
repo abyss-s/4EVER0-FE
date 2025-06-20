@@ -1,13 +1,11 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useUserProfile } from '@/stores/useUserProfile';
-import { logout as apiLogout } from '@/utils/auth';
 import Subscription from './Subscription';
 import { Banner } from '@/components/Banner';
 import { Button } from '@/components/Button';
 import { IMAGES } from '@/constant/imagePath';
-import { sonnerToast } from '@/components/Sooner';
 import { useQuery } from '@tanstack/react-query';
 import { fetchCurrentPlan } from '@/apis/plan/getCurrentPlan';
 import { BillSummaryCard } from '@/components/ui/billsummarycard';
@@ -15,19 +13,8 @@ import { BillSummaryCard } from '@/components/ui/billsummarycard';
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isLoggedIn, logout: stateLogout } = useAuthStore();
+  const { isLoggedIn } = useAuthStore();
   const { data: profile, isLoading: profileLoading } = useUserProfile();
-
-  const handleLogout = useCallback(async () => {
-    try {
-      await apiLogout();
-      stateLogout();
-      sonnerToast('로그아웃되었습니다.');
-      navigate('/login');
-    } catch {
-      sonnerToast.error('로그아웃 실패');
-    }
-  }, [navigate, stateLogout]);
 
   const { data: plan, isLoading: planLoading } = useQuery({
     queryKey: ['currentPlan'],
