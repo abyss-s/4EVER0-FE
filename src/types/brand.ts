@@ -12,3 +12,21 @@ export type BrandCategory =
   | '편의점/쇼핑'
   | '카페/음료'
   | '베이커리';
+
+export interface PlaceInfo {
+  id: number;
+  name: string;
+  lat: number;
+  lng: number;
+  address: string;
+}
+
+export interface PlaceSearchResponse {
+  places: PlaceInfo[];
+}
+
+export interface NearbyCouponsResponse {
+  success: boolean;
+  message: string;
+  data: PlaceSearchResponse;
+}
