@@ -18,24 +18,17 @@ const BottomNavHint = ({
   align?: 'left' | 'center' | 'right';
   rotate?: number;
 }) => {
-  const alignment =
-    align === 'left'
-      ? 'items-start text-left'
-      : align === 'right'
-        ? 'items-end text-right'
-        : 'items-center text-center';
-
   return (
     <div className="absolute bottom-[37px] z-30 pointer-events-none" style={{ left }}>
-      <div className={`flex flex-col ${alignment}`}>
+      <div className={`flex flex-col items-center`}>
         <p
           className={`text-[11px] text-white leading-tight whitespace-pre-line font-medium ${
             align === 'left'
-              ? 'mr-1'
+              ? 'ml-2'
               : align === 'center'
                 ? 'ml-4'
                 : align === 'right'
-                  ? 'ml-10'
+                  ? 'ml-3'
                   : ''
           }`}
         >
@@ -152,9 +145,9 @@ const Tutorial = () => {
               </button>
             </div>
 
-            <div className="relative w-full h-[0px] mx-auto">
+            <div className="relative w-full h-[0px] mx-auto translate-y-[14px]">
               <BottomNavHint
-                left="1%"
+                left="-6%"
                 align="left"
                 rotate={-135}
                 text={
@@ -165,7 +158,7 @@ const Tutorial = () => {
                 }
               />
               <BottomNavHint
-                left="19%"
+                left="17%"
                 align="center"
                 rotate={-90}
                 text={
@@ -187,7 +180,7 @@ const Tutorial = () => {
                   </>
                 }
               />
-              <BottomNavHint left="76%" align="right" rotate={-45} text={<span>내 정보</span>} />
+              <BottomNavHint left="85%" align="right" rotate={-45} text={<span>내 정보</span>} />
             </div>
           </div>
         </div>
