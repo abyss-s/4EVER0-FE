@@ -10,11 +10,16 @@ const buttonVariants = cva(
     variants: {
       variant: {
         share: 'bg-brand-darkblue text-primary-foreground shadow-xs hover:bg-brand-darkblue-hover',
+        'gradient-pink':
+          'bg-gradient-to-r from-pink-500 to-orange-500 text-white shadow-xl hover:from-pink-600 hover:to-orange-600 focus-visible:ring-pink-400 focus-visible:ring-offset-2',
+        'gradient-purple':
+          'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-xl hover:from-purple-600 hover:to-indigo-600 focus-visible:ring-purple-400 focus-visible:ring-offset-2',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',
         sm: 'h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5',
         lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
+        xl: 'h-12 rounded-2xl px-6 py-4 text-base font-bold',
         icon: 'size-9',
       },
     },

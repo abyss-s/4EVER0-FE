@@ -4,7 +4,6 @@ import Attendance from '@/pages/attendance/Attendance';
 import Chatbot from '@/pages/chatbot/Chatbot';
 import NotFound from '@/pages/common/NotFound';
 import HotPlace from '@/pages/hotplace/HotPlace';
-import Landing from '@/pages/landing/Landing';
 import Login from '@/pages/auth/Login';
 import Singup from '@/pages/auth/Signup';
 import Plan from '@/pages/plan/Plan';
@@ -22,14 +21,29 @@ import Layout from '@/components/Layout/Layout';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import OAuthCallback from '@/pages/auth/Callback';
 import Subscriptions from '@/pages/me/subscriptions/Subscriptions';
+import Intro from '@/pages/intro/Intro';
+import Tutorial from '@/pages/intro/Tutorial';
+import IntroRedirect from '@/pages/intro/IntroRedirect';
 import PlanDetail from './pages/plan/PlanDetail';
 
 const routes: RouteObject[] = [
   {
+    path: '/intro',
+    element: <Intro />,
+  },
+  {
+    path: '/tutorial',
+    element: <Tutorial />,
+  },
+  {
+    path: '/',
+    element: <IntroRedirect />,
+  },
+  {
+    path: '/',
     element: <Layout />,
     children: [
-      // index:true 로 "/" 기본페이지 지정
-      { index: true, element: <Home /> },
+      { path: 'home', element: <Home /> },
 
       // 로그인 필수 페이지
       {
@@ -56,7 +70,6 @@ const routes: RouteObject[] = [
 
       // 선택형 or  로그인 필요 없는 페이지
       { path: 'chatbot', element: <Chatbot /> },
-      { path: 'landing', element: <Landing /> },
       { path: 'login', element: <Login /> },
       { path: 'signup', element: <Singup /> },
       { path: 'authcallback', element: <OAuthCallback /> },

@@ -39,4 +39,5 @@ export const IMAGES = {
     'taco-milky-back': 'images/taco-milky-back.png',
     'taco-milky-front': 'images/taco-milky-front.png',
   },
+  bubble: '/images/bubble.png',
 } as const;
