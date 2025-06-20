@@ -15,12 +15,10 @@ const MissionItem = ({ mission }: MissionItemProps) => {
   return (
     <div className="rounded-xl shadow-sm bg-white dark:bg-gray-900 px-4 py-3 flex flex-col gap-2 w-full">
       <div className="flex items-start gap-3">
-        {/* 기본 아이콘 */}
         <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-100 text-lg">
           🧩
         </div>
 
-        {/* 본문 */}
         <div className="flex-1 min-w-0 flex flex-col gap-1">
           <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
             {mission.name}
@@ -46,7 +44,6 @@ const MissionItem = ({ mission }: MissionItemProps) => {
             </div>
           </div>
 
-          {/* 보상 + 상태별 버튼 */}
           <div className="flex justify-between items-center mt-2">
             <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
               {mission.reward_point.toLocaleString()}P
@@ -70,7 +67,7 @@ const MissionItem = ({ mission }: MissionItemProps) => {
               onClick={() => {
                 if (mission.status === 'COM') {
                   console.log(`보상 수령! missionId: ${mission.id}`);
-                  // TODO: 보상 수령 API 호출 예정
+                  // ✅ TODO: 보상 수령 API 연동 예정
                 }
               }}
             >
