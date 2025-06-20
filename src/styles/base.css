@@ -64,3 +64,27 @@
     outline-offset: 2px;
   }
 }
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #9ca3af; /* Tailwind gray-400 */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 24px;
+  height: 24px;
+  opacity: 0.9;
+}
+
+.swiper-button-prev {
+  left: 2px; /* 왼쪽 네비게이션 위치 바깥쪽으로 벌리기 */
+}
+
+.swiper-button-next {
+  right: 2px;
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 15px; /* 네비게이션 버튼 크기 */
+}
