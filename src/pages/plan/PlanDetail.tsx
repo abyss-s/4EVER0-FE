@@ -4,13 +4,18 @@ import { usePlanDetail } from '@/hooks/usePlanDetail';
 import PlanCard from '@/components/PlanCard/PlanCard';
 import { Share2, Heart } from 'lucide-react';
 import { Button } from '@/components/Button';
-import { PlanResponse, Plan } from '@/types/plans';
+import { PlanResponse } from '@/types/plans';
+import { Plan } from '@/types/plan';
 
-// PlanResponse → Plan 변환 함수
 const normalizePlan = (raw: PlanResponse): Plan => ({
-  ...raw,
+  id: raw.id,
+  name: raw.name,
+  description: raw.description,
   price: typeof raw.price === 'string' ? Number(raw.price) : raw.price,
   data: raw.data ?? '',
+  voice: raw.voice ?? '',
+  speed: raw.speed ?? '',
+  sms: raw.sms ?? '',
 });
 
 const PlanDetail: React.FC = () => {

@@ -2,20 +2,25 @@ import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAllPlan } from '@/hooks/useAllPlan';
 import { usePlanDetail } from '@/hooks/usePlanDetail';
-import { PlanResponse, Plan } from '@/types/plans';
+import { PlanResponse } from '@/types/plans';
 import PlanCard from '@/components/PlanCard/PlanCard';
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plan } from '@/types/plan';
 
 const ITEMS_PER_PAGE = 3;
 
-// PlanResponse → Plan 변환 함수
 const normalizePlan = (raw: PlanResponse): Plan => ({
-  ...raw,
+  id: raw.id,
+  name: raw.name,
+  description: raw.description,
   price: typeof raw.price === 'string' ? Number(raw.price) : raw.price,
   data: raw.data ?? '',
+  voice: raw.voice ?? '',
+  speed: raw.speed ?? '',
+  sms: raw.sms ?? '',
 });
 
-const Plan: React.FC = () => {
+const PlanPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
@@ -195,4 +200,4 @@ const Plan: React.FC = () => {
   );
 };
 
-export default Plan;
+export default PlanPage;

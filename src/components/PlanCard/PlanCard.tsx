@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 interface Plan {
   id: number;
   name: string;
-  price: number;
+  price: number | string;
   data: string;
   voice: string;
   speed?: string;
