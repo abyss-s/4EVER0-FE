@@ -100,7 +100,7 @@ const MyPage: React.FC = () => {
           </Card>
         </Link>
 
-        <Card clickable>
+        <Card className="cursor-default hover:bg-transparent">
           <CardContent className="flex items-center justify-center gap-1.5 py-2.5 leading-none">
             <Coins className="w-[18px] h-[18px] text-blue-600 shrink-0" />
             <span className="caption-1 whitespace-nowrap">보유 포인트</span>
@@ -136,19 +136,23 @@ const MyPage: React.FC = () => {
               </CardContent>
             </Card>
           </Link>
+          <Link to="/mission" state={{ scrollTo: 'mission-list' }}>
+            <Card clickable>
+              <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
+                <ClipboardCheck className="w-6 h-6" />
+                <span className="caption-1">미션 목록</span>
+              </CardContent>
+            </Card>
+          </Link>
+          <Link to="/mission" state={{ scrollTo: 'attendance' }}>
+            <Card clickable>
+              <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
+                <Stamp className="w-6 h-6" />
+                <span className="caption-1">이번달 출석 기록</span>
+              </CardContent>
+            </Card>
+          </Link>
 
-          <Card clickable>
-            <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
-              <ClipboardCheck className="w-6 h-6" />
-              <span className="caption-1">미션 목록</span>
-            </CardContent>
-          </Card>
-          <Card clickable>
-            <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
-              <Stamp className="w-6 h-6" />
-              <span className="caption-1">이번달 출석 기록</span>
-            </CardContent>
-          </Card>
           <Card clickable>
             <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
               <FolderHeart className="w-6 h-6" />
