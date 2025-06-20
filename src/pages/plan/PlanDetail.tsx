@@ -2,16 +2,17 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePlanDetail } from '@/hooks/usePlanDetail';
 import PlanCard from '@/components/PlanCard/PlanCard';
-import { Share2, Heart } from 'lucide-react';
-import { Button } from '@/components/Button';
+import { Share2, Heart, Wifi, Shield, Gift, Smartphone, Star, MapPin } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { PlanResponse } from '@/types/plans';
 import { Plan } from '@/types/plan';
+import { cn } from '@/lib/utils';
 
 const normalizePlan = (raw: PlanResponse): Plan => ({
   id: raw.id,
   name: raw.name,
   description: raw.description,
-  price: typeof raw.price === 'string' ? Number(raw.price) : raw.price,
+  price: raw.price,
   data: raw.data ?? '',
   voice: raw.voice ?? '',
   speed: raw.speed ?? '',
@@ -23,11 +24,24 @@ const PlanDetail: React.FC = () => {
   const navigate = useNavigate();
   const { data: plan, isLoading, error } = usePlanDetail(id ?? '');
 
+  const getThemeColor = (price: number) => {
+    if (price <= 30000) return 'yellow';
+    if (price <= 50000) return 'red';
+    return 'blue';
+  };
+
+  const themeColor = plan ? getThemeColor(plan.price) : 'yellow';
+  const themeColors = {
+    yellow: 'bg-brand-yellow hover:bg-brand-yellow-hover',
+    red: 'bg-brand-red hover:bg-brand-red-hover',
+    blue: 'bg-brand-darkblue hover:bg-brand-darkblue-hover',
+  };
+
   if (isLoading) {
     return (
-      <div className="min-h-full bg-white flex items-center justify-center">
+      <div className="h-full flex items-center justify-center">
         <div className="text-center">
-          <div className="w-8 h-8 border-3 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-8 h-8 border-4 border-brand-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600">로딩 중...</p>
         </div>
       </div>
@@ -36,13 +50,13 @@ const PlanDetail: React.FC = () => {
 
   if (error || !plan) {
     return (
-      <div className="min-h-full bg-white flex items-center justify-center">
-        <div className="text-center p-6 bg-white rounded-xl shadow-lg">
+      <div className="min-h-full flex items-center justify-center">
+        <div className="text-center p-6 bg-white rounded-xl shadow-lg mx-4">
           <div className="text-red-500 text-4xl mb-4">⚠️</div>
           <p className="text-red-600 font-medium mb-4">요금제를 불러올 수 없습니다.</p>
           <Button
             onClick={() => navigate('/plans')}
-            className="bg-blue-500 hover:bg-blue-600 text-white"
+            className="bg-brand-red hover:bg-brand-red-hover text-white"
           >
             목록으로 돌아가기
           </Button>
@@ -52,49 +66,124 @@ const PlanDetail: React.FC = () => {
   }
 
   return (
-    <div className="min-h-full bg-white">
-      <div className="container mx-auto px-4 py-4">
-        <div className="max-w-md mx-auto space-y-6">
-          <PlanCard plan={normalizePlan(plan)} />
+    <div className="h-full overflow-y-auto">
+      <div className="space-y-6 pb-6">
+        <PlanCard plan={normalizePlan(plan)} />
 
-          {/* 액션 버튼들 */}
-          <div className="flex gap-3">
-            <Button className="flex-1 border border-gray-300 bg-white text-gray-700 hover:bg-[#25394B] hover:text-white py-2 rounded-full transition-colors">
-              신청하기
-            </Button>
+        <div className="flex gap-3">
+          <Button
+            className={cn(
+              'flex-1 text-white py-3 rounded-xl font-medium transition-all',
+              themeColors[themeColor],
+            )}
+          >
+            <Smartphone className="w-4 h-4 mr-2" />
+            신청하기
+          </Button>
 
-            <Button
-              variant="outline"
-              className="p-3 border-gray-300 hover:bg-gray-50 rounded-xl cursor-pointer"
-            >
-              <Share2 className="w-5 h-5" />
-            </Button>
-            <Button
-              variant="outline"
-              className="p-3 border-gray-300 hover:bg-gray-50 rounded-xl cursor-pointer"
-            >
-              <Heart className="w-5 h-5" />
-            </Button>
-          </div>
+          <Button variant="outline" className="p-3 border-gray-200 hover:bg-gray-50 rounded-xl">
+            <Share2 className="w-5 h-5 text-gray-600" />
+          </Button>
 
-          {/* 추가 정보 */}
-          <div className="bg-white rounded-xl p-6 shadow-sm">
-            <h3 className="font-semibold text-gray-800 mb-4">요금제 혜택</h3>
-            <div className="space-y-3 text-sm text-gray-600">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-[#F4DE75] rounded-full"></div>
-                <span>피싱/해킹 안심서비스 24개월 무료</span>
+          <Button variant="outline" className="p-3 border-gray-200 hover:bg-gray-50 rounded-xl">
+            <Heart className="w-5 h-5 text-gray-600" />
+          </Button>
+        </div>
+
+        <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+          <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+            <Star className="w-5 h-5 text-brand-yellow" />
+            주요 혜택
+          </h3>
+          <div className="space-y-3 text-sm">
+            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+              <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                <Gift className="w-4 h-4 text-red-500" />
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-[#F4DE75] rounded-full"></div>
-                <span>네이버페이 월 할인 혜택</span>
+              <div>
+                <div className="font-medium text-gray-900">넷플릭스 베이직 12개월 무료</div>
+                <div className="text-xs text-gray-600">월 9,500원 상당</div>
               </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-[#F4DE75] rounded-full"></div>
-                <span>유심 추가 데이터 제공</span>
+            </div>
+
+            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+              <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                <Wifi className="w-4 h-4 text-purple-500" />
+              </div>
+              <div>
+                <div className="font-medium text-gray-900">U+ zone 무료 Wi-Fi</div>
+                <div className="text-xs text-gray-600">전국 22만개 AP 무제한 이용</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+              <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                <Shield className="w-4 h-4 text-blue-500" />
+              </div>
+              <div>
+                <div className="font-medium text-gray-900">U+안심폰 서비스</div>
+                <div className="text-xs text-gray-600">스팸차단, 악성코드 방지</div>
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+          <h3 className="font-semibold text-gray-800 mb-4">추가 서비스</h3>
+          <div className="grid grid-cols-2 gap-3 text-sm">
+            <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+              <div className="w-2 h-2 bg-brand-yellow rounded-full"></div>
+              <span className="text-gray-700">U+ 포인트 적립</span>
+            </div>
+            <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+              <div className="w-2 h-2 bg-brand-yellow rounded-full"></div>
+              <span className="text-gray-700">데이터 선물하기</span>
+            </div>
+            <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+              <div className="w-2 h-2 bg-brand-yellow rounded-full"></div>
+              <span className="text-gray-700">해외로밍 30% 할인</span>
+            </div>
+            <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+              <div className="w-2 h-2 bg-brand-yellow rounded-full"></div>
+              <span className="text-gray-700">U+tv 할인혜택</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+          <h3 className="font-semibold text-gray-800 mb-4">이용 안내</h3>
+          <div className="space-y-3 text-sm text-gray-600">
+            <div className="flex gap-3">
+              <MapPin className="w-4 h-4 text-gray-400 flex-shrink-0 mt-0.5" />
+              <div>
+                <div className="font-medium text-gray-700 mb-1">5G 커버리지</div>
+                <div>전국 85개 도시 5G 서비스 제공</div>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <Shield className="w-4 h-4 text-gray-400 flex-shrink-0 mt-0.5" />
+              <div>
+                <div className="font-medium text-gray-700 mb-1">데이터 사용량 알림</div>
+                <div>80%, 100% 도달시 문자 알림 서비스</div>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <Gift className="w-4 h-4 text-gray-400 flex-shrink-0 mt-0.5" />
+              <div>
+                <div className="font-medium text-gray-700 mb-1">약정 혜택</div>
+                <div>24개월 약정시 월 요금 추가 할인</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gray-50 rounded-xl p-4 text-xs text-gray-600">
+          <div className="font-medium text-gray-700 mb-2">※ 유의사항</div>
+          <ul className="space-y-1 leading-relaxed">
+            <li>• 요금제 혜택은 가입일로부터 적용됩니다.</li>
+            <li>• OTT 서비스는 신규 가입자에 한해 제공됩니다.</li>
+            <li>• 데이터 사용량 초과시 속도 제한이 적용될 수 있습니다.</li>
+            <li>• 부가서비스는 별도 신청이 필요할 수 있습니다.</li>
+          </ul>
         </div>
       </div>
     </div>
