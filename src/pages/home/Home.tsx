@@ -8,6 +8,7 @@ import { Banner } from '@/components/Banner';
 import { Button } from '@/components/Button';
 import { IMAGES } from '@/constant/imagePath';
 import { sonnerToast } from '@/components/Sooner';
+import { Card, CardContent } from '@/components/Card';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();

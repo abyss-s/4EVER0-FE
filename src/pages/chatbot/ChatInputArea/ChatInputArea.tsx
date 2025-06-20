@@ -3,6 +3,9 @@ import { Button } from '@/components/Button';
 import { Input } from '@/components/ui/input';
 import { Send } from 'lucide-react';
 
+export const ChatInputArea = () => {
+  return <div>...</div>;
+};
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
   disabled?: boolean;
