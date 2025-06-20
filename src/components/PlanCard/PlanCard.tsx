@@ -15,7 +15,6 @@ interface Plan {
   sms?: string;
   description: string;
 }
-import type { Plan } from '@/types/plan';
 
 interface PlanCardProps {
   plan: Plan;
