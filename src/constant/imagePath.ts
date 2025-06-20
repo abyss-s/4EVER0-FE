@@ -2,11 +2,10 @@ export const IMAGES = {
   MOONER: {
     'mooner-phone': '/images/mooner-phone.svg',
     'mooner-chat': '/images/mooner-chat.png',
-    'moonoz-logo': '/images/moonoz-logo.svg',
+    'moonoz-logo': '/images/moonoz-logo.png',
     'moonoz-hello': '/images/moonoz-hello.png',
     'mooner-game': '/images/mooner-game.svg',
     'mooner-share': 'https://d3e0ocbonj571p.cloudfront.net/MoonoZ.png',
-    'mooner-login': 'https://d3e0ocbonj571p.cloudfront.net/MoonoZ_Login.png',
     rotation_1: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_1.png',
     rotation_2: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_2.png',
     rotation_3: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_3.png',
