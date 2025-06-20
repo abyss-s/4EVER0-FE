@@ -3,14 +3,16 @@ import { getTopCoupons, TopCoupon } from '@/apis/coupon/getTopCoupons';
 import TopCouponCard from '@/components/Card/TopCouponCard';
 import PopupMap from './PopupMap/PopupMap';
 import StoreMap from './StoreMap/StoreMap';
+import SelectorPopover from './StoreMap/SelectorPopover'; // 추가
 
 const HotPlace = () => {
   const [bestDeals, setBestDeals] = useState<TopCoupon[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const [option, setOption] = useState<'popup' | 'store'>('popup');
-  const allBrandIds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const selectedBrandIds: number[] = [];
+  const allBrandIds = [1, 2, 3, 4, 5, 6, 7, 8];
+
+  const [selectedBrandIds, setSelectedBrandIds] = useState<number[]>([]);
 
   useEffect(() => {
     const fetchCoupons = async () => {
@@ -60,13 +62,23 @@ const HotPlace = () => {
         </button>
       </div>
 
+      {/* store 옵션일 때 브랜드 선택 팝오버 보여주기 */}
+      {option === 'store' && (
+        <div className="flex justify-center mb-4">
+          <SelectorPopover
+            brandIds={allBrandIds}
+            selectedIds={selectedBrandIds}
+            onChange={setSelectedBrandIds}
+          />
+        </div>
+      )}
+
       {option === 'popup' ? (
         <PopupMap />
       ) : (
         <StoreMap allBrandIds={allBrandIds} selectedIds={selectedBrandIds} />
       )}
 
-      {/* 인기 쿠폰 TOP 3 */}
       <div className="px-4">
         <div className="flex justify-center py-4">
           <div className="bg-gray-800 text-white px-4 py-2 rounded-full text-sm">

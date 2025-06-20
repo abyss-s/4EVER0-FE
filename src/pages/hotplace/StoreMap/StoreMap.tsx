@@ -4,7 +4,6 @@ import type { PlaceInfo } from '@/types/brand';
 import MapControls from '@/pages/hotplace/StoreMap/MapControls';
 import MapLegend from '@/pages/hotplace/StoreMap/MapLegend';
 import MapPopover from '@/pages/hotplace/StoreMap/MapPopover';
-import StoreSelector from '@/pages/hotplace/StoreMap/StoreSelector';
 import { createMarkerClustering, type MarkerClusteringInstance } from '@/utils/markerClustering';
 import { useState, useRef, useEffect, useCallback } from 'react';
 
@@ -38,8 +37,8 @@ export default function StoreMap({
 
   const [nearbyStores, setNearbyStores] = useState<StoreData[]>([]);
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number }>({
-    lat: 36.2253017,
-    lng: 127.6460516,
+    lat: 37.503325874722,
+    lng: 127.04403462366,
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -49,7 +48,7 @@ export default function StoreMap({
   const [popoverOpen, setPopoverOpen] = useState(false);
 
   const { mapRef, isLoaded, isApiReady, mapInstance, addMarker, setCenter, setZoom } = useNaverMap({
-    center: { lat: 36.2253017, lng: 127.6460516 },
+    center: { lat: 37.503325874722, lng: 127.04403462366 },
     zoom: 7,
   });
 
@@ -422,17 +421,6 @@ export default function StoreMap({
         onShowAllStores={onShowAllStores}
         onGetCurrentLocation={getCurrentLocation}
       />
-
-      {/* 선택 보기일 때 브랜드 선택 리스트 표시 */}
-      {isShowingSelected && (
-        <div className="absolute top-20 right-4 z-50">
-          <StoreSelector
-            brandIds={allBrandIds}
-            selectedBrandIds={selectedBrandIds}
-            onChange={setSelectedBrandIds}
-          />
-        </div>
-      )}
 
       {/* 범례 */}
       <MapLegend
