@@ -95,9 +95,9 @@ const PlanPage: React.FC = () => {
 
   if (!id && planList.length > 0) {
     return (
-      <div className="min-h-screen bg-white">
-        <div className="container mx-auto px-4 py-4">
-          <div className="bg-white rounded-xl shadow-sm p-4 mb-6 border border-gray-200">
+      <div className="min-h-full bg-white">
+        <div className="container mx-auto py-4">
+          <div className="bg-white rounded-xl shadow-sm mb-6 border border-gray-200">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
@@ -120,7 +120,6 @@ const PlanPage: React.FC = () => {
                 <PlanCard
                   plan={normalizePlan(plan)}
                   onSelect={() => navigate(`/plans/${plan.id}`)}
-                  variant="list"
                 />
               </div>
             ))}
@@ -184,7 +183,7 @@ const PlanPage: React.FC = () => {
       <div className="min-h-screen bg-white">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-md mx-auto">
-            <PlanCard plan={normalizePlan(planDetail)} variant="detail" />
+            <PlanCard plan={normalizePlan(planDetail)} />
           </div>
         </div>
       </div>
