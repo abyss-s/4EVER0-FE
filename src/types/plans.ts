@@ -1,7 +1,7 @@
 export interface PlanResponse {
   id: number;
   name: string;
-  price: string;
+  price: number;
   description: string;
   data: string | null;
   speed: string | null;
