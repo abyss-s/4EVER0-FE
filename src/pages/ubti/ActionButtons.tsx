@@ -10,6 +10,9 @@ interface ActionButtonsProps {
 }
 
 export const ActionButtons: React.FC<ActionButtonsProps> = ({ result }) => {
+  // 타코타입 id 기반 공유용 URL 생성
+  const shareUrl = `${window.location.origin}/share/${result.ubti_type.id}`;
+
   return (
     <motion.div
       className="flex flex-col gap-4 justify-center items-center pt-8 px-4"
@@ -28,8 +31,8 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({ result }) => {
       >
         <SharePopover
           content_title={`나는 ${result.ubti_type.emoji} ${result.ubti_type.name}! 타코시그널 테스트 결과를 공유해보세요 💕`}
-          shareUrl={window.location.href}
-          sharemUrl={window.location.href}
+          shareUrl={shareUrl}
+          sharemUrl={shareUrl}
           shareimage={IMAGES.MOONER['mooner-share']}
           sharetitle={`나는 ${result.ubti_type.emoji} ${result.ubti_type.name}!`}
           sharedescription={`타코시그널 테스트로 나의 통신 유형을 알아봤어요! ${result.ubti_type.description}`}
@@ -71,6 +74,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({ result }) => {
         transition={{ delay: 1.5 }}
       >
         <p>💡 키보드 Tab키로 버튼 이동, Enter/Space로 선택 가능</p>
+        <p className="mt-1">🔗 공유 링크를 통해 친구들도 테스트할 수 있어요!</p>
       </motion.div>
     </motion.div>
   );
