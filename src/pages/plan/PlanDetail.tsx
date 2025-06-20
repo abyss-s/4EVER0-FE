@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePlanDetail } from '@/hooks/usePlanDetail';
 import PlanCard from '@/components/PlanCard/PlanCard';
-import { ArrowLeft, Share2, Heart } from 'lucide-react';
+import { Share2, Heart } from 'lucide-react';
 import { Button } from '@/components/Button';
 
 const PlanDetail: React.FC = () => {
@@ -40,7 +40,7 @@ const PlanDetail: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* 네비게이션 */}
+      {/* 네비게이션
       <div className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 py-4">
           <button
@@ -51,10 +51,9 @@ const PlanDetail: React.FC = () => {
             전체 요금제로 돌아가기
           </button>
         </div>
-      </div>
-
+      </div> */}
       {/* 상세 내용 */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4">
         <div className="max-w-md mx-auto space-y-6">
           <PlanCard plan={plan} variant="detail" />
 

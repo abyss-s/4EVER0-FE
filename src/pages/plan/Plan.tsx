@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAllPlan } from '@/hooks/useAllPlan';
 import { usePlanDetail } from '@/hooks/usePlanDetail';
 import { PlanResponse } from '@/types/plans';
 import PlanCard from '@/components/PlanCard/PlanCard';
-import { Search, Filter, ArrowLeft } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
+
+const ITEMS_PER_PAGE = 3;
 
 const Plan: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   const {
     data: planDetail,
@@ -20,11 +23,67 @@ const Plan: React.FC = () => {
   const { data: planList = [], isLoading: isListLoading, error: listError } = useAllPlan();
 
   // 검색 필터링
-  const filteredPlans = planList.filter(
-    (plan: PlanResponse) =>
-      plan.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      plan.description?.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  const filteredPlans = useMemo(() => {
+    return planList.filter(
+      (plan: PlanResponse) =>
+        plan.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        plan.description?.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+  }, [planList, searchTerm]);
+
+  // 페이지네이션 계산
+  const totalPages = Math.ceil(filteredPlans.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentPlans = filteredPlans.slice(startIndex, endIndex);
+
+  // 페이지 변경 시 맨 위로 스크롤
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // 검색 시 첫 페이지로 리셋
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
+    setCurrentPage(1);
+  };
+
+  // 페이지 번호 생성
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 7;
+
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 4) {
+        for (let i = 1; i <= 5; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 3) {
+        pages.push(1);
+        pages.push('...');
+        for (let i = totalPages - 4; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        pages.push(1);
+        pages.push('...');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+
+    return pages;
+  };
 
   if (isDetailLoading || isListLoading) {
     return (
@@ -53,23 +112,23 @@ const Plan: React.FC = () => {
     return (
       <div className="min-h-screen bg-white">
         {/* 검색 영역 */}
-        <div className="container mx-auto px-4 py-6">
-          <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
+        <div className="container mx-auto px-4 py-4">
+          <div className="bg-white rounded-xl shadow-sm p-4 mb-6 border border-gray-200">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type="text"
                 placeholder="요금제 검색..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => handleSearch(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
               />
             </div>
           </div>
 
           {/* 요금제 카드 목록 */}
-          <div className="space-y-4">
-            {filteredPlans.map((plan: PlanResponse, index) => (
+          <div className="space-y-4 mb-8">
+            {currentPlans.map((plan: PlanResponse, index) => (
               <div
                 key={plan.id}
                 className="animate-fade-in"
@@ -83,6 +142,65 @@ const Plan: React.FC = () => {
               </div>
             ))}
           </div>
+
+          {/* 페이지네이션 */}
+          {totalPages > 1 && (
+            <div className="flex flex-col items-center space-y-6 py-8">
+              {/* MoonoZ 로고 */}
+              <div className="flex items-center space-x-1">
+                <span className="text-3xl font-bold text-[#DD4640]">M</span>
+                <span className="text-3xl font-bold text-[#25394B]">oono</span>
+                <span className="text-3xl font-bold text-[#DD4640]">Z</span>
+              </div>
+
+              {/* 페이지 버튼들 */}
+              <div className="flex items-center space-x-2">
+                {/* 이전 페이지 */}
+                {currentPage > 1 && (
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    className="flex items-center px-3 py-2 text-[#25394B] hover:bg-yellow-50 rounded-lg transition-colors"
+                  >
+                    <ChevronLeft className="w-4 h-4 mr-1" />
+                    이전
+                  </button>
+                )}
+
+                {/* 페이지 번호들 */}
+                <div className="flex items-center space-x-1">
+                  {getPageNumbers().map((page, index) => (
+                    <React.Fragment key={index}>
+                      {page === '...' ? (
+                        <span className="px-3 py-2 text-gray-400">...</span>
+                      ) : (
+                        <button
+                          onClick={() => handlePageChange(page as number)}
+                          className={`w-10 h-10 rounded-full text-sm font-medium transition-colors ${
+                            currentPage === page
+                              ? 'bg-[#F4DE75] text-white'
+                              : 'text-[#25394B] hover:bg-yellow-50'
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
+
+                {/* 다음 페이지 */}
+                {currentPage < totalPages && (
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    className="flex items-center px-3 py-2 text-[#25394B] hover:bg-yello-50 rounded-lg transition-colors"
+                  >
+                    다음
+                    <ChevronRight className="w-4 h-4 ml-1" />
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
 
           {filteredPlans.length === 0 && (
             <div className="text-center py-12">
@@ -100,7 +218,7 @@ const Plan: React.FC = () => {
   if (id && planDetail) {
     return (
       <div className="min-h-screen bg-white">
-        {/* 네비게이션 */}
+        {/* 네비게이션
         <div className="bg-white shadow-sm border-b">
           <div className="container mx-auto px-4 py-4">
             <button
@@ -111,7 +229,7 @@ const Plan: React.FC = () => {
               전체 요금제로 돌아가기
             </button>
           </div>
-        </div>
+        </div> */}
 
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-md mx-auto">

@@ -33,7 +33,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     onSelect?.(plan);
   };
 
-  // 요금제별 색상 테마
+  // 요금제별 색상 테마 (price 기준으로 분류)
   const getThemeColor = (price: number | string) => {
     const numPrice = Number(price);
     if (numPrice <= 50000) return 'green';
@@ -67,8 +67,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   };
 
   const theme = themes[themeColor];
-  // 상세 페이지
+
   if (variant === 'detail') {
+    // 상세 페이지용
     return (
       <Card
         className={cn(
@@ -140,7 +141,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     );
   }
 
-  // 전체 목록
+  // 전체 목록용
   return (
     <Card
       className={cn(
@@ -177,9 +178,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                     월 {Number(plan.price).toLocaleString()}원
                   </span>
                   {plan.share_data && (
-                    <span className="text-sm text-blue-500 font-medium">
-                      유심 혜택 +{plan.share_data}
-                    </span>
+                    <div className="border border-blue-100 bg-blue-50 text-blue-600 rounded-md px-2 py-1 text-sm w-fit mt-2">
+                      유심 혜택 +-
+                    </div>
                   )}
                 </div>
 
@@ -213,7 +214,6 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                 </span>
               </div>
             )}
-
             {/* 자세히 보기 버튼 */}
             <Button
               className={cn(
