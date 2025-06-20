@@ -1,10 +1,9 @@
-// src/components/Swiper/BaseSwiper.tsx
-
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination } from 'swiper/modules';
+import { Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import React from 'react';
+import 'swiper/css/navigation';
 
 interface BaseSwiperProps<T> {
   items: T[];
@@ -15,10 +14,11 @@ interface BaseSwiperProps<T> {
 export function BaseSwiper<T>({ items, renderItem, slideWidth = 280 }: BaseSwiperProps<T>) {
   return (
     <Swiper
-      modules={[Pagination]}
+      modules={[Pagination, Navigation]}
       spaceBetween={16}
       slidesPerView={'auto'}
       pagination={{ clickable: true }}
+      navigation={true}
       className="w-full px-2 !pb-9"
     >
       {items.map((item, idx) => (
