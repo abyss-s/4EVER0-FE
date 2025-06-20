@@ -7,7 +7,6 @@ import { useKakaoInit, kakaoShare, KakaoShareParams } from '@/pages/share/KakaoS
 import { useFacebookShare } from '@/pages/share/useFacebookShare';
 import { useTwitterShare } from '@/pages/share/useTwitterShare';
 import { useShare } from '@/pages/share/useShare';
-import { Share2 } from 'lucide-react';
 import { ICONS } from '@/constant/iconPath';
 
 interface SharePopoverProps {
@@ -20,32 +19,44 @@ interface SharePopoverProps {
 }
 
 const SharePopover: React.FC<SharePopoverProps> = ({
-  content_title, // 앱에서 공유 팝오버에 띄울 메시지
+  content_title,
   shareUrl,
   sharemUrl,
   shareimage,
   sharetitle,
   sharedescription,
 }) => {
-  // 카카오톡 SDK 초기화 훅
-  const kakaoInitialized = useKakaoInit(import.meta.env.KAKAO_JS_KEY);
+  const [copySuccess, setCopySuccess] = useState('');
+  const kakaoKey = import.meta.env.VITE_KAKAO_JS_KEY || '';
 
-  const shareData: KakaoShareParams = {
-    title: sharetitle, // 공유 게시물 제목
-    description: sharedescription, // 공유 게시물 설명란
-    imageUrl: shareimage, // 공유 게시물 대표 이미지
-    mobileWebUrl: sharemUrl, // 모바일 링크
-    webUrl: shareUrl, // 웹 링크
-  };
-
-  const shareData_etc = {
+  // 모든 커스텀 훅들을 조건부 없이 항상 호출
+  const kakaoInitialized = useKakaoInit(kakaoKey);
+  const { share: handleFacebookShare } = useFacebookShare({ webUrl: shareUrl });
+  const { share: handleTwitterShare } = useTwitterShare({
+    title: sharetitle,
+    description: sharedescription,
+    webUrl: shareUrl,
+  });
+  const { share: handleMoreShare } = useShare({
     title: sharetitle,
     text: sharedescription,
     url: shareUrl,
+  });
+
+  const shareData: KakaoShareParams = {
+    title: sharetitle,
+    description: sharedescription,
+    imageUrl: shareimage,
+    mobileWebUrl: sharemUrl,
+    webUrl: shareUrl,
   };
 
-  // 카카오톡 공유 함수 (초기화 완료 후만 작동)
+  // 카카오톡 공유 함수
   const handleKakaoShare = () => {
+    if (!kakaoKey) {
+      alert('카카오 공유 기능이 설정되지 않았습니다.');
+      return;
+    }
     if (!kakaoInitialized) {
       alert('카카오 SDK 초기화 중입니다. 잠시만 기다려주세요.');
       return;
@@ -53,18 +64,18 @@ const SharePopover: React.FC<SharePopoverProps> = ({
     kakaoShare(shareData);
   };
 
-  // 다른 SNS 공유 훅
-  const { share: handleFacebookShare } = useFacebookShare({ webUrl: shareUrl });
-  const { share: handleTwitterShare } = useTwitterShare(shareData);
-  const { share: handleMoreShare } = useShare(shareData_etc);
-
   const SNS_ICON_DATA = [
-    {
-      name: '카카오톡',
-      onClick: handleKakaoShare,
-      fallback: 'KK',
-      src: ICONS.KAKAO_ICON,
-    },
+    // 카카오 키가 있을 때만 카카오톡 공유 버튼 표시
+    ...(kakaoKey
+      ? [
+          {
+            name: '카카오톡',
+            onClick: handleKakaoShare,
+            fallback: 'KK',
+            src: ICONS.KAKAO_ICON,
+          },
+        ]
+      : []),
     {
       name: 'Facebook',
       onClick: handleFacebookShare,
@@ -77,10 +88,12 @@ const SharePopover: React.FC<SharePopoverProps> = ({
       fallback: 'X',
       src: ICONS.X_ICON,
     },
-    { name: '더보기', onClick: handleMoreShare, icon: <MoreHorizontal className="h-8 w-8" /> },
+    {
+      name: '더보기',
+      onClick: handleMoreShare,
+      icon: <MoreHorizontal className="h-8 w-8" />,
+    },
   ];
-
-  const [copySuccess, setCopySuccess] = useState('');
 
   const handleCopyClick = async () => {
     try {
@@ -95,8 +108,14 @@ const SharePopover: React.FC<SharePopoverProps> = ({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <FocusableButton variant="share" size="sm" className="w-8.5">
-          <Share2 size={15} color="#ffffff" />
+        <FocusableButton
+          variant="gradient-pink"
+          size="xl"
+          className="w-full touch-manipulation flex items-center justify-center gap-3"
+          style={{ WebkitTapHighlightColor: 'transparent' }}
+        >
+          <span className="inline-block text-xl">📤</span>
+          <span>친구들에게 공유하기</span>
         </FocusableButton>
       </PopoverTrigger>
 

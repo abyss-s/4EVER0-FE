@@ -3,18 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/Button';
 import { Smartphone, Wifi, Phone, MessageSquare, Zap, Share2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-interface Plan {
-  id: number;
-  name: string;
-  price: number;
-  data: string;
-  voice: string;
-  speed?: string;
-  share_data?: string;
-  sms?: string;
-  description: string;
-}
+import type { Plan } from '@/types/plan';
 
 interface PlanCardProps {
   plan: Plan;
