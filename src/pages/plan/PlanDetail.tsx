@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePlanDetail } from '@/hooks/usePlanDetail';
 import PlanCard from '@/components/PlanCard/PlanCard';
-import { Share2, Heart, Wifi, Shield, Gift, Smartphone, Star, MapPin } from 'lucide-react';
+import { Share2, Heart, Wifi, Shield, Gift, Smartphone, Star, MapPin, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PlanResponse } from '@/types/plans';
 import { Plan } from '@/types/plan';
 import { cn } from '@/lib/utils';
+import { changePlan } from '@/apis/plan/postPlan';
+import { toast } from 'sonner';
+import { useAuthStore } from '@/stores/useAuthStore';
+import { useModalStore } from '@/stores/useModalStore';
 
 const normalizePlan = (raw: PlanResponse): Plan => ({
   id: raw.id,
@@ -21,8 +25,11 @@ const normalizePlan = (raw: PlanResponse): Plan => ({
 
 const PlanDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const { openModal } = useModalStore();
   const navigate = useNavigate();
   const { data: plan, isLoading, error } = usePlanDetail(id ?? '');
+  const [isChanging, setIsChanging] = useState(false);
+  const { isLoggedIn } = useAuthStore();
 
   const getThemeColor = (price: number) => {
     if (price <= 30000) return 'yellow';
@@ -35,6 +42,98 @@ const PlanDetail: React.FC = () => {
     yellow: 'bg-brand-yellow hover:bg-brand-yellow-hover',
     red: 'bg-brand-red hover:bg-brand-red-hover',
     blue: 'bg-brand-darkblue hover:bg-brand-darkblue-hover',
+  };
+
+  const handlePlanChange = async () => {
+    if (!plan || !id) return;
+
+    if (!isLoggedIn) {
+      openModal({
+        id: 'login-required-modal',
+        title: '로그인이 필요합니다!',
+        description: '요금제 변경을 위해서는 로그인이 필요합니다.\n로그인 후 이용해주세요.',
+        variant: 'default',
+        size: 'sm',
+        showClose: false,
+        showCancel: false,
+        showConfirm: true,
+        confirmText: '로그인하기',
+        confirmVariant: 'default',
+        closeOnOverlayClick: false,
+        closeOnEscape: false,
+        onConfirm: () => {
+          navigate('/login');
+        },
+      });
+      return;
+    }
+
+    openModal({
+      id: 'plan-change-confirm-modal',
+      title: '요금제 변경 확인',
+      description: `${plan.name} 요금제로 변경하시겠습니까?\n월 ${plan.price.toLocaleString()}원이 청구됩니다.`,
+      variant: 'default',
+      size: 'sm',
+      showClose: true,
+      showCancel: true,
+      showConfirm: true,
+      cancelText: '취소',
+      confirmText: '변경하기',
+      confirmVariant: 'default',
+      closeOnOverlayClick: true,
+      closeOnEscape: true,
+      onConfirm: async () => {
+        await executePlanChange();
+      },
+    });
+  };
+
+  const executePlanChange = async () => {
+    if (!plan || !id) return;
+
+    setIsChanging(true);
+
+    try {
+      const result = await changePlan(Number(id));
+
+      if (result.status === 200) {
+        toast.success(result.data?.message || '요금제 변경이 완료되었습니다!', {
+          description: result.data?.plan_name
+            ? `${result.data.plan_name}으로 변경되었습니다. 마이페이지에서 확인하실 수 있습니다.`
+            : '마이페이지에서 변경 내역을 확인하실 수 있습니다.',
+        });
+
+        // 성공 후 /me로 이동
+        setTimeout(() => {
+          navigate('/me');
+        }, 2000);
+      } else {
+        toast.error(result.message || '요금제 변경에 실패했습니다.', {
+          description:
+            result.status === 409
+              ? '이미 사용중인 요금제입니다.'
+              : result.status === 404
+                ? '존재하지 않는 요금제입니다.'
+                : '다시 시도해주세요.',
+        });
+      }
+    } catch (error) {
+      const axiosError = error as { response?: { status?: number; data?: { message?: string } } };
+      const statusCode = axiosError?.response?.status;
+      const errorMessage =
+        axiosError?.response?.data?.message || '요청 처리 중 오류가 발생했습니다.';
+
+      toast.error(errorMessage, {
+        description:
+          statusCode === 409
+            ? '이미 사용중인 요금제입니다.'
+            : statusCode === 404
+              ? '존재하지 않는 요금제입니다.'
+              : '잠시 후 다시 시도해주세요.',
+      });
+    } finally {
+      setIsChanging(false);
+    }
   };
 
   if (isLoading) {
@@ -50,7 +149,7 @@ const PlanDetail: React.FC = () => {
 
   if (error || !plan) {
     return (
-      <div className="min-h-full flex items-center justify-center">
+      <div className="h-full flex items-center justify-center">
         <div className="text-center p-6 bg-white rounded-xl shadow-lg mx-4">
           <div className="text-red-500 text-4xl mb-4">⚠️</div>
           <p className="text-red-600 font-medium mb-4">요금제를 불러올 수 없습니다.</p>
@@ -69,16 +168,27 @@ const PlanDetail: React.FC = () => {
     <div className="h-full overflow-y-auto">
       <div className="space-y-6 pb-6">
         <PlanCard plan={normalizePlan(plan)} />
-
         <div className="flex gap-3">
           <Button
+            onClick={handlePlanChange}
+            disabled={isChanging}
             className={cn(
               'flex-1 text-white py-3 rounded-xl font-medium transition-all',
               themeColors[themeColor],
+              isChanging && 'opacity-70 cursor-not-allowed',
             )}
           >
-            <Smartphone className="w-4 h-4 mr-2" />
-            신청하기
+            {isChanging ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                변경 중...
+              </>
+            ) : (
+              <>
+                <Smartphone className="w-4 h-4 mr-2" />
+                변경하기
+              </>
+            )}
           </Button>
 
           <Button variant="outline" className="p-3 border-gray-200 hover:bg-gray-50 rounded-xl">
