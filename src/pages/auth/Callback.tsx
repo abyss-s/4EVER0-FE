@@ -44,6 +44,7 @@ const OAuthCallback: React.FC = () => {
       try {
         const { data } = await apiWithToken.get<UserResponse>('/user');
         login(data.userId, data.id);
+        localStorage.setItem('hasLoggedIn', 'true');
 
         // React Query 캐시에 미리 저장
         queryClient.setQueryData(['userProfile', data.userId], data);
