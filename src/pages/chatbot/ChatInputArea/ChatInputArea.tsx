@@ -1,67 +1,163 @@
-import React from 'react';
-import { ChatInput } from './ChatInput';
-import { PremiumFeatureButton } from '../ChatContainer/PremiumFeatureButton';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Button } from '@/components/Button';
+import { Input } from '@/components/ui/input';
+import { Send } from 'lucide-react';
 
-interface ChatInputAreaProps {
-  ubtiInProgress: boolean;
-  currentUBTIStep: number;
-  buttonDisabled: boolean;
-  isSessionEnded: boolean;
-  inputPlaceholder: string;
+interface ChatInputProps {
   onSendMessage: (message: string) => void;
-  onUBTIStart: () => void;
-  onLikesRecommendation: () => void;
-  onResetChat: () => void;
+  disabled?: boolean;
+  placeholder?: string;
+  ubtiInProgress?: boolean;
+  currentUBTIStep?: number;
 }
 
-export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
-  ubtiInProgress,
-  buttonDisabled,
-  isSessionEnded,
-  inputPlaceholder,
+export const ChatInput: React.FC<ChatInputProps> = ({
   onSendMessage,
-  onUBTIStart,
-  onLikesRecommendation,
-  onResetChat,
+  disabled = false,
+  placeholder = '무너에게 메시지를 입력하세요...',
+  ubtiInProgress,
+  currentUBTIStep,
 }) => {
+  const [message, setMessage] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
+
+  // ✅ 사용자 인터랙션 감지
+  useEffect(() => {
+    const handleFirstInteraction = () => {
+      setHasUserInteracted(true);
+      console.log('🎯 사용자 인터랙션 감지됨');
+    };
+
+    document.addEventListener('touchstart', handleFirstInteraction, { once: true });
+    document.addEventListener('click', handleFirstInteraction, { once: true });
+    document.addEventListener('keydown', handleFirstInteraction, { once: true });
+
+    return () => {
+      document.removeEventListener('touchstart', handleFirstInteraction);
+      document.removeEventListener('click', handleFirstInteraction);
+      document.removeEventListener('keydown', handleFirstInteraction);
+    };
+  }, []);
+
+  // ✅ 포커싱 재시도 함수
+  const focusInputWithRetry = useCallback(
+    (retries = 3, delay = 100) => {
+      const attemptFocus = (count: number) => {
+        if (inputRef.current && !disabled && hasUserInteracted) {
+          inputRef.current.focus();
+
+          // iOS Safari 대응
+          if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            inputRef.current.click();
+          }
+
+          console.log('🎯 포커스 성공');
+        } else if (count > 0) {
+          setTimeout(() => attemptFocus(count - 1), delay);
+        }
+      };
+
+      attemptFocus(retries);
+    },
+    [disabled, hasUserInteracted],
+  );
+
+  // ✅ UBTI 단계 변경 시 포커싱
+  useEffect(() => {
+    if (ubtiInProgress && currentUBTIStep !== undefined && hasUserInteracted) {
+      setTimeout(() => {
+        focusInputWithRetry();
+        console.log('🆕 새 질문 - 포커스 재시도:', currentUBTIStep);
+      }, 100);
+    }
+  }, [ubtiInProgress, currentUBTIStep, hasUserInteracted, focusInputWithRetry]);
+
+  // ✅ disabled → false 변경 시 포커싱
+  useEffect(() => {
+    if (!disabled && hasUserInteracted) {
+      focusInputWithRetry();
+    }
+  }, [disabled, hasUserInteracted, focusInputWithRetry]);
+
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      const trimmedMessage = message.trim();
+      if (trimmedMessage && !disabled) {
+        console.log('📤 메시지 전송:', trimmedMessage);
+        onSendMessage(trimmedMessage);
+        setMessage('');
+        setHasUserInteracted(true);
+        focusInputWithRetry(); // 전송 후 포커스 재시도
+      }
+    },
+    [message, disabled, onSendMessage, focusInputWithRetry],
+  );
+
+  const handleKeyPress = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleSubmit(e);
+      }
+    },
+    [handleSubmit],
+  );
+
+  const handleInputFocus = useCallback(() => {
+    setHasUserInteracted(true);
+    console.log('🎯 입력창 포커스 - 인터랙션 상태 업데이트');
+  }, []);
+
+  const handleContainerClick = useCallback(() => {
+    if (inputRef.current && !disabled) {
+      inputRef.current.focus();
+      setHasUserInteracted(true);
+    }
+  }, [disabled]);
+
   return (
-    <div className="bottom-0 left-0 right-0 flex flex-col space-y-3 bg-white py-3 border-t border-gray-300">
-      {/* 기능 버튼들 */}
-      {!ubtiInProgress && (
-        <div className="flex justify-between w-full space-x-2">
-          <PremiumFeatureButton
-            className="flex-1"
-            onClick={onUBTIStart}
-            disabled={buttonDisabled}
-            featureName="UBTI 분석"
-          >
-            타코시그널 검사하기
-          </PremiumFeatureButton>
-          <PremiumFeatureButton
-            className="flex-1"
-            onClick={onLikesRecommendation}
-            disabled={buttonDisabled}
-            featureName="서비스 추천"
-          >
-            브랜드 케미 분석
-          </PremiumFeatureButton>
+    <div className="flex w-full items-center space-x-2" onClick={handleContainerClick}>
+      <form onSubmit={handleSubmit} className="flex w-full items-center space-x-2">
+        <div className="flex-1 relative">
+          {ubtiInProgress && !hasUserInteracted && (
+            <div className="absolute inset-0 border-2 border-blue-400 rounded-md animate-pulse pointer-events-none z-10">
+              <div className="absolute -top-8 left-0 text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded">
+                👆 여기를 터치해서 답변해주세요!
+              </div>
+            </div>
+          )}
+
+          <Input
+            ref={inputRef}
+            type="text"
+            placeholder={disabled ? '무너가 답변을 생각 중...' : placeholder}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyPress={handleKeyPress}
+            onFocus={handleInputFocus}
+            disabled={disabled}
+            className={`flex-1 ${ubtiInProgress ? 'ring-2 ring-blue-300' : ''}`}
+            maxLength={500}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck="false"
+            inputMode="text"
+          />
         </div>
-      )}
 
-      {/* 입력창 */}
-      <ChatInput
-        onSendMessage={onSendMessage}
-        disabled={buttonDisabled}
-        placeholder={inputPlaceholder}
-      />
-
-      {/* 새 대화 시작 버튼 */}
-      {isSessionEnded && (
-        <Button onClick={onResetChat} className="w-full">
-          새 대화 시작하기
+        <Button
+          type="submit"
+          size="icon"
+          disabled={disabled || !message.trim()}
+          className="shrink-0"
+          onClick={() => setHasUserInteracted(true)}
+        >
+          <Send className="h-4 w-4" />
         </Button>
-      )}
+      </form>
     </div>
   );
 };
