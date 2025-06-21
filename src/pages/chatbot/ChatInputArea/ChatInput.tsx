@@ -8,14 +8,6 @@ interface ChatInputProps {
   disabled?: boolean;
   placeholder?: string;
   autoFocus?: boolean;
-  ubtiInProgress?: boolean;
-  currentUBTIStep?: number;
-  buttonDisabled?: boolean;
-  isSessionEnded?: boolean;
-  onUBTIStart?: () => Promise<void>;
-  onLikesRecommendation?: () => Promise<void>;
-  onResetChat?: () => void;
-  inputPlaceholder?: string;
 }
 
 export const ChatInput: React.FC<ChatInputProps> = ({
