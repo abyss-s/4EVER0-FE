@@ -12,15 +12,17 @@ interface BaseSwiperProps<T> {
 }
 
 export function BaseSwiper<T>({ items, renderItem }: BaseSwiperProps<T>) {
+  const isSingleSlide = items.length === 1;
+
   return (
     <div className="w-full max-w-sm mx-auto">
       <Swiper
         modules={[Pagination, Navigation]}
         spaceBetween={16}
         slidesPerView={1}
-        pagination={{ clickable: true }}
-        navigation
-        className="!pb-12"
+        pagination={isSingleSlide ? false : { clickable: true }}
+        navigation={!isSingleSlide}
+        className={isSingleSlide ? '' : '!pb-12'}
       >
         {items.map((item, index) => (
           <SwiperSlide key={index}>{renderItem(item)}</SwiperSlide>
