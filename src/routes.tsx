@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouteObject } from 'react-router-dom';
 import Home from '@/pages/home/Home';
-import Attendance from '@/pages/attendance/Attendance';
 import Chatbot from '@/pages/chatbot/Chatbot';
 import NotFound from '@/pages/common/NotFound';
 import HotPlace from '@/pages/hotplace/HotPlace';
@@ -50,7 +49,6 @@ const routes: RouteObject[] = [
       {
         element: <ProtectedRoute />,
         children: [
-          { path: 'attendance', element: <Attendance /> },
           { path: 'hotplace', element: <HotPlace /> },
           { path: 'mission', element: <Mission /> },
           { path: 'ubti', element: <UBTI /> },
