@@ -11,11 +11,11 @@ export const getUserMissions = async (): Promise<Mission[]> => {
       description: m.description ?? '',
       image_url: m.image_url ?? '',
       completed_at: m.completed_at ?? '',
-      type: m.type as MissionType, // ✅ 필요 시 임시 처리 or mission에서 type join 필요
+      type: m.type as MissionType, // 필요 시 임시 처리 or mission에서 type join 필요
       target_count: m.target_count,
       current_progress: m.progress_count,
       reward_point: m.reward_point,
-      is_completed: m.status !== 'INP', // ✅ 핵심!
+      is_completed: m.status !== 'INP',
       status: m.status,
     }),
   );

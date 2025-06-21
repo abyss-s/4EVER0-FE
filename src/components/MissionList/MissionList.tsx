@@ -1,7 +1,8 @@
 import { useMissions } from '@/hooks/useMissions';
+import { useUserProfile } from '@/stores/useUserProfile';
 import { Progress } from '@/components/Progress';
 import { Button } from '@/components/ui/button';
-import type { Mission } from '@/types/mission';
+import type { Mission, MissionStatus } from '@/types/mission';
 import { cn } from '@/lib/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { receiveMissionReward } from '@/apis/mission/receiveMissionReward';
@@ -15,7 +16,7 @@ const MissionItem = ({ mission }: MissionItemProps) => {
   const current = mission.current_progress ?? 0;
   const queryClient = useQueryClient();
 
-  // ✅ 보상 수령 뮤테이션
+  // 보상 수령 뮤테이션
   const { mutate: claimReward, isPending } = useMutation({
     mutationFn: () => receiveMissionReward(mission.id),
     onSuccess: (data) => {
@@ -105,6 +106,8 @@ const MissionItem = ({ mission }: MissionItemProps) => {
 
 export const MissionList = () => {
   const { data: missions, isLoading } = useMissions();
+  const { data: user } = useUserProfile();
+  const streak = user?.attendanceStreak ?? 0;
 
   if (isLoading) {
     return (
@@ -122,9 +125,36 @@ export const MissionList = () => {
     );
   }
 
+  // 전체 미션 로그
+  console.log('[🧩 전체 미션]', missions);
+
+  // 출석 미션만 streak 기반으로 수정, 보상 수령 상태는 유지
+  const updatedMissions = missions.map((mission) => {
+    // 각 미션별 로그
+    console.log(
+      `[미션] ${mission.name} | type=${mission.type} | status=${mission.status} | progress=${mission.current_progress}`,
+    );
+
+    if (mission.type === 'ATTENDANCE' && mission.status !== 'REC') {
+      const adjustedStatus: MissionStatus = streak >= mission.target_count ? 'COM' : 'INP';
+
+      console.log(
+        `→ [덮어씀] streak=${streak} → progress=${Math.min(streak, mission.target_count)}, status=${adjustedStatus}`,
+      );
+
+      return {
+        ...mission,
+        current_progress: Math.min(streak, mission.target_count),
+        status: adjustedStatus,
+      };
+    }
+
+    return mission;
+  });
+
   return (
     <div className="flex flex-col gap-4">
-      {missions.map((mission) => (
+      {updatedMissions.map((mission) => (
         <MissionItem key={mission.id} mission={mission} />
       ))}
     </div>
