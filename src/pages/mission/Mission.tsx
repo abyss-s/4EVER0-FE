@@ -25,8 +25,8 @@ const MissionPage: React.FC = () => {
     <div className="p-4">
       <AttendanceBanner />
 
-      <div className="flex items-center justify-between mb-4 mt-6">
-        <h2 className="text-[20px] font-bold text-gray-900">출석 스탬프 북</h2>
+      <div className="flex items-center justify-between mt-6 mb-4">
+        <h1 className="text-xl font-bold text-brand-darkblue mb-2">출석 스탬프 북</h1>
         <button
           onClick={() => navigate('/upltuple')}
           className="text-sm text-[#DD4640] font-medium hover:underline"
@@ -38,7 +38,7 @@ const MissionPage: React.FC = () => {
       <AttendanceCalendar />
 
       <div ref={missionRef} className="mt-10">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">진행 중인 미션</h2>
+        <h1 className="text-xl font-bold text-brand-darkblue mb-4">진행 중인 미션</h1>
         <MissionList />
       </div>
     </div>
