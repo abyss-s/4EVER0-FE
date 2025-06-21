@@ -11,7 +11,9 @@ const Layout = (): React.ReactElement => {
     <section className="relative min-h-[100dvh] w-full bg-background text-foreground pt-[56px] pb-[56px]">
       <TopNav />
       <main
-        className={`mx-auto w-full max-w-[420px] px-6 py-4 ${isChatPage ? '' : 'overflow-y-auto'}`}
+        className={`mx-auto w-full max-w-full sm:max-w-[600px] px-4 sm:px-6 py-4 ${
+          isChatPage ? '' : 'overflow-y-auto'
+        }`}
         style={{
           height: 'calc(100dvh - 112px)',
           ...(isChatPage

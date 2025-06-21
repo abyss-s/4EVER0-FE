@@ -18,10 +18,10 @@ const navItems = [
 const BottomNav = () => {
   return (
     <footer
-      className="fixed bottom-0 left-0 right-0 mx-auto max-w-[420px] w-full bg-[var(--color-background)] z-20 px-6 py-3 h-[56px]"
+      className="fixed bottom-0 left-0 right-0 w-full bg-[var(--color-background)] z-20 px-4 sm:px-6 py-3 h-[56px]"
       style={{ boxShadow: '0 -2px 4px -1px rgba(0, 0, 0, 0.06)' }}
     >
-      <nav className="flex justify-around h-full items-center">
+      <nav className="mx-auto max-w-[600px] flex justify-around h-full items-center">
         {navItems.map(({ label, icon: Icon, path }) => (
           <NavLink
             key={label}
