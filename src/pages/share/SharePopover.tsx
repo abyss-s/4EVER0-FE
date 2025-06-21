@@ -8,8 +8,10 @@ import { useFacebookShare } from '@/pages/share/useFacebookShare';
 import { useTwitterShare } from '@/pages/share/useTwitterShare';
 import { useShare } from '@/pages/share/useShare';
 import { ICONS } from '@/constant/iconPath';
+import { updateProgress } from '@/apis/mission/updateProgress';
 
 interface SharePopoverProps {
+  missionId?: number;
   content_title: string;
   shareUrl: string;
   sharemUrl: string;
@@ -19,6 +21,7 @@ interface SharePopoverProps {
 }
 
 const SharePopover: React.FC<SharePopoverProps> = ({
+  missionId,
   content_title,
   shareUrl,
   sharemUrl,
@@ -105,10 +108,23 @@ const SharePopover: React.FC<SharePopoverProps> = ({
     }
   };
 
+  const handleShareMissionProgress = async () => {
+    if (missionId !== 1) return;
+    try {
+      await updateProgress(1);
+      console.log('공유 미션 진행도 +1');
+      // toast.success('공유 미션이 진행됐어요!');
+    } catch (err) {
+      console.error('공유 미션 실패:', err);
+      // toast.error('미션 진행 중 오류가 발생했어요.');
+    }
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
         <FocusableButton
+          onClick={handleShareMissionProgress}
           variant="gradient-pink"
           size="xl"
           className="w-full touch-manipulation flex items-center justify-center gap-3"
@@ -119,7 +135,14 @@ const SharePopover: React.FC<SharePopoverProps> = ({
         </FocusableButton>
       </PopoverTrigger>
 
-      <PopoverContent variant="light" side="bottom" sideOffset={8} className="w-80 p-4">
+      <PopoverContent
+        variant="light"
+        align="center"
+        side="bottom"
+        sideOffset={8}
+        alignOffset={0}
+        className="absolute left-1/2 -translate-x-1/2 w-80 p-4"
+      >
         <h3 className="font-semibold text-lg mb-1">컨텐츠 공유하기</h3>
         <p className="text-sm text-gray-600 mb-4">{content_title}</p>
 
