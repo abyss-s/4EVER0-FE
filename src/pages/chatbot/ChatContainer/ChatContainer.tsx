@@ -5,6 +5,7 @@ import {
   useChatMutation,
   useUBTIMutation,
   useLikesRecommendationMutation,
+  useUsageRecommendationMutation,
 } from '@/hooks/useChatMutation';
 import { useStreamingChat } from '@/hooks/useStreamingChat';
 import { UBTIOverlay } from '../UBTIOverlay';
@@ -65,6 +66,7 @@ export const ChatContainer: React.FC = () => {
   const chatMutation = useChatMutation();
   const ubtiMutation = useUBTIMutation();
   const likesRecommendationMutation = useLikesRecommendationMutation();
+  const usageRecommendationMutation = useUsageRecommendationMutation();
 
   // 현재 세션 계산
   const currentSession = useMemo(() => {
@@ -196,6 +198,23 @@ export const ChatContainer: React.FC = () => {
     }
   }, [createStreamingHandlers, likesRecommendationMutation, currentSessionId, isMunerTone]);
 
+  // 사용량 기반 추천
+  const handleUsageRecommendation = useCallback(async () => {
+    const message = '내 사용량 기반으로 요금제 추천해 주세요';
+    const handlers = createStreamingHandlers(message, false);
+    if (!handlers) return;
+
+    try {
+      await usageRecommendationMutation.mutateAsync({
+        onChunk: handlers.onChunk,
+        tone: isMunerTone ? 'muneoz' : 'general',
+      });
+    } catch (error) {
+      console.error('사용량 추천 에러:', error);
+      handlers.onError(error as Error);
+    }
+  }, [createStreamingHandlers, usageRecommendationMutation, isMunerTone]);
+
   // 채팅 초기화
   const resetChat = useCallback(() => {
     if (currentSessionId) {
@@ -227,20 +246,31 @@ export const ChatContainer: React.FC = () => {
       chatMutation.isPending ||
       ubtiMutation.isPending ||
       likesRecommendationMutation.isPending ||
-      isLoadingResult, // 결과 로딩 중에도 비활성화
+      usageRecommendationMutation.isPending ||
+      isLoadingResult,
     [
       isSessionEnded,
       chatMutation.isPending,
       ubtiMutation.isPending,
       likesRecommendationMutation.isPending,
+      usageRecommendationMutation.isPending,
       isLoadingResult,
     ],
   );
 
   // 스트리밍 상태
   const isStreaming = useMemo(
-    () => chatMutation.isPending || ubtiMutation.isPending || likesRecommendationMutation.isPending,
-    [chatMutation.isPending, ubtiMutation.isPending, likesRecommendationMutation.isPending],
+    () =>
+      chatMutation.isPending ||
+      ubtiMutation.isPending ||
+      likesRecommendationMutation.isPending ||
+      usageRecommendationMutation.isPending,
+    [
+      chatMutation.isPending,
+      ubtiMutation.isPending,
+      likesRecommendationMutation.isPending,
+      usageRecommendationMutation.isPending,
+    ],
   );
 
   // 입력 필드 플레이스홀더
@@ -303,6 +333,7 @@ export const ChatContainer: React.FC = () => {
         onSendMessage={handleSendMessage}
         onUBTIStart={handleUBTIStart}
         onLikesRecommendation={handleLikesRecommendation}
+        onUsageRecommendation={handleUsageRecommendation}
         onResetChat={resetChat}
       />
     </div>

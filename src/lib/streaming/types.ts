@@ -28,6 +28,15 @@ export interface UBTIChunk {
   data: string;
 }
 
+// 사용량 기반 추천 타입
+export interface UsageRecommendationRequest {
+  tone: 'muneoz' | 'general';
+}
+
+export interface UsageRecommendationChunk {
+  data: string;
+}
+
 // 스트리밍 설정 인터페이스
 export interface StreamingConfig {
   minDelay: number;
