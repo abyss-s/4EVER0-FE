@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RouterProvider } from 'react-router-dom';
 import { GlobalModalProvider } from './provider/GlobalModalProvider/GlobalModalProvider';
+import { Sooner } from '@/components/Sooner/Sonner';
 import { ThemeProvider } from '@/provider/ThemeProvider';
 import router from './routes';
 
@@ -13,6 +14,7 @@ function App() {
       <ThemeProvider>
         <RouterProvider router={router} />
         <GlobalModalProvider />
+        <Sooner position="bottom-center" style={{ bottom: '80px' }} />
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
