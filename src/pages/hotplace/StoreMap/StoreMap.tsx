@@ -1,17 +1,17 @@
 import { useNaverMap } from '@/hooks/useNaverMap';
 import { getNearbyCoupons } from '@/apis/coupon/getNearbyCoupons';
 import type { PlaceInfo } from '@/types/brand';
-import MapControls from '@/pages/hotplace/StoreMap/MapControls';
-import MapLegend from '@/pages/hotplace/StoreMap/MapLegend';
-import MapPopover from '@/pages/hotplace/StoreMap/MapPopover';
+import MapControls from './MapControls';
+import MapLegend from './MapLegend';
+import MapPopover from './MapPopover';
 import { createMarkerClustering, type MarkerClusteringInstance } from '@/utils/markerClustering';
 import { useState, useRef, useEffect, useCallback } from 'react';
 
 interface StoreMapProps {
   className?: string;
   style?: React.CSSProperties;
-  allBrandIds: number[]; // 전체 브랜드 아이디 목록
-  selectedIds: number[]; // 선택된 브랜드 아이디 목록
+  allBrandIds: number[];
+  selectedIds: number[];
 }
 
 interface StoreData {
@@ -25,15 +25,10 @@ interface StoreData {
 export default function StoreMap({
   className = '',
   style = {},
-  allBrandIds,
   selectedIds,
+  allBrandIds,
 }: StoreMapProps) {
-  // 선택 브랜드 아이디 상태 (선택 보기)
   const [selectedBrandIds, setSelectedBrandIds] = useState<number[]>([]);
-  // 구독한 모든 아이디 상태 (전체 보기)
-  const [subscribedBrandIds, setSubscribedBrandIds] = useState<number[]>([]);
-  // 전체보기 모드 여부 (false면 선택보기)
-  const [isShowingSelected, setIsShowingSelected] = useState(false);
 
   const [nearbyStores, setNearbyStores] = useState<StoreData[]>([]);
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number }>({
@@ -44,10 +39,10 @@ export default function StoreMap({
   const [error, setError] = useState<string | null>(null);
   const [loadingLocation, setLoadingLocation] = useState(false);
 
-  const [selectedStore, setSelectedStore] = useState<StoreData | null>();
+  const [selectedStore, setSelectedStore] = useState<StoreData | null>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
 
-  const { mapRef, isLoaded, isApiReady, mapInstance, addMarker, setCenter, setZoom } = useNaverMap({
+  const { mapRef, isLoaded, isApiReady, mapInstance, addMarker } = useNaverMap({
     center: { lat: 37.503325874722, lng: 127.04403462366 },
     zoom: 7,
   });
@@ -58,15 +53,11 @@ export default function StoreMap({
   const mapEventListenersRef = useRef<naver.maps.MapEventListener[]>([]);
   const markersInitializedRef = useRef(false);
 
-  useEffect(() => {
-    setSubscribedBrandIds(allBrandIds);
-  }, [allBrandIds]);
-
+  // selectedIds prop이 바뀌면 내부 상태 동기화
   useEffect(() => {
     setSelectedBrandIds(selectedIds);
-  }, [selectedBrandIds]);
+  }, [selectedIds]);
 
-  // 팝오버 열기/닫기
   const openPopover = useCallback((store: StoreData) => {
     setSelectedStore(store);
     setPopoverOpen(true);
@@ -77,6 +68,7 @@ export default function StoreMap({
     setPopoverOpen(false);
   }, []);
 
+  // 매장 데이터 호출
   useEffect(() => {
     const fetchStores = async () => {
       try {
@@ -89,9 +81,7 @@ export default function StoreMap({
           return;
         }
 
-        const brandIdsToQuery = isShowingSelected ? selectedBrandIds : subscribedBrandIds;
-
-        if (brandIdsToQuery.length === 0) {
+        if (selectedBrandIds.length === 0) {
           setNearbyStores([]);
           setLoading(false);
           return;
@@ -100,7 +90,7 @@ export default function StoreMap({
         const response = await getNearbyCoupons(
           currentLocation.lat,
           currentLocation.lng,
-          brandIdsToQuery,
+          selectedBrandIds,
         );
 
         if (Array.isArray(response)) {
@@ -123,9 +113,9 @@ export default function StoreMap({
     };
 
     fetchStores();
-  }, [currentLocation, isShowingSelected, selectedBrandIds, subscribedBrandIds]);
+  }, [currentLocation, selectedBrandIds]);
 
-  // 현재 위치 찾기
+  // 현재 위치 가져오기
   const getCurrentLocation = useCallback(() => {
     if (!navigator.geolocation) {
       alert('이 브라우저는 위치 서비스를 지원하지 않습니다.');
@@ -139,7 +129,7 @@ export default function StoreMap({
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
-        setError(null); // 성공 시 에러 초기화
+        setError(null);
         setLoadingLocation(false);
       },
       (error) => {
@@ -152,35 +142,6 @@ export default function StoreMap({
     );
   }, []);
 
-  // 전체보기 버튼 클릭
-  const onShowAllStores = useCallback(() => {
-    setIsShowingSelected(false);
-    setSelectedBrandIds([]);
-    closePopover();
-    setCenter(36.2253017, 127.6460516);
-    setZoom(7);
-  }, [closePopover, setCenter, setZoom]);
-
-  // 선택보기 버튼 클릭
-  const onShowSelectedStores = useCallback(() => {
-    if (selectedBrandIds.length === 0) {
-      alert('브랜드를 하나 이상 선택해주세요.');
-      return;
-    }
-    setIsShowingSelected(true);
-    closePopover();
-    setCenter(currentLocation.lat, currentLocation.lng);
-    setZoom(14);
-  }, [
-    selectedBrandIds,
-    closePopover,
-    currentLocation.lat,
-    currentLocation.lng,
-    setCenter,
-    setZoom,
-  ]);
-
-  // 마커 정리 함수
   const safeCleanupMarkers = useCallback(() => {
     markersRef.current.forEach((marker, index) => {
       try {
@@ -193,7 +154,6 @@ export default function StoreMap({
     });
     markersRef.current = [];
 
-    // 현재 위치 마커 정리
     if (currentLocationMarkerRef.current) {
       try {
         if (typeof currentLocationMarkerRef.current.setMap === 'function') {
@@ -205,7 +165,6 @@ export default function StoreMap({
       currentLocationMarkerRef.current = null;
     }
 
-    // 이벤트 리스너 정리
     mapEventListenersRef.current.forEach((listener) => {
       try {
         naver.maps.Event.removeListener(listener);
@@ -215,7 +174,6 @@ export default function StoreMap({
     });
     mapEventListenersRef.current = [];
 
-    // 클러스터 정리
     if (markerClusterRef.current) {
       try {
         if (typeof markerClusterRef.current.setMap === 'function') {
@@ -228,7 +186,6 @@ export default function StoreMap({
     }
   }, []);
 
-  // 마커 생성 및 초기화
   useEffect(() => {
     if (!isLoaded || !isApiReady || !mapInstance) {
       markersInitializedRef.current = false;
@@ -240,7 +197,6 @@ export default function StoreMap({
     safeCleanupMarkers();
 
     try {
-      // 현재 위치 마커 추가
       if (currentLocation) {
         const locationMarker = addMarker({
           position: { lat: currentLocation.lat, lng: currentLocation.lng },
@@ -274,7 +230,6 @@ export default function StoreMap({
         if (locationMarker) currentLocationMarkerRef.current = locationMarker;
       }
 
-      // 매장 마커 생성
       nearbyStores.forEach((store, idx) => {
         const marker = addMarker({
           position: { lat: store.latitude, lng: store.longitude },
@@ -316,14 +271,12 @@ export default function StoreMap({
         });
         if (marker) markersRef.current.push(marker);
 
-        // 마커 클릭 이벤트
         const clickListener = naver.maps.Event.addListener(marker, 'click', (e) => {
           e.domEvent?.stopPropagation();
           openPopover(store);
         });
         mapEventListenersRef.current.push(clickListener);
 
-        // 마커 호버 이벤트
         const mouseoverListener = naver.maps.Event.addListener(marker, 'mouseover', () => {
           if (mapRef.current) mapRef.current.style.cursor = 'pointer';
         });
@@ -333,12 +286,10 @@ export default function StoreMap({
         mapEventListenersRef.current.push(mouseoverListener, mouseoutListener);
       });
 
-      // 클러스터링 적용
       if (markersRef.current.length > 0 && mapInstance) {
         markerClusterRef.current = createMarkerClustering(mapInstance, markersRef.current);
       }
 
-      // 지도 클릭 시 팝오버 닫기
       const mapClickListener = naver.maps.Event.addListener(mapInstance, 'click', () => {
         closePopover();
       });
@@ -410,26 +361,18 @@ export default function StoreMap({
 
   return (
     <div className={`relative ${className}`} style={{ width: '100%', height: '400px', ...style }}>
-      {/* 지도 영역 */}
       <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
 
-      {/* 브랜드 선택 토글 및 위치 찾기 버튼 */}
       <MapControls
-        isShowingSelected={isShowingSelected}
         loadingLocation={loadingLocation}
-        onShowSelectedStores={onShowSelectedStores}
-        onShowAllStores={onShowAllStores}
         onGetCurrentLocation={getCurrentLocation}
+        brandIds={allBrandIds}
+        selectedIds={selectedBrandIds}
+        onChangeSelectedIds={setSelectedBrandIds}
       />
 
-      {/* 범례 */}
-      <MapLegend
-        isShowingSelected={isShowingSelected}
-        popupCount={nearbyStores.length}
-        hasCurrentLocation={!!currentLocation}
-      />
+      <MapLegend popupCount={nearbyStores.length} hasCurrentLocation={!!currentLocation} />
 
-      {/* 팝오버 */}
       {selectedStore && (
         <div
           style={{
@@ -449,13 +392,7 @@ export default function StoreMap({
               if (!open) closePopover();
             }}
           >
-            <div
-              style={{
-                width: '1px',
-                height: '1px',
-                pointerEvents: 'auto',
-              }}
-            />
+            <div style={{ width: '1px', height: '1px', pointerEvents: 'auto' }} />
           </MapPopover>
         </div>
       )}

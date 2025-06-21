@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { getTopCoupons, TopCoupon } from '@/apis/coupon/getTopCoupons';
 import TopCouponCard from '@/components/Card/TopCouponCard';
 import PopupMap from './PopupMap/PopupMap';
 import StoreMap from './StoreMap/StoreMap';
-import SelectorPopover from './StoreMap/SelectorPopover'; // 추가
 
 const HotPlace = () => {
   const [bestDeals, setBestDeals] = useState<TopCoupon[]>([]);
@@ -12,7 +12,13 @@ const HotPlace = () => {
   const [option, setOption] = useState<'popup' | 'store'>('popup');
   const allBrandIds = [1, 2, 3, 4, 5, 6, 7, 8];
 
-  const [selectedBrandIds, setSelectedBrandIds] = useState<number[]>([]);
+  const [searchParams] = useSearchParams();
+  const subscribedBrandIdsParam = searchParams.get('subscribedBrandIds');
+  const subscribedBrandIds = subscribedBrandIdsParam
+    ? subscribedBrandIdsParam.split(',').map((id) => Number(id))
+    : [1, 3, 4]; // <-- 이게 기본값으로 잘 들어감
+
+  const selectedBrandIds: number[] = subscribedBrandIds;
 
   useEffect(() => {
     const fetchCoupons = async () => {
@@ -25,11 +31,15 @@ const HotPlace = () => {
         setIsLoading(false);
       }
     };
-
     fetchCoupons();
   }, []);
 
+  useEffect(() => {
+    console.log('selectedBrandIds:', selectedBrandIds);
+  }, [subscribedBrandIds]);
+
   const getDiscountLabel = (deal: TopCoupon) => {
+    if (!deal) return '';
     return deal.discountType === 'PERCENT'
       ? `${deal.discountValue}% 할인`
       : `${deal.discountValue.toLocaleString()}원 할인`;
@@ -61,17 +71,6 @@ const HotPlace = () => {
           스토어맵 보기
         </button>
       </div>
-
-      {/* store 옵션일 때 브랜드 선택 팝오버 보여주기 */}
-      {option === 'store' && (
-        <div className="flex justify-center mb-4">
-          <SelectorPopover
-            brandIds={allBrandIds}
-            selectedIds={selectedBrandIds}
-            onChange={setSelectedBrandIds}
-          />
-        </div>
-      )}
 
       {option === 'popup' ? (
         <PopupMap />
