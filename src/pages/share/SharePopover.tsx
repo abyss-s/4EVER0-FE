@@ -8,8 +8,10 @@ import { useFacebookShare } from '@/pages/share/useFacebookShare';
 import { useTwitterShare } from '@/pages/share/useTwitterShare';
 import { useShare } from '@/pages/share/useShare';
 import { ICONS } from '@/constant/iconPath';
+import { updateProgress } from '@/apis/mission/updateProgress';
 
 interface SharePopoverProps {
+  missionId: number; // UBTI 공유 시 미션 +1 할 때 필요
   content_title: string;
   shareUrl: string;
   sharemUrl: string;
@@ -105,10 +107,22 @@ const SharePopover: React.FC<SharePopoverProps> = ({
     }
   };
 
+  const handleShareMissionProgress = async () => {
+    try {
+      await updateProgress(1);
+      console.log('✅ 공유 미션 진행도 +1');
+      // toast.success('공유 미션이 진행됐어요!');
+    } catch (err) {
+      console.error('❌ 공유 미션 실패:', err);
+      // toast.error('미션 진행 중 오류가 발생했어요.');
+    }
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
         <FocusableButton
+          onClick={handleShareMissionProgress}
           variant="gradient-pink"
           size="xl"
           className="w-full touch-manipulation flex items-center justify-center gap-3"
