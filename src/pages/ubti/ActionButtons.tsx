@@ -34,6 +34,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({ result }) => {
         whileTap={{ scale: 0.95 }}
       >
         <SharePopover
+          missionId={1}
           content_title={`${userName}님은 ${result.ubti_type.emoji} ${result.ubti_type.name}! 타코시그널 테스트 결과를 공유해보세요 💕`}
           shareUrl={shareUrl}
           sharemUrl={shareUrl}
