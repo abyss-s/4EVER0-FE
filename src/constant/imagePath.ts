@@ -5,6 +5,7 @@ export const IMAGES = {
     'moonoz-logo': '/images/moonoz-logo.png',
     'moonoz-hello': '/images/moonoz-hello.png',
     'mooner-game': '/images/mooner-game.svg',
+    'mooner-hotplace': '/images/mooner-hotplace.png',
     'mooner-share': 'https://d3e0ocbonj571p.cloudfront.net/MoonoZ.png',
     rotation_1: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_1.png',
     rotation_2: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_2.png',

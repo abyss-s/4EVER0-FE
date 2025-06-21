@@ -43,7 +43,7 @@ export default function MapPopover({
           overflow: 'auto',
           pointerEvents: 'auto',
         }}
-        onClick={(e) => e.stopPropagation()} // 팝오버 내부 클릭시 닫히지 않음
+        onClick={(e) => e.stopPropagation()}
       >
         {/* 헤더 */}
         <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-3 relative rounded-t-lg">
@@ -58,7 +58,6 @@ export default function MapPopover({
           <button
             onClick={() => onOpenChange?.(false)}
             className="absolute top-2 right-2 w-6 h-6 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center text-white transition-colors"
-            aria-label="팝오버 닫기"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
@@ -103,7 +102,7 @@ export default function MapPopover({
             </div>
           </div>
 
-          {/* 좌표 정보 (개발자용) */}
+          {/* 좌표 정보 */}
           <div className="text-xs text-gray-400 border-t pt-2">
             위도: {popup.latitude.toFixed(6)}, 경도: {popup.longitude.toFixed(6)}
           </div>
@@ -119,8 +118,6 @@ export default function MapPopover({
             <button
               onClick={() => {
                 console.log('상세 정보:', popup);
-                // 상세 페이지로 이동하거나 추가 모달 열기
-                // 예: router.push(`/popup/${popup.id}`)
               }}
               className="flex-1 px-3 py-2 text-xs font-medium bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-md transition-all shadow-sm hover:shadow-md"
             >
