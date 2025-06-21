@@ -11,7 +11,7 @@ import { ICONS } from '@/constant/iconPath';
 import { updateProgress } from '@/apis/mission/updateProgress';
 
 interface SharePopoverProps {
-  missionId: number;
+  missionId?: number;
   content_title: string;
   shareUrl: string;
   sharemUrl: string;
@@ -21,6 +21,7 @@ interface SharePopoverProps {
 }
 
 const SharePopover: React.FC<SharePopoverProps> = ({
+  missionId,
   content_title,
   shareUrl,
   sharemUrl,
@@ -108,6 +109,7 @@ const SharePopover: React.FC<SharePopoverProps> = ({
   };
 
   const handleShareMissionProgress = async () => {
+    if (missionId !== 1) return;
     try {
       await updateProgress(1);
       console.log('공유 미션 진행도 +1');
