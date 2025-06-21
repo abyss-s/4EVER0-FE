@@ -52,13 +52,12 @@ const SelectorPopover = ({
     return null; // 또는 에러 상태 표시
   }
 
-  // brandIds만 들어왔으니, 해당하는 브랜드만 렌더 (안전한 처리 추가)
+  // brandIds만 들어왔으니, 해당하는 브랜드만 렌더
   const brandsToShow = BRAND_META.filter((b) => brandIds.includes(b.id));
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        {/* 깔끔한 카드 스타일 트리거 버튼 - 이모지로 변경 */}
         <div className="flex items-center gap-2 cursor-pointer">
           <span style={{ fontSize: '12px' }}>🏪</span>
           <span className="text-xs font-medium text-gray-700 whitespace-nowrap">브랜드 선택</span>
