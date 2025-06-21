@@ -53,8 +53,8 @@ const HotPlace = () => {
       {/* 헤더 섹션 - 마이페이지 스타일 적용 */}
       <div className="px-4">
         <h2 className="title-1 mt-6 flex items-center text-brand-darkblue gap-2">
-          <img src={IMAGES.MOONER['mooner-phone']} alt="문어 아이콘" className="w-15 h-15" />
-          요즘 뜨는 핫플레이스를 찾고, <br></br>내 근처 쿠폰을 저장해보세요!
+          <img src={IMAGES.MOONER['mooner-hotplace']} alt="문어 아이콘" className="w-15 h-15" />
+          요즘 뜨는핫플레이스를 찾고, <br></br>내 근처 쿠폰을 저장해보세요!
         </h2>
 
         {/* MZ PICK 배너 */}

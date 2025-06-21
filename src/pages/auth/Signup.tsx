@@ -106,9 +106,6 @@ const Signup: React.FC = () => {
   };
 
   return (
-    // <div className="text-center pt-4 pb-6">
-    //         <div className="text- font-bold text-slate-800">
-    //           Moono<span className="text-brand-red">Z</span>에 오신 걸 환영해요!
     <div className="flex items-start justify-center min-h-screen pt-2 px-0">
       <div className="w-full max-w-sm">
         {alert && (
