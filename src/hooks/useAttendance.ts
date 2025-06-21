@@ -48,6 +48,7 @@ export const useAttendance = () => {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['attendance', year, month] });
       queryClient.invalidateQueries({ queryKey: ['attendance', 'today'] });
+      queryClient.invalidateQueries({ queryKey: ['missions'] });
     },
   });
 
