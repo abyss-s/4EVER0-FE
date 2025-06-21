@@ -1,21 +1,20 @@
-interface MapControlsProps {
-  isShowingSelected: boolean;
-  loadingLocation: boolean;
-  onShowSelectedStores: () => void;
-  onShowAllStores: () => void;
-  onGetCurrentLocation: () => void; // 현재 위치 탐색은 별개로 받음
-}
+import SelectorPopover from './SelectorPopover';
 
-export default function StoreControls({
-  isShowingSelected,
+export default function MapControls({
   loadingLocation,
-  onShowSelectedStores,
-  onShowAllStores,
   onGetCurrentLocation,
-}: MapControlsProps) {
+  brandIds,
+  selectedIds,
+  onChangeSelectedIds,
+}: {
+  loadingLocation: boolean;
+  onGetCurrentLocation: () => void;
+  brandIds: number[];
+  selectedIds: number[];
+  onChangeSelectedIds: (ids: number[]) => void;
+}) {
   return (
-    <div className="absolute top-4 right-4 flex flex-col gap-2">
-      {/* 현재 위치 탐색 버튼 (별개) */}
+    <div className="absolute top-4 right-4 flex flex-col gap-2 z-10">
       <button
         onClick={onGetCurrentLocation}
         disabled={loadingLocation}
@@ -31,19 +30,18 @@ export default function StoreControls({
         )}
       </button>
 
-      {/* 상태에 따라 버튼 텍스트 및 콜백 분기 */}
-      <button
-        onClick={() => {
-          if (isShowingSelected) {
-            onShowAllStores();
-          } else {
-            onShowSelectedStores();
-          }
+      {/* 브랜드 선택 토글 버튼 제거 */}
+      {/* 팝오버는 SelectorPopover 내부의 트리거 버튼으로 열고 닫음 */}
+
+      <SelectorPopover
+        brandIds={brandIds}
+        selectedIds={selectedIds}
+        onChange={(ids) => {
+          onChangeSelectedIds(ids);
+          // 팝오버 자동 닫기 제거
+          // onToggleBrandSelector();
         }}
-        className="bg-white shadow-lg rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 border transition-all"
-      >
-        {isShowingSelected ? '🗺️ 전체 보기' : '선택 보기'}
-      </button>
+      />
     </div>
   );
 }
