@@ -31,7 +31,7 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
     <div
       className={cn(
         'flex justify-between items-center py-4 bg-white shrink-0 transition-all duration-300',
-        ubtiInProgress && 'mt-40', // UBTI 진행 중에는 오버레이 공간 확보
+        ubtiInProgress && 'mt-24',
       )}
     >
       <h1 className="text-lg font-semibold">무너와 대화하기</h1>

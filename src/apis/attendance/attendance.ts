@@ -3,8 +3,11 @@ import { AttendanceTodayResponse, MonthlyAttendanceResponse } from '../../types/
 
 export const getTodayAttendance = async (): Promise<AttendanceTodayResponse> => {
   const res = await apiWithToken.get('/attendances/today');
-  console.log('📦 getTodayAttendance 응답:', res.data); // ✅ 여기!
-  return res.data.data;
+  return {
+    checked: res.data.data, // Boolean 값 그대로 가져오기
+    date: '', // ← 필요 시 서버에서 내려받도록 수정
+    streak: 0, // ← 추후 streak API 통합 시 수정 가능
+  };
 };
 
 export const postTodayAttendance = async (): Promise<AttendanceTodayResponse> => {

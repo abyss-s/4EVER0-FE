@@ -14,6 +14,7 @@ import MyPage from '@/pages/me/MyPage';
 import Mission from '@/pages/mission/Mission';
 import DesignSystemTest from '@/pages/test/DesignSystemTest';
 import UBTI from '@/pages/ubti/UBTI';
+import UBTIShare from '@/pages/ubti/SharePage';
 import UplTuple from '@/pages/upltuple/UplTuple';
 import ShareTest from '@/pages/share/ShareTest';
 import NaverMap from '@/components/NaverMap/NaverMap';
@@ -75,6 +76,7 @@ const routes: RouteObject[] = [
       { path: 'authcallback', element: <OAuthCallback /> },
       { path: 'plans', element: <Plan /> },
       { path: 'plans/:id', element: <PlanDetail /> },
+      { path: 'share/:id', element: <UBTIShare /> },
 
       // 테스트용
       { path: 'design-system', element: <DesignSystemTest /> },

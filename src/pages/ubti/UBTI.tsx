@@ -13,6 +13,7 @@ import { TacoCookingAnimation } from './TacoCookingAnimation';
 import { UBTITypeCard } from './UBTITypeCard';
 import { MatchingTypeCard } from './MatchingTypeCard';
 import { ActionButtons } from './ActionButtons';
+import { LoadingOverlay, InlineLoading } from './LoadingOverlay';
 import type { Plan } from '@/types/plan';
 import type { Brand } from '@/types/brand';
 import PlanCard from '@/components/PlanCard/PlanCard';
@@ -40,7 +41,7 @@ const stepMessages = [
   ],
 ];
 
-export const UBTIResultPage: React.FC = () => {
+export const UBTI: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const markdownComponents = useMarkdownComponents();
@@ -55,6 +56,7 @@ export const UBTIResultPage: React.FC = () => {
   const [detailedPlans, setDetailedPlans] = useState<Plan[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
   const [isLoadingDetails, setIsLoadingDetails] = useState(true);
+  const [showResultLoading, setShowResultLoading] = useState(false);
 
   // 애니메이션 상태 및 훅
   const { currentStep, isFlipped, isBaked, isRevealed, showResults, updateState } =
@@ -101,15 +103,20 @@ export const UBTIResultPage: React.FC = () => {
     const state = location.state as UBTIResultResponse | undefined;
 
     if (state?.data) {
-      setResult(state.data);
-      setUbtiType({
-        front_image: IMAGES.TACO['taco-spicy-front'],
-        back_image: IMAGES.TACO['taco-spicy-back'],
-      });
-      setIsDataReady(true);
-      loadDetailedData(state.data);
+      setShowResultLoading(true); // 결과 로딩 표시 시작
+      setTimeout(() => {
+        setResult(state.data);
+        setUbtiType({
+          front_image: IMAGES.TACO['taco-spicy-front'],
+          back_image: IMAGES.TACO['taco-spicy-back'],
+        });
+        setIsDataReady(true);
+        setShowResultLoading(false);
+        loadDetailedData(state.data);
+      }, 1500); // 결과 로딩 여부와 상관없이 지연 효과 추가
     } else {
       console.log('데이터 로딩 실패');
+      setShowResultLoading(false);
     }
 
     setIsLoading(false);
@@ -153,6 +160,21 @@ export const UBTIResultPage: React.FC = () => {
       life_brand: undefined,
     };
   };
+
+  // 결과 로딩 오버레이
+  if (showResultLoading) {
+    return (
+      <>
+        <div className="bg-gradient-to-br from-pink-100 via-orange-100 to-yellow-100 min-h-screen" />
+        <LoadingOverlay
+          isVisible={true}
+          message="타코시그널 결과를 분석하고 있어요!"
+          submessage="당신만의 특별한 타코야끼가 완성되고 있어요 🎉"
+          type="processing"
+        />
+      </>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -284,7 +306,7 @@ export const UBTIResultPage: React.FC = () => {
                 </motion.p>
               </motion.div>
 
-              {/* 본인 유형 */}
+              {/* 본인 유형 카드 */}
               <UBTITypeCard ubtiType={ubti_type} />
 
               {/* 유형 요약 */}
@@ -327,15 +349,8 @@ export const UBTIResultPage: React.FC = () => {
                   </div>
 
                   {isLoadingDetails ? (
-                    <div className="text-center py-8">
-                      <motion.div
-                        className="text-4xl mb-4"
-                        animate={{ rotate: 360 }}
-                        transition={{ repeat: Infinity, duration: 2 }}
-                      >
-                        📱
-                      </motion.div>
-                      <p className="text-gray-600">최적의 요금제를 찾고 있어요...</p>
+                    <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-blue-200">
+                      <InlineLoading message="최적의 요금제를 찾고 있어요..." size="md" />
                     </div>
                   ) : (
                     <div className="flex flex-col gap-4 justify-items-center">
@@ -375,15 +390,8 @@ export const UBTIResultPage: React.FC = () => {
                   </div>
 
                   {isLoadingDetails ? (
-                    <div className="text-center py-8">
-                      <motion.div
-                        className="text-4xl mb-4"
-                        animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ repeat: Infinity, duration: 1.5 }}
-                      >
-                        🎵
-                      </motion.div>
-                      <p className="text-gray-600">구독 서비스 추천을 준비중이에요...</p>
+                    <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-purple-200">
+                      <InlineLoading message="구독 서비스 추천을 준비중이에요..." size="md" />
                     </div>
                   ) : (
                     <div className="flex justify-center">
@@ -400,7 +408,6 @@ export const UBTIResultPage: React.FC = () => {
               {/* 잘 맞는 타입 */}
               <MatchingTypeCard matchingType={matching_type} />
 
-              {/* 액션 버튼들 */}
               <ActionButtons result={result} />
 
               {/* 엔딩 메시지 */}
@@ -430,4 +437,4 @@ export const UBTIResultPage: React.FC = () => {
   );
 };
 
-export default UBTIResultPage;
+export default UBTI;

@@ -5,9 +5,14 @@ import { Button } from '@/components/Button';
 import { IMAGES } from '@/constant/imagePath';
 
 export const AttendanceBanner = () => {
-  const { attendance, checkAttendance, isChecking, userName } = useAttendance();
+  const { attendance, isManuallyChecked, checkAttendance, isChecking, userName, isLoadingToday } =
+    useAttendance();
 
-  const isChecked = attendance ?? false;
+  if (isLoadingToday) {
+    return <div className="mb-8 h-24 rounded-xl bg-slate-100 animate-pulse" />; // 스켈레톤 등
+  }
+
+  const isChecked = isManuallyChecked || attendance;
 
   return (
     <Banner

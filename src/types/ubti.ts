@@ -2,10 +2,12 @@ import { BaseResponse } from './common';
 
 export interface UBTIResultData {
   ubti_type: {
+    id: number;
     code: string;
     name: string;
     emoji: string;
     description: string;
+    image_url: string;
   };
   summary: string;
   recommendation: {
@@ -21,25 +23,31 @@ export interface UBTIResultData {
     };
   };
   matching_type: {
+    id: number;
     code: string;
     name: string;
     emoji: string;
     description: string;
+    image_url: string;
   };
 }
 
 export interface UBTIType {
-  emoji: string;
+  id: number;
+  code: string;
   name: string;
+  emoji: string;
   description: string;
-  front_image?: string;
-  back_image?: string;
+  image_url: string;
 }
 
 export interface MatchingType {
-  emoji: string;
+  id: number;
+  code: string;
   name: string;
+  emoji: string;
   description: string;
+  image_url: string;
 }
 
 export type UBTIResultResponse = BaseResponse<UBTIResultData>;
