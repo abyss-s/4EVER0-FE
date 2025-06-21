@@ -11,6 +11,8 @@ export type Coupon = {
   };
   color: 'red' | 'yellow' | 'gray';
   isUsed: boolean;
+  startDate?: string;
+  endDate?: string;
 };
 
 export interface PlaceInfo {
