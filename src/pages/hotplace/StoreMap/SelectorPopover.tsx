@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/Popover';
-import { FocusableButton } from '@/components/Popover/FocusableButton';
 import { Heart, HeartIcon } from 'lucide-react';
 
 // 내부에서 brandId로 매칭
@@ -21,13 +20,17 @@ interface BrandSelectorPopoverProps {
   onChange: (ids: number[]) => void;
 }
 
-const SelectorPopover = ({ brandIds, selectedIds, onChange }: BrandSelectorPopoverProps) => {
+const SelectorPopover = ({
+  brandIds = [],
+  selectedIds = [],
+  onChange,
+}: BrandSelectorPopoverProps) => {
   const [open, setOpen] = useState(false);
-  const [localSelected, setLocalSelected] = useState<number[]>(selectedIds);
+  const [localSelected, setLocalSelected] = useState<number[]>(selectedIds || []);
 
   useEffect(() => {
     if (open) {
-      setLocalSelected(selectedIds);
+      setLocalSelected(selectedIds || []);
     }
   }, [open, selectedIds]);
 
@@ -39,16 +42,27 @@ const SelectorPopover = ({ brandIds, selectedIds, onChange }: BrandSelectorPopov
 
   const handleApply = () => {
     setOpen(false);
-    onChange(localSelected);
+    if (onChange) {
+      onChange(localSelected);
+    }
   };
 
-  // brandIds만 들어왔으니, 해당하는 브랜드만 렌더
+  // brandIds 안전 처리 강화
+  if (!brandIds || !Array.isArray(brandIds)) {
+    return null; // 또는 에러 상태 표시
+  }
+
+  // brandIds만 들어왔으니, 해당하는 브랜드만 렌더 (안전한 처리 추가)
   const brandsToShow = BRAND_META.filter((b) => brandIds.includes(b.id));
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <FocusableButton>브랜드 선택</FocusableButton>
+        {/* 깔끔한 카드 스타일 트리거 버튼 - 이모지로 변경 */}
+        <div className="flex items-center gap-2 cursor-pointer">
+          <span style={{ fontSize: '12px' }}>🏪</span>
+          <span className="text-xs font-medium text-gray-700 whitespace-nowrap">브랜드 선택</span>
+        </div>
       </PopoverTrigger>
 
       <PopoverContent variant="light" sideOffset={8} className="w-64 max-h-80 p-4 flex flex-col">
