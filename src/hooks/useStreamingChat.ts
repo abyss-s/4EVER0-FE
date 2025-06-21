@@ -38,6 +38,17 @@ export const useStreamingChat = () => {
     subscriptions: null,
   });
 
+  // 질문 텍스트 추출을 위한 패턴들
+  const questionPatterns = [
+    /질문\s*\d*\s*[:.]\s*(.+?)(?=\n|$)/i,
+    /Q\d*[:.]\s*(.+?)(?=\n|$)/i,
+    /\d+\.\s*(.+\?)/i,
+    /(.+\?)/i,
+    /다음 중.+선택해주세요/i,
+    /어떤.+생각하시나요/i,
+    /당신은.+어떻게/i,
+  ];
+
   // 요금제 카드 상태
   const [currentPlanRecommendations, setCurrentPlanRecommendations] = useState<
     PlanRecommendation[]
@@ -93,10 +104,6 @@ export const useStreamingChat = () => {
         }
       });
 
-      // console.log('[DEBUG] Converted subscription data:', result);
-      // console.log('[DEBUG] Has main_subscription:', !!result.main_subscription);
-      // console.log('[DEBUG] Has life_brand:', !!result.life_brand);
-
       return result;
     },
     [],
@@ -112,6 +119,25 @@ export const useStreamingChat = () => {
       return null;
     }
   }, []);
+
+  const extractQuestionFromText = useCallback(
+    (text: string): string | null => {
+      for (const pattern of questionPatterns) {
+        const match = text.match(pattern);
+        if (match && match[1]) {
+          return match[1].trim();
+        }
+      }
+
+      // 질문 키워드가 포함된 경우 전체 텍스트 반환
+      if (text.includes('질문') || text.includes('?') || text.includes('선택해주세요')) {
+        return text.trim();
+      }
+
+      return null;
+    },
+    [questionPatterns],
+  );
 
   // UBTI 응답 파싱
   const parseAndDisplayUBTIResponse = useCallback(
@@ -140,7 +166,19 @@ export const useStreamingChat = () => {
           return true;
         }
       } catch (error) {
-        console.warn('[WARN] UBTI 파싱 실패, 일반 텍스트로 처리:', error);
+        // 일반 텍스트에서 질문 추출 로직 추가
+        const extractedQuestion = extractQuestionFromText(chunk);
+        if (extractedQuestion) {
+          setCurrentUBTIQuestionText(extractedQuestion);
+
+          // 단계 추출도 시도
+          const stepMatch = chunk.match(/(\d+)/);
+          if (stepMatch) {
+            const step = parseInt(stepMatch[1]) - 1; // 0-based
+            setCurrentUBTIStep(step);
+          }
+          return true;
+        }
       }
       return false;
     },
@@ -176,24 +214,23 @@ export const useStreamingChat = () => {
         currentSubscriptions || undefined,
       );
 
-      // 저장 후 확인 - 더 상세하게
       setTimeout(() => {
         const session = useChatStore.getState().sessions[currentSessionId];
         if (session && session.messages.length > 0) {
           const lastMessage = session.messages[session.messages.length - 1];
-          console.log('[DEBUG] 저장된 메시지 확인:', {
-            id: lastMessage.id,
-            content: lastMessage.content?.slice(0, 50) + '...',
-            hasPlans: !!lastMessage.planRecommendations,
-            planCount: lastMessage.planRecommendations?.length || 0,
-            hasSubscriptions: !!lastMessage.subscriptionRecommendations,
-            subscriptionKeys: lastMessage.subscriptionRecommendations
-              ? Object.keys(lastMessage.subscriptionRecommendations)
-              : [],
-            mainSub: !!lastMessage.subscriptionRecommendations?.main_subscription,
-            lifeBrand: !!lastMessage.subscriptionRecommendations?.life_brand,
-            timestamp: lastMessage.timestamp,
-          });
+          // console.log('[DEBUG] 저장된 메시지 확인:', {
+          //   id: lastMessage.id,
+          //   content: lastMessage.content?.slice(0, 50) + '...',
+          //   hasPlans: !!lastMessage.planRecommendations,
+          //   planCount: lastMessage.planRecommendations?.length || 0,
+          //   hasSubscriptions: !!lastMessage.subscriptionRecommendations,
+          //   subscriptionKeys: lastMessage.subscriptionRecommendations
+          //     ? Object.keys(lastMessage.subscriptionRecommendations)
+          //     : [],
+          //   mainSub: !!lastMessage.subscriptionRecommendations?.main_subscription,
+          //   lifeBrand: !!lastMessage.subscriptionRecommendations?.life_brand,
+          //   timestamp: lastMessage.timestamp,
+          // });
 
           // 카드 데이터 손실 확인
           const shouldHavePlans = cardDataRef.current.plans.length > 0;
@@ -266,39 +303,32 @@ export const useStreamingChat = () => {
       setExpectingCards(userMessage.includes('추천') || userMessage.includes('요금제'));
 
       return {
+        // createStreamingHandlers의 onChunk 함수 개선 (일반 텍스트 처리 부분)
+
         onChunk: (chunk: string) => {
           const parsedResponse = parseStreamingResponse(chunk);
 
           if (parsedResponse) {
+            // JSON 응답 처리 (기존 로직 그대로)
             switch (parsedResponse.type) {
               case 'plan_recommendations': {
-                console.log('[DEBUG] 요금제 추천 받음:', parsedResponse.plans);
                 setCurrentPlanRecommendations(parsedResponse.plans);
                 setStreamingState('receiving_cards');
-                // 즉시 저장
                 updateMessageWithAllData(fullResponseRef.current, parsedResponse.plans, undefined);
                 break;
               }
 
               case 'subscription_recommendations': {
-                console.log('[DEBUG] 구독 추천 받음 (배열):', parsedResponse.subscriptions);
-
                 const convertedData = convertSubscriptionArrayToObject(
                   parsedResponse.subscriptions,
                 );
-                console.log('[DEBUG] 변환된 구독 데이터:', convertedData);
-
                 setCurrentSubscriptionRecommendations(convertedData);
                 setStreamingState('receiving_cards');
-
-                // 즉시 저장
                 updateMessageWithAllData(fullResponseRef.current, undefined, convertedData);
-
                 break;
               }
 
               case 'message_start': {
-                console.log('[DEBUG] 메시지 시작');
                 setStreamingState('receiving_text');
                 fullResponseRef.current = '';
                 break;
@@ -308,37 +338,30 @@ export const useStreamingChat = () => {
                 fullResponseRef.current += parsedResponse.content;
                 setStreamingState('receiving_text');
 
-                // 텍스트 업데이트 시에는 기존 카드 정보 유지 (ref 사용)
-                updateMessageWithAllData(
-                  fullResponseRef.current,
-                  undefined, // 새로운 카드 데이터 없음
-                  undefined, // 새로운 카드 데이터 없음
-                );
+                // UBTI 메시지 청크 질문 추출 시도
+                if (isUBTI) {
+                  const extractedQuestion = extractQuestionFromText(parsedResponse.content);
+                  if (extractedQuestion && extractedQuestion !== currentUBTIQuestionText) {
+                    setCurrentUBTIQuestionText(extractedQuestion);
+                  }
+                }
+
+                updateMessageWithAllData(fullResponseRef.current, undefined, undefined);
                 break;
               }
 
               case 'message_end': {
-                console.log('[DEBUG] 메시지 완료');
                 setStreamingState('completed');
-
-                // 최종 저장 (ref의 모든 데이터 포함)
                 updateMessageWithAllData(fullResponseRef.current, undefined, undefined);
 
                 const hasCards =
                   cardDataRef.current.plans.length > 0 ||
                   cardDataRef.current.subscriptions !== null;
-
-                const resetDelay = hasCards ? 10000 : 1000; // 리셋 시간: 카드 있으면 10초, 없으면 1초
-
-                console.log('[DEBUG] 카드 리셋 지연 시간:', resetDelay, 'ms', {
-                  plans: cardDataRef.current.plans.length,
-                  subscriptions: !!cardDataRef.current.subscriptions,
-                });
+                const resetDelay = hasCards ? 10000 : 1000;
 
                 setTimeout(() => {
                   setStreamingState('idle');
                   setExpectingCards(false);
-                  // ref는 리셋하지 않음 (메시지에 저장되어 있음)
                 }, resetDelay);
                 break;
               }
@@ -361,12 +384,38 @@ export const useStreamingChat = () => {
                 break;
             }
           } else {
-            // JSON이 아닌 일반 텍스트 처리
             if (chunk.trim()) {
               fullResponseRef.current += chunk;
               setStreamingState('receiving_text');
 
               if (isUBTI) {
+                // UBTI에서는 먼저 질문 추출 시도
+                const extractedQuestion = extractQuestionFromText(chunk);
+                if (extractedQuestion && extractedQuestion !== currentUBTIQuestionText) {
+                  console.log('[DEBUG] 일반 텍스트에서 질문 추출:', extractedQuestion);
+                  setCurrentUBTIQuestionText(extractedQuestion);
+                }
+
+                // 단계 추출 시도
+                const stepMatch = chunk.match(/질문\s*(\d+)|Q(\d+)|(\d+)\./);
+                if (stepMatch) {
+                  const step = parseInt(stepMatch[1] || stepMatch[2] || stepMatch[3]) - 1;
+                  if (step >= 0 && step !== currentUBTIStep) {
+                    setCurrentUBTIStep(step);
+                  }
+                }
+
+                // UBTI 완료 감지
+                if (
+                  chunk.includes('모든 질문') ||
+                  chunk.includes('완료') ||
+                  chunk.includes('결과')
+                ) {
+                  console.log('[DEBUG] UBTI 완료 감지 (텍스트)');
+                  setUbtiReadyToSubmit(true);
+                }
+
+                // JSON 파싱 시도 실패하면 일반 메시지로 처리
                 const isParsed = parseAndDisplayUBTIResponse(fullResponseRef.current);
                 if (!isParsed) {
                   updateLastBotMessage(currentSessionId, fullResponseRef.current);

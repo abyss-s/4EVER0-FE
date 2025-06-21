@@ -1,9 +1,12 @@
-// src/components/MissionList/MissionList.tsx
 import { useMissions } from '@/hooks/useMissions';
+import { useUserProfile } from '@/stores/useUserProfile';
 import { Progress } from '@/components/Progress';
 import { Button } from '@/components/ui/button';
-import type { Mission } from '@/types/mission';
+import type { Mission, MissionStatus } from '@/types/mission';
 import { cn } from '@/lib/utils';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { receiveMissionReward } from '@/apis/mission/receiveMissionReward';
+import { toast } from 'sonner';
 
 interface MissionItemProps {
   mission: Mission;
@@ -11,6 +14,20 @@ interface MissionItemProps {
 
 const MissionItem = ({ mission }: MissionItemProps) => {
   const current = mission.current_progress ?? 0;
+  const queryClient = useQueryClient();
+
+  // 보상 수령 뮤테이션
+  const { mutate: claimReward, isPending } = useMutation({
+    mutationFn: () => receiveMissionReward(mission.id),
+    onSuccess: (data) => {
+      toast.success(data.message ?? '보상 수령 완료!');
+      queryClient.invalidateQueries({ queryKey: ['missions'] }); // 미션 상태 최신화
+    },
+    onError: (err) => {
+      toast.error('보상 수령에 실패했어요.');
+      console.error(err);
+    },
+  });
 
   return (
     <div className="rounded-xl shadow-sm bg-white dark:bg-gray-900 px-4 py-3 flex flex-col gap-2 w-full">
@@ -63,16 +80,19 @@ const MissionItem = ({ mission }: MissionItemProps) => {
                   ? 'cursor-pointer hover:opacity-90 hover:scale-105'
                   : 'cursor-default',
               )}
-              disabled={mission.status !== 'COM'}
+              disabled={mission.status !== 'COM' || isPending}
               onClick={() => {
                 if (mission.status === 'COM') {
                   console.log(`보상 수령! missionId: ${mission.id}`);
-                  // ✅ TODO: 보상 수령 API 연동 예정
+                  // 보상 수령 API 연동
+                  claimReward();
                 }
               }}
             >
               {mission.status === 'COM'
-                ? '🪙 수령하기'
+                ? isPending
+                  ? '수령 중...'
+                  : '🪙 수령하기'
                 : mission.status === 'REC'
                   ? '이미 수령'
                   : '진행 중'}
@@ -86,6 +106,8 @@ const MissionItem = ({ mission }: MissionItemProps) => {
 
 export const MissionList = () => {
   const { data: missions, isLoading } = useMissions();
+  const { data: user } = useUserProfile();
+  const streak = user?.attendanceStreak ?? 0;
 
   if (isLoading) {
     return (
@@ -103,9 +125,36 @@ export const MissionList = () => {
     );
   }
 
+  // 전체 미션 로그
+  console.log('[🧩 전체 미션]', missions);
+
+  // 출석 미션만 streak 기반으로 수정, 보상 수령 상태는 유지
+  const updatedMissions = missions.map((mission) => {
+    // 각 미션별 로그
+    console.log(
+      `[미션] ${mission.name} | type=${mission.type} | status=${mission.status} | progress=${mission.current_progress}`,
+    );
+
+    if (mission.type === 'ATTENDANCE' && mission.status !== 'REC') {
+      const adjustedStatus: MissionStatus = streak >= mission.target_count ? 'COM' : 'INP';
+
+      console.log(
+        `→ [덮어씀] streak=${streak} → progress=${Math.min(streak, mission.target_count)}, status=${adjustedStatus}`,
+      );
+
+      return {
+        ...mission,
+        current_progress: Math.min(streak, mission.target_count),
+        status: adjustedStatus,
+      };
+    }
+
+    return mission;
+  });
+
   return (
     <div className="flex flex-col gap-4">
-      {missions.map((mission) => (
+      {updatedMissions.map((mission) => (
         <MissionItem key={mission.id} mission={mission} />
       ))}
     </div>

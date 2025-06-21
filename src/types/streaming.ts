@@ -61,7 +61,7 @@ export interface SubscriptionRecommendationsResponse {
 // 컴포넌트에서 사용하는 구독 데이터 구조 (type 필드 없음)
 export interface SubscriptionRecommendationsData {
   main_subscription?: MainSubscription;
-  life_brand?: LifeBrand;
+  life_brand?: LifeBrand | null;
 }
 
 export interface MessageStartResponse {
