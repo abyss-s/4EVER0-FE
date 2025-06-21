@@ -8,6 +8,7 @@ export const useAttendance = () => {
   const { data: userData } = useUserProfile();
   const queryClient = useQueryClient();
   const userName = userData?.name ?? '사용자';
+  const userId = userData?.id;
 
   const today = new Date();
   const year = today.getFullYear();
@@ -48,6 +49,11 @@ export const useAttendance = () => {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['attendance', year, month] });
       queryClient.invalidateQueries({ queryKey: ['attendance', 'today'] });
+      queryClient.invalidateQueries({ queryKey: ['missions'] });
+
+      if (userId) {
+        queryClient.invalidateQueries({ queryKey: ['userProfile', userId] });
+      }
     },
   });
 

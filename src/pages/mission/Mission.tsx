@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { AttendanceBanner } from './Attendance';
 import { AttendanceCalendar } from './Attendance/AttendanceCalendar';
 import { MissionList } from '@/components/MissionList/MissionList';
-// import type { Mission } from '@/components/MissionList/MissionList.types';
 
 const MissionPage: React.FC = () => {
   const navigate = useNavigate();
