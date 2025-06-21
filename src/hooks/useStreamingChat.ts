@@ -10,6 +10,7 @@ import {
   MainSubscriptionWithType,
   LifeBrandWithType,
   StreamingResponse,
+  UsageAnalysisData,
 } from '@/types/streaming';
 import type { UBTIStreamingMessage } from '@/types/streaming';
 
@@ -33,9 +34,11 @@ export const useStreamingChat = () => {
   const cardDataRef = useRef<{
     plans: PlanRecommendation[];
     subscriptions: SubscriptionRecommendationsData | null;
+    usageAnalysis: UsageAnalysisData | null;
   }>({
     plans: [],
     subscriptions: null,
+    usageAnalysis: null,
   });
 
   // 질문 텍스트 추출을 위한 패턴들
@@ -61,6 +64,9 @@ export const useStreamingChat = () => {
   // UBTI 상태
   const [currentUBTIStep, setCurrentUBTIStep] = useState<number>(-1);
   const [ubtiInProgress, setUbtiInProgress] = useState(false);
+
+  // 사용량 분석 상태
+  const [currentUsageAnalysis, setCurrentUsageAnalysis] = useState<UsageAnalysisData | null>(null);
 
   // 스트리밍 상태
   const [streamingState, setStreamingState] = useState<StreamingState>('idle');
@@ -191,6 +197,7 @@ export const useStreamingChat = () => {
       content: string,
       plans?: PlanRecommendation[],
       subscriptions?: SubscriptionRecommendationsData,
+      usageAnalysis?: UsageAnalysisData, // 👈 추가
     ) => {
       if (!currentSessionId) return;
 
@@ -201,55 +208,23 @@ export const useStreamingChat = () => {
       if (subscriptions) {
         cardDataRef.current.subscriptions = subscriptions;
       }
+      if (usageAnalysis) {
+        cardDataRef.current.usageAnalysis = usageAnalysis;
+      }
 
       // 항상 ref의 최신 데이터 사용
       const currentPlans =
         cardDataRef.current.plans.length > 0 ? cardDataRef.current.plans : undefined;
       const currentSubscriptions = cardDataRef.current.subscriptions;
+      const currentUsageAnalysis = cardDataRef.current.usageAnalysis;
 
       updateLastBotMessageWithCards(
         currentSessionId,
         content,
         currentPlans,
         currentSubscriptions || undefined,
+        currentUsageAnalysis || undefined,
       );
-
-      setTimeout(() => {
-        const session = useChatStore.getState().sessions[currentSessionId];
-        if (session && session.messages.length > 0) {
-          const lastMessage = session.messages[session.messages.length - 1];
-          // console.log('[DEBUG] 저장된 메시지 확인:', {
-          //   id: lastMessage.id,
-          //   content: lastMessage.content?.slice(0, 50) + '...',
-          //   hasPlans: !!lastMessage.planRecommendations,
-          //   planCount: lastMessage.planRecommendations?.length || 0,
-          //   hasSubscriptions: !!lastMessage.subscriptionRecommendations,
-          //   subscriptionKeys: lastMessage.subscriptionRecommendations
-          //     ? Object.keys(lastMessage.subscriptionRecommendations)
-          //     : [],
-          //   mainSub: !!lastMessage.subscriptionRecommendations?.main_subscription,
-          //   lifeBrand: !!lastMessage.subscriptionRecommendations?.life_brand,
-          //   timestamp: lastMessage.timestamp,
-          // });
-
-          // 카드 데이터 손실 확인
-          const shouldHavePlans = cardDataRef.current.plans.length > 0;
-          const shouldHaveSubscriptions = !!cardDataRef.current.subscriptions;
-
-          if (
-            (shouldHavePlans && !lastMessage.planRecommendations) ||
-            (shouldHaveSubscriptions && !lastMessage.subscriptionRecommendations)
-          ) {
-            console.error('[ERROR] 카드 데이터 손실 감지!', {
-              expectedPlans: shouldHavePlans,
-              savedPlans: !!lastMessage.planRecommendations,
-              expectedSubscriptions: shouldHaveSubscriptions,
-              savedSubscriptions: !!lastMessage.subscriptionRecommendations,
-              refData: cardDataRef.current,
-            });
-          }
-        }
-      }, 100);
     },
     [currentSessionId, updateLastBotMessageWithCards],
   );
@@ -294,11 +269,13 @@ export const useStreamingChat = () => {
       cardDataRef.current = {
         plans: [],
         subscriptions: null,
+        usageAnalysis: null,
       };
 
       // 상태 초기화
       setCurrentPlanRecommendations([]);
       setCurrentSubscriptionRecommendations(null);
+      setCurrentUsageAnalysis(null);
       setStreamingState('waiting');
       setExpectingCards(userMessage.includes('추천') || userMessage.includes('요금제'));
 
@@ -311,10 +288,27 @@ export const useStreamingChat = () => {
           if (parsedResponse) {
             // JSON 응답 처리 (기존 로직 그대로)
             switch (parsedResponse.type) {
+              case 'usage_analysis': {
+                setCurrentUsageAnalysis(parsedResponse.data);
+                setStreamingState('receiving_cards');
+                updateMessageWithAllData(
+                  fullResponseRef.current,
+                  undefined,
+                  undefined,
+                  parsedResponse.data,
+                );
+                break;
+              }
+
               case 'plan_recommendations': {
                 setCurrentPlanRecommendations(parsedResponse.plans);
                 setStreamingState('receiving_cards');
-                updateMessageWithAllData(fullResponseRef.current, parsedResponse.plans, undefined);
+                updateMessageWithAllData(
+                  fullResponseRef.current,
+                  parsedResponse.plans,
+                  undefined,
+                  undefined,
+                );
                 break;
               }
 
@@ -438,6 +432,7 @@ export const useStreamingChat = () => {
           cardDataRef.current = {
             plans: [],
             subscriptions: null,
+            usageAnalysis: null,
           };
           if (isUBTI) {
             setUbtiInProgress(false);
@@ -490,6 +485,7 @@ export const useStreamingChat = () => {
   return {
     currentPlanRecommendations,
     currentSubscriptionRecommendations,
+    currentUsageAnalysis,
     currentUBTIStep,
     ubtiInProgress,
     streamingState,

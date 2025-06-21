@@ -6,6 +6,7 @@ import { Message } from '@/types/chat';
 import { PlanRecommendation } from '@/types/streaming';
 import { AvatarComponent } from '@/components/Avatar';
 import { SubscriptionCard } from '@/components/SubscriptionCard/SubscriptionCard';
+import { UsageAnalysisCard } from '@/components/UsageAnalysisCard/UsageAnalysisCard';
 import { cn } from '@/lib/utils';
 import { IMAGES } from '@/constant/imagePath';
 import { useNavigate } from 'react-router-dom';
@@ -138,6 +139,12 @@ const ChatBubble: React.FC<ChatBubbleProps> = React.memo(
       isLatestBotMessage,
       message.id,
     ]);
+
+    const shouldShowUsageAnalysisCard = React.useMemo(() => {
+      const hasUsageAnalysis = !!message.usageAnalysis;
+      const shouldShow = isRecommendationMessage || isLatestBotMessage || hasUsageAnalysis;
+      return isBot && hasUsageAnalysis && shouldShow;
+    }, [isBot, message.usageAnalysis, isRecommendationMessage, isLatestBotMessage]);
 
     // 타임스탬프 포맷팅 최적화
     const formatTimestamp = React.useMemo(() => {
@@ -316,6 +323,13 @@ const ChatBubble: React.FC<ChatBubbleProps> = React.memo(
                 onBrandSelect={handleBrandSelect}
                 className="max-w-sm"
               />
+            </div>
+          )}
+
+          {/* 사용량 분석 카드 */}
+          {shouldShowUsageAnalysisCard && message.usageAnalysis && (
+            <div key={`usage-analysis-${uniqueMessageKey}`}>
+              <UsageAnalysisCard data={message.usageAnalysis} className="max-w-sm" />
             </div>
           )}
         </div>
