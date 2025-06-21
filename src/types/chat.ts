@@ -1,15 +1,18 @@
-import { PlanRecommendation, SubscriptionRecommendationsData } from './streaming';
+import {
+  PlanRecommendation,
+  SubscriptionRecommendationsData,
+  UsageAnalysisData,
+} from './streaming';
 
 export interface Message {
   id: string;
   content: string;
   type: 'user' | 'bot';
   timestamp: Date;
-  // 카드 정보
-  planRecommendations?: PlanRecommendation[];
-  subscriptionRecommendations?: SubscriptionRecommendationsData;
-  // 추천 메시지인지 여부
-  isRecommendationMessage?: boolean;
+  planRecommendations?: PlanRecommendation[]; // 요금제 카드
+  subscriptionRecommendations?: SubscriptionRecommendationsData; // 구독 카드
+  usageAnalysis?: UsageAnalysisData; // 사용량 분석
+  isRecommendationMessage?: boolean; // 추천 메시지인지 여부
 }
 
 export interface ChatSession {
@@ -50,6 +53,7 @@ export interface ChatActions {
     content: string,
     planRecommendations?: PlanRecommendation[],
     subscriptionRecommendations?: SubscriptionRecommendationsData,
+    usageAnalysis?: UsageAnalysisData,
   ) => void;
 
   addPlanRecommendationsToMessage: (

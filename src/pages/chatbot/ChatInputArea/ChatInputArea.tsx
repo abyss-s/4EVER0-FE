@@ -12,6 +12,7 @@ interface ChatInputAreaProps {
   onSendMessage: (message: string) => void;
   onUBTIStart: () => void;
   onLikesRecommendation: () => void;
+  onUsageRecommendation: () => void;
   onResetChat: () => void;
 }
 
@@ -23,6 +24,7 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
   onSendMessage,
   onUBTIStart,
   onLikesRecommendation,
+  onUsageRecommendation,
   onResetChat,
 }) => {
   return (
@@ -36,7 +38,15 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
             disabled={buttonDisabled}
             featureName="UBTI 분석"
           >
-            타코시그널 검사하기
+            🐙 타코시그널
+          </PremiumFeatureButton>
+          <PremiumFeatureButton
+            className="flex-1"
+            onClick={onUsageRecommendation}
+            disabled={buttonDisabled}
+            featureName="사용량 분석"
+          >
+            📊 사용량
           </PremiumFeatureButton>
           <PremiumFeatureButton
             className="flex-1"
@@ -44,7 +54,7 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
             disabled={buttonDisabled}
             featureName="서비스 추천"
           >
-            브랜드 케미 분석
+            💜 취향저격
           </PremiumFeatureButton>
         </div>
       )}
