@@ -62,7 +62,7 @@ const OAuthCallback: React.FC = () => {
   const currentLoadingStep = loadingSteps[currentStep]; // 추가
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center min-h-full">
       <div className="text-center mb-8">
         <h1 className="text-2xl font-bold">
           <span className="text-red-500">M</span>
