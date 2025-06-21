@@ -14,7 +14,7 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
   const bannerData = [
     {
       id: 1,
-      title: '🤖 AI 챗봇과 대화하세요!',
+      title: '1. AI 챗봇과 대화하세요!',
       description: '타코시그널, 무너말투로 재미있게\n좋아요 기능으로 더 스마트하게',
       buttonText: '챗봇 체험하기',
       action: () => navigate('/chatbot'),
@@ -22,7 +22,7 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
     },
     {
       id: 2,
-      title: '📅 캘린더로 미션 완성!',
+      title: '2. 캘린더로 미션 완성!',
       description: '매일 출석체크하고\n다양한 미션을 완료해보세요',
       buttonText: '캘린더 보기',
       action: () => navigate('/calendar'),
@@ -30,7 +30,7 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
     },
     {
       id: 3,
-      title: '📍 내 주변 핫플레이스',
+      title: '3. 내 주변 핫플레이스',
       description: '위치기반 팝업스토어와\n특별한 쿠폰을 만나보세요',
       buttonText: '핫플 둘러보기',
       action: () => navigate('/hotplace'),
@@ -38,7 +38,7 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
     },
     {
       id: 4,
-      title: '👤 마이페이지 기능들',
+      title: '4. 마이페이지 기능들',
       description: '다양한 개인화 기능과\n맞춤 서비스를 이용하세요',
       buttonText: '내 정보 보기',
       action: () => navigate('/mypage'),
@@ -98,10 +98,7 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
 
       {/* 슬라이드 컨텐츠 */}
       <div className="relative z-10 transition-all duration-500 ease-in-out">
-        <div className="text-4xl mb-4">{currentBanner.title.match(/[🤖📅📍👤]/)?.[0]}</div>
-        <h1 className="text-3xl font-bold text-[#25394B] mb-3">
-          {currentBanner.title.replace(/[🤖📅📍👤]\s*/, '')}
-        </h1>
+        <h1 className="text-3xl font-bold text-[#25394B] mb-3"></h1>
         <p className="text-[#25394B] mb-6 whitespace-pre-line">{currentBanner.description}</p>
         <Button variant="link" onClick={currentBanner.action}>
           {currentBanner.buttonText}

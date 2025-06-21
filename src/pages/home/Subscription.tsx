@@ -6,7 +6,7 @@ const Subscription: React.FC = () => {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="title-2 mb-4">유독Pick</h3>
+        <h1 className="text-xl font-bold mb-4">유독Pick</h1>
         <Card>
           <CardContent className="p-4">
             <p className="text-sm text-gray-600">
