@@ -5,17 +5,20 @@ import {
   useChatMutation,
   useUBTIMutation,
   useLikesRecommendationMutation,
+  useUsageRecommendationMutation,
 } from '@/hooks/useChatMutation';
 import { useStreamingChat } from '@/hooks/useStreamingChat';
 import { UBTIOverlay } from '../UBTIOverlay';
 import { ChatHeader } from '../ChatHeader';
 import { ChatMessages } from '../ChatMessages';
 import { ChatInputArea } from '../ChatInputArea/ChatInputArea';
+import { LoadingOverlay } from '../../ubti/LoadingOverlay';
 import { SubscriptionRecommendationsData } from '@/types/streaming';
 import { fetchUBTIResult } from '@/apis/ubti/ubti';
 
 export const ChatContainer: React.FC = () => {
   const [isMunerTone, setIsMunerTone] = useState(false);
+  const [isLoadingResult, setIsLoadingResult] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const isInitializedRef = useRef(false);
   const navigate = useNavigate();
@@ -29,14 +32,17 @@ export const ChatContainer: React.FC = () => {
 
   const handleUBTIResultClick = async () => {
     if (!currentSessionId) return;
+    setIsLoadingResult(true); // 로딩 시작
 
     try {
       const result = await fetchUBTIResult(currentSessionId, isMunerTone ? 'muneoz' : 'general');
 
+      // 결과 페이지로 이동
       navigate('/ubti', { state: result });
     } catch (error) {
       console.error('UBTI 결과 불러오기 실패:', error);
-      // 예외 처리 UI 나 로딩 추가?
+      setIsLoadingResult(false); // 에러 시 로딩 해제
+      // TODO: 에러 토스트 메시지 표시?
     }
   };
 
@@ -56,12 +62,11 @@ export const ChatContainer: React.FC = () => {
     resetStreamingState,
   } = useStreamingChat();
 
-  console.log('[DEBUG] currentUBTIQuestionText:', currentUBTIQuestionText);
-
   // Mutations
   const chatMutation = useChatMutation();
   const ubtiMutation = useUBTIMutation();
   const likesRecommendationMutation = useLikesRecommendationMutation();
+  const usageRecommendationMutation = useUsageRecommendationMutation();
 
   // 현재 세션 계산
   const currentSession = useMemo(() => {
@@ -193,6 +198,23 @@ export const ChatContainer: React.FC = () => {
     }
   }, [createStreamingHandlers, likesRecommendationMutation, currentSessionId, isMunerTone]);
 
+  // 사용량 기반 추천
+  const handleUsageRecommendation = useCallback(async () => {
+    const message = '내 사용량 기반으로 요금제 추천해 주세요';
+    const handlers = createStreamingHandlers(message, false);
+    if (!handlers) return;
+
+    try {
+      await usageRecommendationMutation.mutateAsync({
+        onChunk: handlers.onChunk,
+        tone: isMunerTone ? 'muneoz' : 'general',
+      });
+    } catch (error) {
+      console.error('사용량 추천 에러:', error);
+      handlers.onError(error as Error);
+    }
+  }, [createStreamingHandlers, usageRecommendationMutation, isMunerTone]);
+
   // 채팅 초기화
   const resetChat = useCallback(() => {
     if (currentSessionId) {
@@ -223,19 +245,32 @@ export const ChatContainer: React.FC = () => {
       isSessionEnded ||
       chatMutation.isPending ||
       ubtiMutation.isPending ||
-      likesRecommendationMutation.isPending,
+      likesRecommendationMutation.isPending ||
+      usageRecommendationMutation.isPending ||
+      isLoadingResult,
     [
       isSessionEnded,
       chatMutation.isPending,
       ubtiMutation.isPending,
       likesRecommendationMutation.isPending,
+      usageRecommendationMutation.isPending,
+      isLoadingResult,
     ],
   );
 
   // 스트리밍 상태
   const isStreaming = useMemo(
-    () => chatMutation.isPending || ubtiMutation.isPending || likesRecommendationMutation.isPending,
-    [chatMutation.isPending, ubtiMutation.isPending, likesRecommendationMutation.isPending],
+    () =>
+      chatMutation.isPending ||
+      ubtiMutation.isPending ||
+      likesRecommendationMutation.isPending ||
+      usageRecommendationMutation.isPending,
+    [
+      chatMutation.isPending,
+      ubtiMutation.isPending,
+      likesRecommendationMutation.isPending,
+      usageRecommendationMutation.isPending,
+    ],
   );
 
   // 입력 필드 플레이스홀더
@@ -248,6 +283,14 @@ export const ChatContainer: React.FC = () => {
 
   return (
     <div className="flex flex-col relative h-full">
+      {/* 결과 로딩 오버레이 */}
+      <LoadingOverlay
+        isVisible={isLoadingResult}
+        message="타코시그널 결과를 불러오고 있어요!"
+        submessage="당신만의 특별한 결과를 준비중이에요 ✨"
+        type="processing"
+      />
+
       {/* UBTI 진행 상황 오버레이 */}
       <UBTIOverlay
         ubtiInProgress={ubtiInProgress}
@@ -290,6 +333,7 @@ export const ChatContainer: React.FC = () => {
         onSendMessage={handleSendMessage}
         onUBTIStart={handleUBTIStart}
         onLikesRecommendation={handleLikesRecommendation}
+        onUsageRecommendation={handleUsageRecommendation}
         onResetChat={resetChat}
       />
     </div>

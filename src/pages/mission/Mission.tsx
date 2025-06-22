@@ -1,33 +1,45 @@
-// pages/mission/Mission.tsx
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AttendanceBanner } from './Attendance';
+import { FlatTabs } from '@/components/Tabs/FlatTabs';
+import { AttendanceBanner } from './Attendance/AttendanceBanner';
 import { AttendanceCalendar } from './Attendance/AttendanceCalendar';
 import { MissionList } from '@/components/MissionList/MissionList';
-// import type { Mission } from '@/components/MissionList/MissionList.types';
+import { UplusCalendar } from './Uplus/UplusCalendar';
+import { UplusBenefitPreview } from './Uplus/UplusBenefitPreview';
+import { useState } from 'react';
+import { UplusBanner } from './Uplus/UplusBanner';
+import { MissionBanner } from './Mission/MissionBanner';
 
-const MissionPage: React.FC = () => {
-  const navigate = useNavigate();
+const TABS = ['출석', '유플투쁠', '미션'];
+
+const MissionPage = () => {
+  const [selectedTab, setSelectedTab] = useState('출석');
 
   return (
-    <div className="p-4">
-      <AttendanceBanner />
+    <div className="p-4 pt-1">
+      <FlatTabs tabs={TABS} defaultTab="출석" onChange={setSelectedTab} />
 
-      <div className="flex items-center justify-between mb-4 mt-6">
-        <h2 className="text-[20px] font-bold text-gray-900">출석 스탬프 북</h2>
-        <button
-          onClick={() => navigate('/upltuple')}
-          className="text-sm text-[#DD4640] font-medium hover:underline"
-        >
-          유플투쁠 혜택 더 자세히 보기 &gt;
-        </button>
-      </div>
+      <div className="mt-6">
+        {selectedTab === '출석' && (
+          <>
+            <AttendanceBanner />
+            <AttendanceCalendar />
+          </>
+        )}
 
-      <AttendanceCalendar />
+        {selectedTab === '유플투쁠' && (
+          <>
+            <UplusBanner />
+            <UplusCalendar />
+            <UplusBenefitPreview />
+          </>
+        )}
 
-      <div className="mt-10">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">진행 중인 미션</h2>
-        <MissionList />
+        {selectedTab === '미션' && (
+          <>
+            <MissionBanner />
+            <h1 className="text-xl font-bold text-brand-darkblue mb-4">진행 중인 미션</h1>
+            <MissionList />
+          </>
+        )}
       </div>
     </div>
   );

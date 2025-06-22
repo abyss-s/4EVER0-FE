@@ -5,6 +5,8 @@ export type {
   LikesRecommendationChunk,
   SendUBTIRequest,
   UBTIChunk,
+  UsageRecommendationRequest,
+  UsageRecommendationChunk,
   StreamingConfig,
   StreamingStats,
 } from './types';

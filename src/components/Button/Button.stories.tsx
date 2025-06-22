@@ -13,11 +13,20 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'],
+      options: [
+        'default',
+        'destructive',
+        'outline',
+        'secondary',
+        'ghost',
+        'link',
+        'login',
+        'missionStatus',
+      ],
     },
     size: {
       control: 'select',
-      options: ['default', 'sm', 'lg', 'icon'],
+      options: ['default', 'sm', 'lg', 'icon', 'badge'],
     },
     children: { control: 'text' },
   },
@@ -37,25 +46,67 @@ export const Playground: Story = {
 export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-wrap gap-4">
-      {(['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'] as ButtonVariant[]).map(
-        (variant) => (
-          <Button key={variant} variant={variant}>
-            {variant}
-          </Button>
-        ),
-      )}
+      {(
+        [
+          'default',
+          'destructive',
+          'outline',
+          'secondary',
+          'ghost',
+          'link',
+          'login',
+          'missionStatus',
+          'missionStatusCom',
+          'map',
+        ] as ButtonVariant[]
+      ).map((variant) => (
+        <Button key={variant} variant={variant}>
+          {variant}
+        </Button>
+      ))}
     </div>
   ),
 };
 
 export const AllSizes: Story = {
   render: () => (
-    <div className="flex gap-4">
-      {(['sm', 'default', 'lg', 'icon'] as ButtonSize[]).map((size) => (
+    <div className="flex gap-4 items-center">
+      {(['sm', 'default', 'lg', 'icon', 'badge'] as ButtonSize[]).map((size) => (
         <Button key={size} size={size}>
           {size === 'icon' ? '⭐️' : size}
         </Button>
       ))}
+    </div>
+  ),
+};
+
+export const MissionStatus: Story = {
+  render: () => (
+    <div className="flex gap-3">
+      <Button variant="missionStatus" size="badge">
+        진행 중
+      </Button>
+      <Button variant="missionStatus" size="badge">
+        이미 수령
+      </Button>
+      <Button variant="missionStatusCom" size="badge">
+        🪙 수령하기
+      </Button>
+    </div>
+  ),
+};
+
+export const MapButtons: Story = {
+  render: () => (
+    <div className="flex gap-3">
+      <Button variant="map" size="default">
+        <span>📍</span>
+        <span>내 위치로 찾기&ensp;</span>
+      </Button>
+      <Button variant="map" size="default">
+        <span>🗺️</span>
+        <span>전체 보기</span>
+      </Button>
     </div>
   ),
 };

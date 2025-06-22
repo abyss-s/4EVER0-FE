@@ -100,6 +100,22 @@ interface UBTIStreamingQuestionsComplete {
   type: 'questions_complete';
 }
 
+// 사용량 분석 관련 타입
+export interface UsageAnalysisData {
+  user_id: number;
+  current_plan: string;
+  current_price: number;
+  remaining_data: number;
+  remaining_voice: number;
+  remaining_sms: number;
+  usage_percentage: number;
+}
+
+export interface UsageAnalysisResponse {
+  type: 'usage_analysis';
+  data: UsageAnalysisData;
+}
+
 export type UBTIStreamingMessage =
   | UBTIStreamingQuestionStart
   | UBTIStreamingQuestion
@@ -110,6 +126,7 @@ export type UBTIStreamingMessage =
 export type StreamingResponse =
   | PlanRecommendationsResponse
   | SubscriptionRecommendationsResponse
+  | UsageAnalysisResponse
   | MessageStartResponse
   | MessageChunkResponse
   | MessageEndResponse

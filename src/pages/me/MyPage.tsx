@@ -74,11 +74,11 @@ const MyPage: React.FC = () => {
   ];
   return (
     <div className="pb-20 space-y-8">
-      <h2 className="title-1 mt-6 flex items-center gap-2">
+      <h2 className="title-1 mt-6 flex items-center text-brand-darkblue gap-2">
         <img src={IMAGES.MOONER['mooner-phone']} alt="문어 아이콘" className="w-15 h-15" />
         {profile?.name ?? '고객'} 님 안녕하세요!
       </h2>
-      <h3 className="title-2 mb-4 mt-4">내 요금제</h3>
+      <h1 className="text-xl font-bold text-brand-darkblue mb-4">내 요금제</h1>
       <BillSummaryCard
         phoneNumber={profile?.phoneNumber ?? '010-****-****'}
         planName={plan.name}
@@ -86,7 +86,7 @@ const MyPage: React.FC = () => {
         amount={Number(plan.price)}
         usageData={usageData}
       />
-      <h3 className="title-2 mb-4 mt-4">내 정보</h3>
+      <h1 className="text-xl font-bold text-brand-darkblue mb-4">내 정보</h1>
       <div className="grid grid-cols-2 gap-4">
         <Link to="coupons">
           <Card clickable>
@@ -100,16 +100,18 @@ const MyPage: React.FC = () => {
           </Card>
         </Link>
 
-        <Card clickable>
+        <Card className="cursor-default hover:bg-transparent">
           <CardContent className="flex items-center justify-center gap-1.5 py-2.5 leading-none">
             <Coins className="w-[18px] h-[18px] text-blue-600 shrink-0" />
             <span className="caption-1 whitespace-nowrap">보유 포인트</span>
-            <span className="caption-1 font-bold ml-1 whitespace-nowrap">1,250P</span>
+            <span className="caption-1 font-bold ml-1 whitespace-nowrap">
+              {profile?.point?.toLocaleString() ?? '0'}P
+            </span>
           </CardContent>
         </Card>
       </div>
 
-      <h3 className="title-2 mb-4 mt-4">요금제 설정</h3>
+      <h1 className="text-xl font-bold text-brand-darkblue mb-4">요금제 설정</h1>
       <div className="grid grid-cols-2 gap-4">
         <Card clickable>
           <CardContent className="text-center py-2.5 caption-1  leading-tight">
@@ -124,9 +126,9 @@ const MyPage: React.FC = () => {
       </div>
 
       <div>
-        <h3 className="title-2 mb-4 mt-4">
+        <h1 className="text-xl font-bold text-brand-darkblue mb-4">
           내 활동 <span className="text-red-400 font-bold">4</span>개
-        </h3>
+        </h1>
         <div className="grid grid-cols-2 gap-4">
           <Link to="subscriptions">
             <Card clickable>
@@ -136,19 +138,23 @@ const MyPage: React.FC = () => {
               </CardContent>
             </Card>
           </Link>
+          <Link to="/mission" state={{ scrollTo: 'mission-list' }}>
+            <Card clickable>
+              <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
+                <ClipboardCheck className="w-6 h-6" />
+                <span className="caption-1">미션 목록</span>
+              </CardContent>
+            </Card>
+          </Link>
+          <Link to="/mission" state={{ scrollTo: 'attendance' }}>
+            <Card clickable>
+              <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
+                <Stamp className="w-6 h-6" />
+                <span className="caption-1">이번달 출석 기록</span>
+              </CardContent>
+            </Card>
+          </Link>
 
-          <Card clickable>
-            <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
-              <ClipboardCheck className="w-6 h-6" />
-              <span className="caption-1">미션 목록</span>
-            </CardContent>
-          </Card>
-          <Card clickable>
-            <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
-              <Stamp className="w-6 h-6" />
-              <span className="caption-1">이번달 출석 기록</span>
-            </CardContent>
-          </Card>
           <Card clickable>
             <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
               <FolderHeart className="w-6 h-6" />

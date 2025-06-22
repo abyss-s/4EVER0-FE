@@ -5,11 +5,12 @@ import type { Components } from 'react-markdown';
 import { Message } from '@/types/chat';
 import { PlanRecommendation } from '@/types/streaming';
 import { AvatarComponent } from '@/components/Avatar';
-import { PlanCard } from '@/components/PlanCard/PlanCard';
 import { SubscriptionCard } from '@/components/SubscriptionCard/SubscriptionCard';
+import { UsageAnalysisCard } from '@/components/UsageAnalysisCard/UsageAnalysisCard';
 import { cn } from '@/lib/utils';
 import { IMAGES } from '@/constant/imagePath';
 import { useNavigate } from 'react-router-dom';
+import { PlanSwiper } from '@/components/PlanCard/PlanSwiper';
 
 interface ChatBubbleProps {
   message: Message;
@@ -139,6 +140,12 @@ const ChatBubble: React.FC<ChatBubbleProps> = React.memo(
       message.id,
     ]);
 
+    const shouldShowUsageAnalysisCard = React.useMemo(() => {
+      const hasUsageAnalysis = !!message.usageAnalysis;
+      const shouldShow = isRecommendationMessage || isLatestBotMessage || hasUsageAnalysis;
+      return isBot && hasUsageAnalysis && shouldShow;
+    }, [isBot, message.usageAnalysis, isRecommendationMessage, isLatestBotMessage]);
+
     // 타임스탬프 포맷팅 최적화
     const formatTimestamp = React.useMemo(() => {
       const timestamp = message.timestamp;
@@ -201,8 +208,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = React.memo(
     );
 
     const handlePlanSelect = React.useCallback((plan: PlanRecommendation) => {
-      console.log('[DEBUG] Plan selected:', plan);
-      // TODO: 요금제 선택 로직 구현
+      navigate(`/plans/${plan.id}`);
     }, []);
 
     const handleSubscriptionSelect = React.useCallback(
@@ -224,23 +230,23 @@ const ChatBubble: React.FC<ChatBubbleProps> = React.memo(
     );
 
     // 전체 메시지 디버깅 정보 출력
-    React.useEffect(() => {
-      if (isBot && (message.planRecommendations || message.subscriptionRecommendations)) {
-        console.log('[DEBUG] ChatBubble message with cards:', {
-          messageId: message.id,
-          content: message.content?.slice(0, 50) + '...',
-          planRecommendations: message.planRecommendations,
-          subscriptionRecommendations: message.subscriptionRecommendations,
-          subscriptionKeys: message.subscriptionRecommendations
-            ? Object.keys(message.subscriptionRecommendations)
-            : [],
-          hasMainSub: !!message.subscriptionRecommendations?.main_subscription,
-          hasLifeBrand: !!message.subscriptionRecommendations?.life_brand,
-          isRecommendationMessage,
-          isLatestBotMessage,
-        });
-      }
-    }, [message, isRecommendationMessage, isLatestBotMessage, isBot]);
+    // React.useEffect(() => {
+    //   if (isBot && (message.planRecommendations || message.subscriptionRecommendations)) {
+    //     console.log('[DEBUG] ChatBubble message with cards:', {
+    //       messageId: message.id,
+    //       content: message.content?.slice(0, 50) + '...',
+    //       planRecommendations: message.planRecommendations,
+    //       subscriptionRecommendations: message.subscriptionRecommendations,
+    //       subscriptionKeys: message.subscriptionRecommendations
+    //         ? Object.keys(message.subscriptionRecommendations)
+    //         : [],
+    //       hasMainSub: !!message.subscriptionRecommendations?.main_subscription,
+    //       hasLifeBrand: !!message.subscriptionRecommendations?.life_brand,
+    //       isRecommendationMessage,
+    //       isLatestBotMessage,
+    //     });
+    //   }
+    // }, [message, isRecommendationMessage, isLatestBotMessage, isBot]);
 
     // 렌더링할 내용이 없으면 null 반환
     if (!processedContent && !shouldShowPlanCards && !shouldShowSubscriptionCard) {
@@ -303,15 +309,8 @@ const ChatBubble: React.FC<ChatBubbleProps> = React.memo(
 
           {/* 요금제 추천 카드(들) */}
           {shouldShowPlanCards && message.planRecommendations && (
-            <div className="flex flex-wrap gap-3">
-              {message.planRecommendations.map((plan, index) => (
-                <PlanCard
-                  key={`plan-${plan.id}-${uniqueMessageKey}-${index}`}
-                  plan={plan}
-                  onSelect={handlePlanSelect}
-                  className="max-w-xs"
-                />
-              ))}
+            <div className="w-full">
+              <PlanSwiper plans={message.planRecommendations} onSelect={handlePlanSelect} />
             </div>
           )}
 
@@ -324,6 +323,13 @@ const ChatBubble: React.FC<ChatBubbleProps> = React.memo(
                 onBrandSelect={handleBrandSelect}
                 className="max-w-sm"
               />
+            </div>
+          )}
+
+          {/* 사용량 분석 카드 */}
+          {shouldShowUsageAnalysisCard && message.usageAnalysis && (
+            <div key={`usage-analysis-${uniqueMessageKey}`}>
+              <UsageAnalysisCard data={message.usageAnalysis} className="max-w-sm" />
             </div>
           )}
         </div>

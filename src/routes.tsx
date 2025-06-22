@@ -1,12 +1,11 @@
 import { createBrowserRouter, RouteObject } from 'react-router-dom';
 import Home from '@/pages/home/Home';
-import Attendance from '@/pages/attendance/Attendance';
 import Chatbot from '@/pages/chatbot/Chatbot';
 import NotFound from '@/pages/common/NotFound';
 import HotPlace from '@/pages/hotplace/HotPlace';
 import Login from '@/pages/auth/Login';
 import Singup from '@/pages/auth/Signup';
-import ChangePlans from '@/pages/me/change-plans/ChangePlans';
+import Plan from '@/pages/plan/Plan';
 import Coupons from '@/pages/me/coupons/Coupons';
 import Events from '@/pages/me/events/Events';
 import Likes from '@/pages/me/likes/Likes';
@@ -14,6 +13,7 @@ import MyPage from '@/pages/me/MyPage';
 import Mission from '@/pages/mission/Mission';
 import DesignSystemTest from '@/pages/test/DesignSystemTest';
 import UBTI from '@/pages/ubti/UBTI';
+import UBTIShare from '@/pages/ubti/SharePage';
 import UplTuple from '@/pages/upltuple/UplTuple';
 import ShareTest from '@/pages/share/ShareTest';
 import NaverMap from '@/components/NaverMap/NaverMap';
@@ -24,6 +24,7 @@ import Subscriptions from '@/pages/me/subscriptions/Subscriptions';
 import Intro from '@/pages/intro/Intro';
 import Tutorial from '@/pages/intro/Tutorial';
 import IntroRedirect from '@/pages/intro/IntroRedirect';
+import PlanDetail from './pages/plan/PlanDetail';
 
 const routes: RouteObject[] = [
   {
@@ -48,7 +49,6 @@ const routes: RouteObject[] = [
       {
         element: <ProtectedRoute />,
         children: [
-          { path: 'attendance', element: <Attendance /> },
           { path: 'hotplace', element: <HotPlace /> },
           { path: 'mission', element: <Mission /> },
           { path: 'ubti', element: <UBTI /> },
@@ -60,10 +60,10 @@ const routes: RouteObject[] = [
               { path: 'coupons', element: <Coupons /> },
               { path: 'likes', element: <Likes /> },
               { path: 'events', element: <Events /> },
-              { path: 'change-plans', element: <ChangePlans /> },
               { path: 'subscriptions', element: <Subscriptions /> },
             ],
           },
+          {},
         ],
       },
 
@@ -72,6 +72,9 @@ const routes: RouteObject[] = [
       { path: 'login', element: <Login /> },
       { path: 'signup', element: <Singup /> },
       { path: 'authcallback', element: <OAuthCallback /> },
+      { path: 'plans', element: <Plan /> },
+      { path: 'plans/:id', element: <PlanDetail /> },
+      { path: 'share/:id', element: <UBTIShare /> },
 
       // 테스트용
       { path: 'design-system', element: <DesignSystemTest /> },

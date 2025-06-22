@@ -95,7 +95,6 @@ const Signup: React.FC = () => {
         title: '회원가입 완료',
         description: '환영합니다! 서비스 이용을 시작하세요.',
       });
-
       loginViaProvider(provider);
     } catch (error: unknown) {
       setAlert({
@@ -107,24 +106,25 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-full">
-      <div className="w-full max-w-lg">
-        {/* Alert 표시 영역 */}
+    <div className="flex items-start justify-center min-h-screen pt-2 px-0">
+      <div className="w-full max-w-sm">
         {alert && (
           <Alert title={alert.title} description={alert.description} variant={alert.variant} />
         )}
-        {/* 카드 제거, 그림자 제거 */}
-        <div className="bg-white/90 backdrop-blur rounded-xl border-0 px-4">
-          <div className="text-center pt-4 pb-6">
-            <div className="text-xl font-bold text-slate-800">
-              Moono<span className="text-brand-red">Z</span>에 오신 걸 환영해요!
+
+        <div className="bg-white/90 backdrop-blur rounded-xl border-0 px-3 py-3">
+          <div className="text-center">
+            <div className="text-xl font-bold text-slate-800 leading-snug">
+              <span className="text-brand-red">M</span>oono<span className="text-brand-red">Z</span>
+              에 오신 걸 환영해요!
             </div>
-            <div className="text-slate-600">서비스 이용을 위해 필요한 정보를 입력해주세요!</div>
+            <p className="text-sm text-slate-600 mt-0.5">
+              서비스 이용을 위해 필요한 정보를 입력해주세요!
+            </p>
           </div>
 
           <div className="space-y-6"></div>
-          <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-            {/* Email */}
+          <form onSubmit={handleSubmit} className="space-y-4 mt-4" noValidate>
             <div className="space-y-2">
               <Label htmlFor="email" className="text-slate-700 font-medium flex items-center gap-2">
                 <Mail className="w-4 h-4 text-slate-500" />
@@ -179,16 +179,12 @@ const Signup: React.FC = () => {
             </div>
 
             {/* Birth Date */}
-            <div className="space-y-2">
-              <Calendar28
-                value={formData.birthDate ? new Date(formData.birthDate) : null}
-                onChange={(date) => {
-                  handleInputChange('birthDate', date ? date.toISOString().substring(0, 10) : '');
-                }}
-                label="생년월일"
-                placeholder="YYYY-MM-DD"
-              />
-            </div>
+            <Calendar28
+              value={formData.birthDate}
+              onChange={(val) => handleInputChange('birthDate', val)}
+              label="생년월일"
+              placeholder="YYYY-MM-DD"
+            />
 
             {/* Submit */}
             <Button
@@ -200,8 +196,8 @@ const Signup: React.FC = () => {
           </form>
 
           {/* Footer */}
-          <div className="text-center pt-4">
-            <p className="text-sm text-slate-500">
+          <div className="text-center pt-4 text-sm">
+            <p className="text-slate-500">
               이미 계정이 있으신가요?{' '}
               <button
                 className="text-yellow-600 hover:text-yellow-700 font-medium"
@@ -214,8 +210,8 @@ const Signup: React.FC = () => {
           </div>
         </div>
         {/* Bottom Message */}
-        <div className="text-center mt-6 text-sm text-slate-500">
-          가입하시면 MoonoZ의{' '}
+        <div className="text-center mt-4 text-xs text-slate-500 px-2">
+          가입 시 MoonoZ의{' '}
           <button className="text-yellow-600 hover:underline" type="button">
             이용약관
           </button>

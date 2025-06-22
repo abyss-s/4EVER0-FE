@@ -18,14 +18,12 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = React.memo(
 
     const handleSubscribeClick = React.useCallback(() => {
       if (main_subscription && onSubscribe) {
-        console.log('[DEBUG] Subscribe clicked:', main_subscription);
         onSubscribe(main_subscription);
       }
     }, [main_subscription, onSubscribe]);
 
     const handleBrandClick = React.useCallback(() => {
       if (life_brand && onBrandSelect) {
-        console.log('[DEBUG] Brand clicked:', life_brand);
         onBrandSelect(life_brand);
       }
     }, [life_brand, onBrandSelect]);

@@ -90,11 +90,13 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
   },
 
   // 카드 정보도 함께 업데이트
+  // 카드 정보와 사용량 분석도 함께 업데이트
   updateLastBotMessageWithCards: (
     sessionId,
     content,
     planRecommendations,
     subscriptionRecommendations,
+    usageAnalysis,
   ) => {
     set((state) => {
       const session = state.sessions[sessionId];
@@ -112,6 +114,7 @@ export const useChatStore = create<ChatStore>()((set, get) => ({
             timestamp: new Date(),
             planRecommendations,
             subscriptionRecommendations,
+            usageAnalysis, // 👈 추가
           };
           updated = true;
           break;

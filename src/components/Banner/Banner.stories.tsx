@@ -14,7 +14,19 @@ const meta: Meta<typeof Banner> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'red', 'yellow', 'white', 'moonuz', 'gradient'],
+      options: [
+        'primary',
+        'red',
+        'yellow',
+        'white',
+        'moonuz',
+        'gradient',
+        'pinkblue',
+        'sunrise',
+        'ocean',
+        'meadow',
+        'twilight',
+      ],
     },
     size: {
       control: 'select',
@@ -72,19 +84,33 @@ export const AllSizes: Story = {
 };
 
 export const AllVariants: Story = {
-  render: () => (
-    <div className="space-y-4">
-      {(['primary', 'red', 'yellow', 'white', 'moonuz', 'gradient'] as BannerVariant[]).map(
-        (variant) => (
+  render: () => {
+    const variants: BannerVariant[] = [
+      'primary',
+      'red',
+      'yellow',
+      'white',
+      'moonuz',
+      'gradient',
+      'pinkblue',
+      'sunrise',
+      'ocean',
+      'meadow',
+      'twilight',
+    ];
+
+    return (
+      <div className="space-y-4">
+        {variants.map((variant) => (
           <Banner
             key={variant}
             variant={variant}
             title={`${variant} 배너`}
-            description="브랜드 토큰을 활용한 배너 디자인입니다."
+            description="브랜드/그라데이션 색상을 활용한 배너 디자인입니다."
             image="https://avatars.githubusercontent.com/u/212847508?s=200&v=4"
           />
-        ),
-      )}
-    </div>
-  ),
+        ))}
+      </div>
+    );
+  },
 };

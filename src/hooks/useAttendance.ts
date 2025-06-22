@@ -1,62 +1,70 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getTodayAttendance, postTodayAttendance } from '@/apis/attendance/attendance';
 import { useUserProfile } from '@/stores/useUserProfile';
-import { updateProgress } from '@/apis/mission/updateProgress'; // 미션 진행도 API 추가
-import { toast } from 'sonner';
+import { useState } from 'react';
 
+// 출석 정보
 export const useAttendance = () => {
-  const { data: profile } = useUserProfile();
+  const { data: userData } = useUserProfile();
+  const queryClient = useQueryClient();
+  const userName = userData?.name ?? '사용자';
+  const userId = userData?.id;
 
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+
+  const [isManuallyChecked, setIsManuallyChecked] = useState(false);
+
+  // 오늘 출석 여부 불러오기
   const {
-    data: attendance,
-    refetch: refetchAttendance,
-    isLoading,
+    data: todayAttendance,
+    isLoading: isLoadingToday,
+    isError: isTodayError,
   } = useQuery({
-    queryKey: ['attendance', profile?.userId],
+    queryKey: ['attendance', 'today'],
     queryFn: getTodayAttendance,
-    enabled: !!profile?.userId,
+    staleTime: 1000 * 60 * 5, // 5분 캐시
   });
 
-  // const { mutate: checkAttendance, isPending } = useMutation({
-  //   mutationFn: async () => {
-  //     await postTodayAttendance(); // ✅ 출석 API 호출
-  //     await updateProgress(3); // ✅ 미션 ID 3: 연속 출석 미션 +1
-  //   },
-  //   onSuccess: () => {
-  //     refetchAttendance(); // 출석 상태 최신화
-  //     toast.success('출석 완료!');
-  //   },
-  //   onError: () => {
-  //     toast.error('이미 출석하셨거나 오류가 발생했어요!');
-  //   },
-  // });
+  // 출석 체크 뮤테이션
+  const {
+    mutate: checkAttendance,
+    isPending: isChecking,
+    isSuccess: isChecked,
+  } = useMutation({
+    mutationFn: postTodayAttendance,
 
-  const { mutate: checkAttendance, isPending } = useMutation({
-    mutationFn: async () => {
-      console.log('🟡 출석 요청 시작');
-      await postTodayAttendance(); // 출석 요청
-      console.log('🟢 출석 성공 → 진행도 업데이트 시도');
+    // 낙관적 UI 업데이트
+    onMutate: () => {
+      setIsManuallyChecked(true); // 배너 바뀌도록 하기 위해 로컬 상태 반영
+      queryClient.setQueryData(['attendance', 'today'], {
+        checked: true,
+        date: today.toISOString(),
+        streak: (todayAttendance?.streak ?? 0) + 1,
+      });
+    },
 
-      await updateProgress(3); // 미션 ID 3 진행도 +1
-      console.log('🟢 미션 진행도 업데이트 성공');
-    },
-    onSuccess: () => {
-      console.log('🟢 전체 성공 → 상태 리패치');
-      refetchAttendance();
-      toast.success('출석 완료!');
-    },
-    onError: (error) => {
-      console.error('❌ 출석 또는 미션 업데이트 실패:', error);
-      toast.error('이미 출석하셨거나 오류가 발생했어요!');
+    // 쿼리 무효화로 달력 리렌더링
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['attendance', year, month] });
+      queryClient.invalidateQueries({ queryKey: ['attendance', 'today'] });
+      queryClient.invalidateQueries({ queryKey: ['missions'] });
+
+      if (userId) {
+        queryClient.invalidateQueries({ queryKey: ['userProfile', userId] });
+      }
     },
   });
 
   return {
-    attendance,
+    userName,
+    attendance: todayAttendance?.checked ?? false,
+    isManuallyChecked,
     checkAttendance,
-    isChecking: isPending,
-    refetchAttendance,
-    isLoading,
-    userName: profile?.name ?? '회원',
+    isChecking,
+    isChecked,
+    isLoadingToday,
+    isTodayError,
   };
 };
