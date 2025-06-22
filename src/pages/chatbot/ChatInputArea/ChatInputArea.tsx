@@ -211,7 +211,7 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
       </AnimatePresence>
 
       {/* 메인 입력 영역 */}
-      <div className="bottom-0 left-0 right-0 flex flex-col space-y-3 bg-white py-3 border-t border-gray-300">
+      <div className="bottom-0 left-0 right-0 flex flex-col space-y-3 bg-white py-3 border-t border-gray-100">
         {/* 입력창 + 플러스 버튼 */}
         <div className="flex items-center space-x-2">
           {!ubtiInProgress && (

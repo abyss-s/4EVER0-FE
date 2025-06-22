@@ -47,7 +47,7 @@ export const ChatMessages: React.FC<ChatMessagesProps> = React.memo(
     }, [streamingState]);
 
     return (
-      <div ref={scrollRef} className="flex-1 overflow-y-auto pb-4">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto py-4 px-1">
         <div className="flex flex-col space-y-2">
           {messages.map((message: Message, index: number) => {
             const isLastMessage = index === messages.length - 1;
