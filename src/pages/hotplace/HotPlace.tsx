@@ -7,21 +7,30 @@ import StoreMap from './StoreMap/StoreMap';
 import { Card, CardContent } from '@/components/Card';
 import { MapPin, Store, TrendingUp } from 'lucide-react';
 import { IMAGES } from '@/constant/imagePath';
+import LoadingMooner from '@/pages/common/LoadingMooner';
 
 const HotPlace = () => {
   const [bestDeals, setBestDeals] = useState<TopCoupon[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [option, setOption] = useState<'popup' | 'store'>('popup');
-
-  const allBrandIds = [1, 2, 3, 4, 5, 6, 7, 8];
-
+  const [mapLoading, setMapLoading] = useState(true);
+  const [showMapLoader, setShowMapLoader] = useState(false);
   const [searchParams] = useSearchParams();
   const subscribedBrandIdsParam = searchParams.get('subscribedBrandIds');
   const subscribedBrandIds = subscribedBrandIdsParam
     ? subscribedBrandIdsParam.split(',').map((id) => Number(id))
     : [1, 3, 4];
-
   const selectedBrandIds: number[] = subscribedBrandIds;
+  const allBrandIds = [1, 2, 3, 4, 5, 6, 7, 8];
+
+  useEffect(() => {
+    if (mapLoading) {
+      const timer = setTimeout(() => setShowMapLoader(true), 2000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowMapLoader(false);
+    }
+  }, [mapLoading]);
 
   useEffect(() => {
     const fetchCoupons = async () => {
@@ -38,8 +47,13 @@ const HotPlace = () => {
   }, []);
 
   useEffect(() => {
-    console.log('selectedBrandIds:', selectedBrandIds);
-  }, [subscribedBrandIds]);
+    if (mapLoading) {
+      const timer = setTimeout(() => setShowMapLoader(true), 2000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowMapLoader(false);
+    }
+  }, [mapLoading]);
 
   const getDiscountLabel = (deal: TopCoupon) => {
     if (!deal) return '';
@@ -110,10 +124,18 @@ const HotPlace = () => {
       <div className="px-4">
         <Card>
           <CardContent className="p-0">
-            {option === 'popup' ? (
-              <PopupMap />
+            {showMapLoader ? (
+              <div className="h-[400px] flex items-center justify-center">
+                <LoadingMooner />
+              </div>
+            ) : option === 'popup' ? (
+              <PopupMap onLoadingChange={setMapLoading} />
             ) : (
-              <StoreMap allBrandIds={allBrandIds} selectedIds={selectedBrandIds} />
+              <StoreMap
+                allBrandIds={allBrandIds}
+                selectedIds={selectedBrandIds}
+                onLoadingChange={setMapLoading}
+              />
             )}
           </CardContent>
         </Card>

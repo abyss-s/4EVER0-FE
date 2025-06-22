@@ -8,24 +8,24 @@ import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
 import { getBrandBackgroundColor } from '@/utils/brandColor';
 import { getDday } from '@/utils/format/getDday';
-
-export const UplusBenefitPreview = () => {
-  const [benefits, setBenefits] = useState<Benefit[] | null>(null);
+interface UplusBenefitPreviewProps {
+  onLoadComplete?: () => void;
+}
+export const UplusBenefitPreview = ({ onLoadComplete }: UplusBenefitPreviewProps) => {
+  const [benefits, setBenefits] = useState<Benefit[]>([]);
   const [showTooltip, setShowTooltip] = useState(false); // ✅ 툴팁 표시 상태
 
   useEffect(() => {
     getMonthlyBenefits()
       .then((data) => {
         setBenefits(data);
+        onLoadComplete?.();
       })
       .catch((err) => {
         console.error('❌ 유플 혜택 조회 실패:', err);
+        onLoadComplete?.();
       });
-  }, []);
-
-  if (benefits === null) {
-    return <p className="text-sm text-gray-400 px-2">혜택을 불러오는 중입니다...</p>;
-  }
+  }, [onLoadComplete]);
 
   return (
     <div
