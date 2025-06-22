@@ -6,22 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
-function formatDate(date: Date | undefined) {
-  if (!date) return '';
-  return date.toLocaleDateString('en-US', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric',
-  });
-}
-function isValidDate(date: Date | undefined) {
-  if (!date) return false;
-  return !isNaN(date.getTime());
-}
-
 interface Calendar28Props {
-  value: Date | null;
-  onChange: (date: Date | null) => void;
+  value: string; // YYYY-MM-DD
+  onChange: (value: string) => void;
   label?: string;
   placeholder?: string;
 }
@@ -30,20 +17,23 @@ export function Calendar28({
   value,
   onChange,
   label = '생년월일',
-  placeholder = 'June 01, 2025',
+  placeholder = '예: 2025-06-01',
 }: Calendar28Props) {
   const [open, setOpen] = React.useState(false);
-  const [month, setMonth] = React.useState<Date | undefined>(value ?? undefined);
-  const [inputValue, setInputValue] = React.useState(formatDate(value ?? undefined));
+  const parsedDate = value ? new Date(value) : undefined;
+
+  const [month, setMonth] = React.useState<Date | undefined>(parsedDate);
+  const [inputValue, setInputValue] = React.useState(value);
 
   React.useEffect(() => {
-    console.log('Popover open:', open);
-  }, [open]);
-
-  React.useEffect(() => {
-    setInputValue(formatDate(value ?? undefined));
-    setMonth(value ?? undefined);
+    setInputValue(value);
+    setMonth(parsedDate);
   }, [value]);
+
+  const toDateString = (date: Date) => {
+    const offsetMs = date.getTimezoneOffset() * 60000;
+    return new Date(date.getTime() - offsetMs).toISOString().substring(0, 10);
+  };
 
   return (
     <div className="flex flex-col gap-3">
@@ -58,13 +48,12 @@ export function Calendar28({
           placeholder={placeholder}
           className="bg-background pr-10 h-12"
           onChange={(e) => {
-            const date = new Date(e.target.value);
             setInputValue(e.target.value);
-            if (isValidDate(date)) {
-              onChange(date);
-              setMonth(date);
-            } else {
-              onChange(null);
+            const newDate = new Date(e.target.value);
+            if (!isNaN(newDate.getTime())) {
+              const formatted = toDateString(newDate);
+              onChange(formatted);
+              setMonth(newDate);
             }
           }}
           onKeyDown={(e) => {
@@ -92,14 +81,17 @@ export function Calendar28({
           >
             <Calendar
               mode="single"
-              selected={value ?? undefined}
+              selected={parsedDate}
               captionLayout="dropdown"
               month={month}
               onMonthChange={setMonth}
               onSelect={(date) => {
-                onChange(date ?? null);
-                setInputValue(formatDate(date ?? undefined));
-                setOpen(false);
+                if (date) {
+                  const formatted = toDateString(date);
+                  setInputValue(formatted);
+                  onChange(formatted);
+                  setOpen(false);
+                }
               }}
             />
           </PopoverContent>

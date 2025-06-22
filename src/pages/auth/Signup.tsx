@@ -180,18 +180,8 @@ const Signup: React.FC = () => {
 
             {/* Birth Date */}
             <Calendar28
-              value={formData.birthDate ? new Date(formData.birthDate) : null}
-              onChange={(date) => {
-                if (date) {
-                  const timezoneOffset = date.getTimezoneOffset() * 60000;
-                  const localDate = new Date(date.getTime() - timezoneOffset)
-                    .toISOString()
-                    .substring(0, 10); // YYYY-MM-DD 형식
-                  handleInputChange('birthDate', localDate);
-                } else {
-                  handleInputChange('birthDate', '');
-                }
-              }}
+              value={formData.birthDate}
+              onChange={(val) => handleInputChange('birthDate', val)}
               label="생년월일"
               placeholder="YYYY-MM-DD"
             />
