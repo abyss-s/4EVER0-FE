@@ -21,9 +21,6 @@ const MissionPage = () => {
         {selectedTab === '출석' && (
           <>
             <AttendanceBanner />
-            <div className="flex items-center justify-between mt-6 mb-4">
-              <h1 className="text-xl font-bold text-brand-darkblue">출석 스탬프 북</h1>
-            </div>
             <AttendanceCalendar />
           </>
         )}
