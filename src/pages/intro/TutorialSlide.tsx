@@ -19,7 +19,7 @@ const TutorialSlide: React.FC<TutorialSlideProps> = ({
   onBackClick,
 }) => {
   return (
-    <div className="w-full h-screen flex flex-col items-center px-6 py-6 bg-white text-center mx-auto max-w-[420px]">
+    <div className="w-full h-full flex flex-col items-center px-6 py-6 bg-white text-center mx-auto max-w-[420px]">
       {onBackClick && (
         <div className="w-full flex items-center">
           <BackButton onClick={onBackClick} />
