@@ -34,7 +34,7 @@ const Likes: React.FC = () => {
 
   return (
     <div className="min-h-full bg-white">
-      <div className="p-6 ">
+      <div className="p-6 flex flex-col items-center">
         {likedCoupons.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
             <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center mb-6">
@@ -55,7 +55,7 @@ const Likes: React.FC = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-4">
+            <div className="grid grid-cols-1 gap-4 items-center">
               {likedCoupons.map((coupon) => (
                 <Coupon
                   key={coupon.id}
