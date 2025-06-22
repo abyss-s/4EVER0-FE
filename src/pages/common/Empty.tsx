@@ -9,6 +9,7 @@ interface EmptyProps {
   buttonText?: string;
   buttonLink?: string;
   className?: string;
+  onClickButton?: () => void;
 }
 
 const Empty: React.FC<EmptyProps> = ({
@@ -18,6 +19,7 @@ const Empty: React.FC<EmptyProps> = ({
   buttonText,
   buttonLink,
   className = '',
+  onClickButton,
 }) => {
   const navigate = useNavigate();
 
@@ -26,12 +28,18 @@ const Empty: React.FC<EmptyProps> = ({
       <img src={imageSrc} alt={altText} className="w-40 h-auto mb-4" />
       <p className="text-gray-500 text-sm text-center mb-4">{message}</p>
 
-      {buttonText && buttonLink && (
+      {buttonText && (
         <Button
           variant="outline"
           size="default"
           className="bg-white/50 border-black/50 text-gray-800 hover:bg-white/70"
-          onClick={() => navigate(buttonLink)}
+          onClick={() => {
+            if (onClickButton) {
+              onClickButton();
+            } else if (buttonLink) {
+              navigate(buttonLink);
+            }
+          }}
         >
           {buttonText}
         </Button>

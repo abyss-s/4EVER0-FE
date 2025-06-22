@@ -5,8 +5,10 @@ import { getMonthlyBenefits } from '@/apis/uplus/benefit';
 import { Benefit } from '@/types/uplus';
 import { getBrandDotColor } from '@/utils/brandColor';
 import { BenefitDetailModal } from './UplusBenefitDetail';
-
-export const UplusCalendar = () => {
+interface UplusCalendarProps {
+  onLoadComplete?: () => void;
+}
+export const UplusCalendar = ({ onLoadComplete }: UplusCalendarProps) => {
   const [benefits, setBenefits] = useState<Benefit[] | null>(null);
   const [month, setMonth] = useState(new Date());
 
@@ -18,11 +20,13 @@ export const UplusCalendar = () => {
       .then((data) => {
         console.log('✅ 응답 성공:', data);
         setBenefits(data);
+        onLoadComplete?.();
       })
       .catch((err) => {
         console.error('❌ 유플 혜택 조회 실패:', err.response?.data || err.message);
+        onLoadComplete?.();
       });
-  }, []);
+  }, [onLoadComplete]);
 
   // 날짜 클릭 핸들러 추가!
   const handleDateClick = (date: Date, isCurrentMonth: boolean) => {
@@ -32,8 +36,8 @@ export const UplusCalendar = () => {
     setIsModalOpen(true);
   };
 
-  if (!benefits) {
-    return <p className="text-sm text-gray-400">혜택 불러오는 중...</p>;
+  if (!benefits || benefits.length === 0) {
+    return null;
   }
 
   return (
