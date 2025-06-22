@@ -116,3 +116,7 @@ sequenceDiagram
     Processor-->>Hook: 스트림 완료
     Hook->>Throttle: reset() 호출
 ```
+
+---
+
+**Team 4EVER0** | LG U+ URECA 프론트엔드 개발자 과정 2기 종합프로젝트 4조
