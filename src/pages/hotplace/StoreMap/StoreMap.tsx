@@ -6,12 +6,14 @@ import MapLegend from './MapLegend';
 import MapPopover from './MapPopover';
 import { createMarkerClustering, type MarkerClusteringInstance } from '@/utils/markerClustering';
 import { useState, useRef, useEffect, useCallback } from 'react';
+import LoadingMooner from '@/pages/common/LoadingMooner';
 
 interface StoreMapProps {
   className?: string;
   style?: React.CSSProperties;
   allBrandIds: number[];
   selectedIds: number[];
+  onLoadingChange?: (loading: boolean) => void;
 }
 
 interface StoreData {
@@ -27,6 +29,7 @@ export default function StoreMap({
   style = {},
   selectedIds,
   allBrandIds,
+  onLoadingChange,
 }: StoreMapProps) {
   const [selectedBrandIds, setSelectedBrandIds] = useState<number[]>([]);
 
@@ -74,7 +77,7 @@ export default function StoreMap({
       try {
         setLoading(true);
         setError(null);
-
+        onLoadingChange?.(true);
         if (!currentLocation) {
           setError('현재 위치 정보가 없습니다.');
           setLoading(false);
@@ -109,6 +112,7 @@ export default function StoreMap({
         setError('매장 조회 중 오류가 발생했습니다.');
       } finally {
         setLoading(false);
+        onLoadingChange?.(false);
       }
     };
 
@@ -314,14 +318,8 @@ export default function StoreMap({
 
   if (loading) {
     return (
-      <div
-        className={`flex items-center justify-center ${className}`}
-        style={{ width: '100%', height: '400px', ...style }}
-      >
-        <div className="flex items-center gap-2 text-gray-500 text-sm">
-          <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
-          지도를 불러오는 중...
-        </div>
+      <div className="flex items-center justify-center h-[400px]">
+        <LoadingMooner />
       </div>
     );
   }

@@ -7,12 +7,14 @@ import MapLegend from './MapLegend';
 import MapPopover from './MapPopover';
 import { createMarkerClustering, type MarkerClusteringInstance } from '@/utils/markerClustering';
 import { useState, useRef, useEffect, useCallback } from 'react';
+import LoadingMooner from '@/pages/common/LoadingMooner';
 
 interface PopupMapProps {
   className?: string;
   style?: React.CSSProperties;
   radius?: number;
   initialOpenPopupId?: number;
+  onLoadingChange?: (loading: boolean) => void;
 }
 
 interface PopupData {
@@ -29,6 +31,7 @@ export default function PopupMap({
   style = {},
   radius = 5,
   initialOpenPopupId,
+  onLoadingChange,
 }: PopupMapProps) {
   const [allPopups, setAllPopups] = useState<GetPopupListResponse | null>(null);
   const [nearbyPopups, setNearbyPopups] = useState<GetNearbyPopupListResponse | null>(null);
@@ -68,6 +71,7 @@ export default function PopupMap({
 
   // 전체 팝업 데이터 로드
   useEffect(() => {
+    onLoadingChange?.(true);
     const fetchAllPopups = async () => {
       try {
         setLoading(true);
@@ -81,6 +85,7 @@ export default function PopupMap({
         setError('네트워크 오류가 발생했습니다.');
       } finally {
         setLoading(false);
+        onLoadingChange?.(false);
       }
     };
     fetchAllPopups();
@@ -404,14 +409,8 @@ export default function PopupMap({
 
   if (loading) {
     return (
-      <div
-        className={`flex items-center justify-center ${className}`}
-        style={{ width: '100%', height: '400px', ...style }}
-      >
-        <div className="flex items-center gap-2 text-gray-500 text-sm">
-          <div className="w-4 h-4 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
-          지도를 불러오는 중...
-        </div>
+      <div className="flex items-center justify-center h-[400px]">
+        <LoadingMooner />
       </div>
     );
   }

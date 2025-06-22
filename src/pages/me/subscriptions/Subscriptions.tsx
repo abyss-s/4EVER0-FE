@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserSubscriptions } from '@/apis/subscription/getUserSubscriptions';
 import { getMainSubscriptions } from '@/apis/subscription/getMainSubscriptions';
 import { Card, CardContent } from '@/components/Card';
 import { Package } from 'lucide-react';
 import { formatPrice } from '@/utils/priceUtils';
+import LoadingMooner from '@/pages/common/LoadingMooner';
 
 const Subscriptions: React.FC = () => {
   const { data: userSubscriptions = [], isLoading: loadingUser } = useQuery({
@@ -19,8 +20,20 @@ const Subscriptions: React.FC = () => {
 
   const mainSubscriptions = mainRes?.data ?? [];
 
-  if (loadingUser || loadingMain) return <p className="p-4">로딩 중...</p>;
+  const [shouldShowLoading, setShouldShowLoading] = useState(false);
 
+  useEffect(() => {
+    if (loadingUser || loadingMain) {
+      const timer = setTimeout(() => setShouldShowLoading(true), 2000);
+      return () => clearTimeout(timer);
+    } else {
+      setShouldShowLoading(false);
+    }
+  }, [loadingUser, loadingMain]);
+
+  if ((loadingUser || loadingMain) && shouldShowLoading) {
+    return <LoadingMooner />;
+  }
   const merged = userSubscriptions.map((sub) => {
     const matched = mainSubscriptions.find((m) => m.title === sub.main_title);
     return {
@@ -46,7 +59,7 @@ const Subscriptions: React.FC = () => {
                   <img
                     src={sub.image_url}
                     alt={sub.main_title}
-                    className="w-30 h-30 object-contain mx-auto mb-2"
+                    className="w-32 h-32 object-contain mx-auto"
                   />
                 )}
                 <h3 className="font-medium text-sm mb-1">{sub.main_title.split('+')[0].trim()}</h3>{' '}

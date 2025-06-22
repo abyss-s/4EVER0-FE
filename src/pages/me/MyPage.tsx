@@ -1,5 +1,5 @@
 import { BillSummaryCard } from '@/components/ui/billsummarycard';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/Card';
 import { useQuery } from '@tanstack/react-query';
 import { fetchCurrentPlan } from '@/apis/plan/getCurrentPlan';
@@ -8,6 +8,7 @@ import { Ticket, Coins, Package, FolderHeart, Stamp, ClipboardCheck } from 'luci
 import { Link } from 'react-router-dom';
 import { IMAGES } from '@/constant/imagePath';
 import { fetchUserCoupons } from '@/apis/coupon/getUserCoupons';
+import LoadingMooner from '@/pages/common/LoadingMooner';
 
 const MyPage: React.FC = () => {
   const {
@@ -28,7 +29,18 @@ const MyPage: React.FC = () => {
   });
   const availableCoupons = coupons.filter((c) => c.isUsed === false);
 
-  if (isLoading) return <p className="p-4">로딩 중...</p>;
+  const [shouldShowLoading, setShouldShowLoading] = useState(false);
+
+  useEffect(() => {
+    if (isLoading) {
+      const timer = setTimeout(() => setShouldShowLoading(true), 2000);
+      return () => clearTimeout(timer);
+    } else {
+      setShouldShowLoading(false);
+    }
+  }, [isLoading]);
+
+  if (isLoading && shouldShowLoading) return <LoadingMooner />;
   if (error || !plan) return <p className="p-4">요금제를 불러오지 못했습니다.</p>;
 
   const formatUsage = (
