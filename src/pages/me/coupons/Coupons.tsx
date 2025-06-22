@@ -15,13 +15,6 @@ const Coupons: React.FC = () => {
 
   const availableCoupons = coupons.filter((c) => !c.isUsed);
   if (isLoading) return <div className="p-4">로딩 중...</div>;
-  console.log(
-    availableCoupons.map((c) => ({
-      title: c.title,
-      startDate: c.startDate,
-      endDate: c.endDate,
-    })),
-  );
 
   return (
     <div className="px-4 py-6 pb-24">
@@ -43,9 +36,9 @@ const Coupons: React.FC = () => {
         />
       ) : (
         <div className="flex flex-col gap-4">
-          {availableCoupons.map((coupon) => (
+          {availableCoupons.map((coupon, index) => (
             <CouponCard
-              key={coupon.couponId}
+              key={coupon.couponId ?? `coupon-${index}`}
               type="owned"
               brandName={coupon.brand.name}
               description={coupon.title}

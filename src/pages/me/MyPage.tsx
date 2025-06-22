@@ -26,7 +26,9 @@ const MyPage: React.FC = () => {
   const { data: coupons = [] } = useQuery({
     queryKey: ['userCoupons'],
     queryFn: fetchUserCoupons,
+    refetchOnMount: true,
   });
+
   const availableCoupons = coupons.filter((c) => c.isUsed === false);
 
   const [shouldShowLoading, setShouldShowLoading] = useState(false);
