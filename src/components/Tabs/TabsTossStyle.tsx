@@ -5,9 +5,10 @@ interface TossTabsProps {
   tabs: string[];
   defaultTab?: string;
   onChange?: (value: string) => void;
+  className?: string;
 }
 
-export const TossTabs = ({ tabs, defaultTab, onChange }: TossTabsProps) => {
+export const TossTabs = ({ tabs, defaultTab, onChange, className }: TossTabsProps) => {
   const [selected, setSelected] = useState(defaultTab ?? tabs[0]);
 
   const handleClick = (tab: string) => {
@@ -16,7 +17,7 @@ export const TossTabs = ({ tabs, defaultTab, onChange }: TossTabsProps) => {
   };
 
   return (
-    <div className="flex border-b border-gray-200">
+    <div className={cn('flex border-b border-gray-200', className)}>
       {tabs.map((tab) => (
         <button
           key={tab}
