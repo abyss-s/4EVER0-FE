@@ -179,16 +179,12 @@ const Signup: React.FC = () => {
             </div>
 
             {/* Birth Date */}
-            <div className="space-y-2">
-              <Calendar28
-                value={formData.birthDate ? new Date(formData.birthDate) : null}
-                onChange={(date) => {
-                  handleInputChange('birthDate', date ? date.toISOString().substring(0, 10) : '');
-                }}
-                label="생년월일"
-                placeholder="YYYY-MM-DD"
-              />
-            </div>
+            <Calendar28
+              value={formData.birthDate}
+              onChange={(val) => handleInputChange('birthDate', val)}
+              label="생년월일"
+              placeholder="YYYY-MM-DD"
+            />
 
             {/* Submit */}
             <Button
