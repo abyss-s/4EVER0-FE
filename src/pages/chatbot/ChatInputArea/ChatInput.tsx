@@ -77,12 +77,17 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         onChange={(e) => setMessage(e.target.value)}
         onKeyPress={handleKeyPress}
         disabled={disabled}
-        className="flex-1"
+        className="flex-1 rounded-lg border-gray-300 py-3 focus:border-brand-yellow focus:ring-brand-yellow/20"
         maxLength={500}
         autoComplete="off"
         autoFocus={autoFocus}
       />
-      <Button type="submit" size="icon" disabled={disabled || !message.trim()} className="shrink-0">
+      <Button
+        type="submit"
+        size="icon"
+        disabled={disabled || !message.trim()}
+        className="shrink-0 rounded-lg w-10 h-10 bg-brand-darkblue hover:bg-brand-darkblue/90"
+      >
         <Send className="h-4 w-4" />
       </Button>
     </form>
