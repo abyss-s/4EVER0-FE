@@ -13,6 +13,9 @@ import { BenefitDetail } from '@/types/uplus';
 import { getCategoryEmoji } from '@/utils/emoji/getCategoryEmoji';
 import { formatDateWithDay } from '@/utils/format/formatDateWithDay';
 import { getDday } from '@/utils/format/getDday';
+import Empty from '@/pages/common/Empty';
+import { IMAGES } from '@/constant/imagePath';
+import { useNavigate } from 'react-router-dom';
 
 interface BenefitDetailModalProps {
   isOpen: boolean;
@@ -24,6 +27,7 @@ export const BenefitDetailModal = ({ isOpen, onClose, selectedDate }: BenefitDet
   const [benefits, setBenefits] = useState<BenefitDetail[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isOpen && selectedDate) {
@@ -79,10 +83,13 @@ export const BenefitDetailModal = ({ isOpen, onClose, selectedDate }: BenefitDet
           )}
 
           {benefits && benefits.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-8 text-gray-500">
-              <div className="text-4xl mb-2">😔</div>
-              <div>이 날짜에는 혜택이 없습니다</div>
-            </div>
+            <Empty
+              imageSrc={IMAGES.MOONER['mooner-sad']}
+              altText="슬픈 무너"
+              message="이 날짜에는 제공되는 혜택이 없어요."
+              buttonText="닫기"
+              onClickButton={() => navigate(-1)}
+            />
           )}
 
           {benefits && benefits.length > 0 && (

@@ -6,6 +6,8 @@ import { Card, CardContent } from '@/components/Card';
 import { Package } from 'lucide-react';
 import { formatPrice } from '@/utils/priceUtils';
 import LoadingMooner from '@/pages/common/LoadingMooner';
+import Empty from '@/pages/common/Empty';
+import { IMAGES } from '@/constant/imagePath';
 
 const Subscriptions: React.FC = () => {
   const { data: userSubscriptions = [], isLoading: loadingUser } = useQuery({
@@ -49,7 +51,13 @@ const Subscriptions: React.FC = () => {
         <div className="text-xl mb-6">구독상품 목록</div>
       </div>
       {merged.length === 0 ? (
-        <p className="text-sm text-gray-500">구독 중인 상품이 없습니다.</p>
+        <Empty
+          imageSrc={IMAGES.MOONER['mooner-sad']}
+          altText="슬픈 무너"
+          message="현재 보유한 구독상품이 없어요"
+          buttonText="구독상품 PICK 하러가기"
+          buttonLink="/home"
+        />
       ) : (
         <div className="grid grid-cols-2 gap-4 w-full">
           {merged.map((sub) => (
