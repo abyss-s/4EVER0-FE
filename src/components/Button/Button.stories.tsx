@@ -56,6 +56,8 @@ export const AllVariants: Story = {
           'link',
           'login',
           'missionStatus',
+          'missionStatusCom',
+          'map',
         ] as ButtonVariant[]
       ).map((variant) => (
         <Button key={variant} variant={variant}>
