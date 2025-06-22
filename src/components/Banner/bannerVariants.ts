@@ -24,6 +24,16 @@ export const bannerVariants = cva(
           'bg-[#ece4fb] text-[#5f4b8b] hover:bg-[#e2d7fa] dark:bg-[#67508a] dark:text-white dark:hover:bg-[#7b64a1]',
         lemon:
           'bg-[#fff9c4] text-[#7a7200] hover:bg-[#fff59d] dark:bg-[#827d1a] dark:text-white dark:hover:bg-[#9a922b]',
+        pinkblue:
+          'bg-gradient-to-r from-pink-300 via-purple-300 to-blue-400 text-white hover:brightness-105 dark:from-pink-500 dark:via-purple-500 dark:to-blue-600',
+        sunrise:
+          'bg-gradient-to-r from-yellow-200 via-orange-300 to-pink-400 text-gray-900 hover:brightness-105 dark:from-yellow-400 dark:via-orange-500 dark:to-pink-600 dark:text-white',
+        ocean:
+          'bg-gradient-to-r from-teal-200 via-cyan-300 to-blue-400 text-white hover:brightness-105 dark:from-teal-400 dark:via-cyan-500 dark:to-blue-600',
+        meadow:
+          'bg-gradient-to-r from-lime-200 via-green-300 to-emerald-400 text-gray-900 hover:brightness-105 dark:from-lime-500 dark:via-green-600 dark:to-emerald-700 dark:text-white',
+        twilight:
+          'bg-gradient-to-r from-indigo-300 via-fuchsia-400 to-pink-400 text-white hover:brightness-105 dark:from-indigo-500 dark:via-fuchsia-500 dark:to-pink-500',
       },
       size: {
         sm: 'p-4 min-h-[80px]',

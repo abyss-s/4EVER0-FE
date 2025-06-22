@@ -34,7 +34,7 @@ export function Banner({
             src={image}
             alt={imageAlt || title}
             className={cn(
-              'object-cover rounded-lg shadow-md',
+              'object-cover rounded-lg',
               layout === 'split'
                 ? 'w-full h-32 md:h-40'
                 : layout === 'centered'

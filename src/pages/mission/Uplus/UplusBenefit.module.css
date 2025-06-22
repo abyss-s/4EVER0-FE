@@ -1,0 +1,24 @@
+.benefitSwiper {
+  width: 100%;
+}
+
+.benefitSwiper :global(.swiper-pagination) {
+  position: static !important;
+  margin-top: 16px !important;
+  text-align: center !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+
+.benefitSwiper :global(.swiper-pagination-bullet) {
+  background-color: #d1d5db;
+  opacity: 1;
+}
+
+.benefitSwiper :global(.swiper-pagination-bullet-active) {
+  background-color: #6366f1;
+}
