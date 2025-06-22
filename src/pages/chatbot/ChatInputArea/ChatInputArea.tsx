@@ -5,6 +5,9 @@ import { Button } from '@/components/Button';
 import { Plus, Lock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '@/stores/useAuthStore';
+import { Alert } from '@/components/ui/alert';
+import { createAlertHelper, AlertState } from '@/utils/alertUtils';
+import { ServiceData } from './ServiceCard';
 
 interface ChatInputAreaProps {
   ubtiInProgress: boolean;
@@ -33,6 +36,10 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
   const [showServiceDrawer, setShowServiceDrawer] = React.useState(false);
   const [showTooltip, setShowTooltip] = React.useState(false);
   const { isLoggedIn } = useAuthStore();
+
+  // Alert 상태
+  const [alert, setAlert] = React.useState<AlertState | null>(null);
+  const showAlert = createAlertHelper(setAlert);
 
   // 첫 방문시 툴팁 자동 표시하기 위한 로컬스토리지 사용
   React.useEffect(() => {
@@ -97,24 +104,14 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
     },
   ] as const;
 
-  const handleServiceClick = (service: {
-    id: string;
-    icon: string;
-    title: string;
-    subtitle?: string;
-    description: string;
-    action: () => void;
-    color?: string;
-    requiresLogin: boolean;
-    disabled?: boolean;
-  }) => {
+  const handleServiceClick = (service: ServiceData) => {
     if (service.disabled) {
-      alert('준비중인 기능입니다. 조금만 기다려주세요! 🙏');
+      showAlert('준비중인 기능', '준비중인 기능입니다. 조금만 기다려주세요! 🙏');
       return;
     }
 
     if (service.requiresLogin && !isLoggedIn) {
-      alert('로그인이 필요한 서비스입니다. 로그인 후 이용해주세요!');
+      showAlert('로그인 필요', '로그인이 필요한 서비스입니다. 로그인 후 이용해주세요!');
       return;
     }
 
@@ -148,6 +145,18 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
 
   return (
     <>
+      {/* Alert - 탑 네비게이션 아래 위치 */}
+      {alert && (
+        <div className="fixed top-20 left-4 right-4 z-50">
+          <Alert
+            title={alert.title}
+            description={alert.description}
+            variant={alert.variant}
+            className="mx-auto max-w-sm"
+          />
+        </div>
+      )}
+
       {/* 바텀 드로어 - 로그인 상태별 잠금 처리 */}
       <AnimatePresence>
         {showServiceDrawer && (
