@@ -103,7 +103,7 @@
 // };
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
+// import { Progress } from '@/components/ui/progress';
 import { Brain, Heart, Zap, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Message } from '@/types/chat';
