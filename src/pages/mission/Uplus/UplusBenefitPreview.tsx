@@ -10,7 +10,11 @@ import { getBrandBackgroundColor } from '@/utils/brandColor';
 import { getDday } from '@/utils/format/getDday';
 import { cn } from '@/lib/utils';
 
-export const UplusBenefitPreview = () => {
+interface UplusBenefitPreviewProps {
+  selectedCategory: string;
+}
+
+export const UplusBenefitPreview = ({ selectedCategory }: UplusBenefitPreviewProps) => {
   const [benefits, setBenefits] = useState<Benefit[] | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -28,7 +32,13 @@ export const UplusBenefitPreview = () => {
     return <p className="text-sm text-gray-400 px-2">혜택을 불러오는 중입니다...</p>;
   }
 
-  const sortedBenefits = [...benefits].sort(
+  // 카테고리 필터링 적용
+  const filteredBenefits =
+    selectedCategory === '전체'
+      ? (benefits ?? [])
+      : (benefits ?? []).filter((benefit) => benefit.category === selectedCategory);
+
+  const sortedBenefits = [...(filteredBenefits ?? [])].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
   );
 
