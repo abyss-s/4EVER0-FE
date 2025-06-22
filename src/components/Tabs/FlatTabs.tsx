@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
-interface TossTabsProps {
+interface FlatTabsProps {
   tabs: string[];
   defaultTab?: string;
   onChange?: (value: string) => void;
   className?: string;
 }
 
-export const TossTabs = ({ tabs, defaultTab, onChange, className }: TossTabsProps) => {
+export const FlatTabs = ({ tabs, defaultTab, onChange, className }: FlatTabsProps) => {
   const [selected, setSelected] = useState(defaultTab ?? tabs[0]);
 
   const handleClick = (tab: string) => {

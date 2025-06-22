@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { TossTabs } from './TabsTossStyle';
+import { FlatTabs } from './FlatTabs';
 import { useState } from 'react';
 
-const meta: Meta<typeof TossTabs> = {
+const meta: Meta<typeof FlatTabs> = {
   title: 'Components/TossTabs',
-  component: TossTabs,
+  component: FlatTabs,
   tags: ['autodocs'],
   argTypes: {
     defaultTab: { control: 'text' },
@@ -13,7 +13,7 @@ const meta: Meta<typeof TossTabs> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof TossTabs>;
+type Story = StoryObj<typeof FlatTabs>;
 
 export const Playground: Story = {
   render: (args) => {
@@ -21,7 +21,7 @@ export const Playground: Story = {
 
     return (
       <div>
-        <TossTabs {...args} onChange={setSelected} />
+        <FlatTabs {...args} onChange={setSelected} />
         <div className="mt-4 p-4 bg-gray-50 rounded-md">
           <p className="text-sm text-gray-700">
             선택된 탭: <strong>{selected}</strong>

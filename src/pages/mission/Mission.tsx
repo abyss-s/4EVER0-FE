@@ -1,4 +1,4 @@
-import { TossTabs } from '@/components/Tabs/TabsTossStyle';
+import { FlatTabs } from '@/components/Tabs/FlatTabs';
 import { AttendanceBanner } from './Attendance/AttendanceBanner';
 import { AttendanceCalendar } from './Attendance/AttendanceCalendar';
 import { MissionList } from '@/components/MissionList/MissionList';
@@ -15,7 +15,7 @@ const MissionPage = () => {
 
   return (
     <div className="p-4 pt-1">
-      <TossTabs tabs={TABS} defaultTab="출석" onChange={setSelectedTab} />
+      <FlatTabs tabs={TABS} defaultTab="출석" onChange={setSelectedTab} />
 
       <div className="mt-6">
         {selectedTab === '출석' && (
