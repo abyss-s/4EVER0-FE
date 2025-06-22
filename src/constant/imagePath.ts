@@ -1,4 +1,14 @@
 export const IMAGES = {
+  BANNER: {
+    TACO_SIGNAL: '/images/banner-1.png',
+    NERGET_PLAN: '/images/banner-2.png',
+    HOTPLACE: '/images/banner-3.png',
+    UPTP: '/images/banner-4.png',
+    TACO_SIGNAL_DESKTOP: '/images/banner-1-desktop.png',
+    NERGET_PLAN_DESKTOP: '/images/banner-2-desktop.png',
+    HOTPLACE_DESKTOP: '/images/banner-3-desktop.png',
+    UPTP_DESKTOP: '/images/banner-4-desktop.png',
+  },
   MOONER: {
     'mooner-phone': '/images/mooner-phone.svg',
     'mooner-chat': '/images/mooner-chat.png',
