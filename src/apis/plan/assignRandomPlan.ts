@@ -1,5 +1,5 @@
-import axios from 'axios';
+import { apiWithoutToken } from '@/lib/api/apiconfig';
 
 export const assignRandomPlan = async () => {
-  return axios.post('/user/plans/random');
+  return apiWithoutToken.post('/user/plans/random');
 };
