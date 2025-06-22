@@ -74,11 +74,11 @@ const MyPage: React.FC = () => {
   ];
   return (
     <div className="pb-20 space-y-8">
-      <h2 className="title-1 mt-6 flex items-center gap-2">
+      <h2 className="title-1 mt-6 flex items-center text-brand-darkblue gap-2">
         <img src={IMAGES.MOONER['mooner-phone']} alt="문어 아이콘" className="w-15 h-15" />
         {profile?.name ?? '고객'} 님 안녕하세요!
       </h2>
-      <h3 className="title-2 mb-4 mt-4">내 요금제</h3>
+      <h1 className="text-xl font-bold text-brand-darkblue mb-4">내 요금제</h1>
       <BillSummaryCard
         phoneNumber={profile?.phoneNumber ?? '010-****-****'}
         planName={plan.name}
@@ -86,7 +86,7 @@ const MyPage: React.FC = () => {
         amount={Number(plan.price)}
         usageData={usageData}
       />
-      <h3 className="title-2 mb-4 mt-4">내 정보</h3>
+      <h1 className="text-xl font-bold text-brand-darkblue mb-4">내 정보</h1>
       <div className="grid grid-cols-2 gap-4">
         <Link to="coupons">
           <Card clickable>
@@ -111,7 +111,7 @@ const MyPage: React.FC = () => {
         </Card>
       </div>
 
-      <h3 className="title-2 mb-4 mt-4">요금제 설정</h3>
+      <h1 className="text-xl font-bold text-brand-darkblue mb-4">요금제 설정</h1>
       <div className="grid grid-cols-2 gap-4">
         <Card clickable>
           <CardContent className="text-center py-2.5 caption-1  leading-tight">
@@ -126,9 +126,9 @@ const MyPage: React.FC = () => {
       </div>
 
       <div>
-        <h3 className="title-2 mb-4 mt-4">
+        <h1 className="text-xl font-bold text-brand-darkblue mb-4">
           내 활동 <span className="text-red-400 font-bold">4</span>개
-        </h3>
+        </h1>
         <div className="grid grid-cols-2 gap-4">
           <Link to="subscriptions">
             <Card clickable>

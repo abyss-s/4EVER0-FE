@@ -85,7 +85,7 @@ const Home: React.FC = () => {
           <div className="flex justify-center">프로필 정보 로딩 중…</div>
         ) : plan ? (
           <div className="mb-4">
-            <h1 className="text-xl font-bold">내 요금제</h1>
+            <h1 className="text-xl font-bold text-brand-darkblue mb-4">내 요금제</h1>
             <BillSummaryCard
               phoneNumber={profile?.phoneNumber ?? '010-****-****'}
               planName={plan.name}
