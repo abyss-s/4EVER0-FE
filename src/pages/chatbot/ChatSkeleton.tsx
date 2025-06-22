@@ -163,3 +163,46 @@ export const CardLoadingIndicator: React.FC = () => {
     </div>
   );
 };
+
+export const UBTILoadingIndicator: React.FC = () => {
+  return (
+    <div className="flex w-full mb-4 justify-start">
+      <div className="w-8 h-8 mr-2 mt-1 flex-shrink-0">
+        <AvatarComponent src={IMAGES.MOONER['mooner-chat']} />
+      </div>
+
+      <div className="bg-brand-yellow-light px-4 py-3 rounded-lg rounded-tl-none shadow-sm">
+        <div className="flex items-center gap-2">
+          <div className="flex gap-1">
+            <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"></div>
+            <div
+              className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"
+              style={{ animationDelay: '0.1s' }}
+            ></div>
+            <div
+              className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"
+              style={{ animationDelay: '0.2s' }}
+            ></div>
+          </div>
+          <span className="text-sm text-purple-600">🐙 타코시그널 분석 중...</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const LikesLoadingIndicator: React.FC = () => {
+  return (
+    <div className="flex w-full mb-4 justify-start">
+      <div className="w-8 h-8 mr-2 mt-1 flex-shrink-0">
+        <AvatarComponent src={IMAGES.MOONER['mooner-chat']} />
+      </div>
+      <div className="flex flex-col gap-3">
+        <div className="flex gap-3">
+          <CardSkeleton type="subscription" />
+        </div>
+        <div className="text-sm text-pink-500 animate-pulse">💜 취향저격 추천 준비 중...</div>
+      </div>
+    </div>
+  );
+};
