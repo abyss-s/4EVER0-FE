@@ -8,8 +8,7 @@ import { Button } from '@/components/Button';
 import { IMAGES } from '@/constant/imagePath';
 import { useCurrentPlan } from '@/hooks/useCurrentPlan';
 import { BillSummaryCard } from '@/components/ui/billsummarycard';
-// import { Card, CardContent } from '@/components/Card';
-import PromotionalBanner from '@/components/Banner/PromotionalBanner';
+import PromotionalBanner from '@/components/PromotionalBanner/PromotionalBanner';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -80,6 +79,8 @@ const Home: React.FC = () => {
         className="mb-4"
       />
 
+      <PromotionalBanner navigate={navigate} />
+
       {isLoggedIn ? (
         profileLoading || planLoading ? (
           <div className="flex justify-center">프로필 정보 로딩 중…</div>
@@ -115,9 +116,7 @@ const Home: React.FC = () => {
             </div>
           </div>
         )
-      ) : (
-        <PromotionalBanner navigate={navigate} />
-      )}
+      ) : null}
 
       <Subscription />
     </div>
