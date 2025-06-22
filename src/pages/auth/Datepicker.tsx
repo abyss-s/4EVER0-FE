@@ -5,6 +5,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { toDateString } from '@/utils/format/date'; // ✅ 유틸에서 가져온 함수 사용
 
 interface Calendar28Props {
   value: string; // YYYY-MM-DD
@@ -29,11 +30,6 @@ export function Calendar28({
     setInputValue(value);
     setMonth(parsedDate);
   }, [value]);
-
-  const toDateString = (date: Date) => {
-    const offsetMs = date.getTimezoneOffset() * 60000;
-    return new Date(date.getTime() - offsetMs).toISOString().substring(0, 10);
-  };
 
   return (
     <div className="flex flex-col gap-3">
