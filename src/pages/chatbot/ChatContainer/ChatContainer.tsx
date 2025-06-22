@@ -15,8 +15,14 @@ import { ChatInputArea } from '../ChatInputArea/ChatInputArea';
 import { LoadingOverlay } from '../../ubti/LoadingOverlay';
 import { SubscriptionRecommendationsData } from '@/types/streaming';
 import { fetchUBTIResult } from '@/apis/ubti/ubti';
+import { useScrollTracker } from '@/hooks/useScrollTracker';
+import { ScrollToTopButton } from '@/components/common/ScrollToTopButton/ScrollToTopButton';
 
 export const ChatContainer: React.FC = () => {
+  // 스크롤 이벤트 감지용
+  const scrollRef = useRef<HTMLDivElement>(null);
+  useScrollTracker(scrollRef);
+
   const [isMunerTone, setIsMunerTone] = useState(false);
   const [isLoadingResult, setIsLoadingResult] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -321,6 +327,7 @@ export const ChatContainer: React.FC = () => {
           currentSubscriptionRecommendations as SubscriptionRecommendationsData
         }
         messagesEndRef={messagesEndRef}
+        scrollRef={scrollRef}
       />
 
       {/* 입력 영역 */}
@@ -336,6 +343,8 @@ export const ChatContainer: React.FC = () => {
         onUsageRecommendation={handleUsageRecommendation}
         onResetChat={resetChat}
       />
+
+      <ScrollToTopButton scrollRef={scrollRef} />
     </div>
   );
 };
