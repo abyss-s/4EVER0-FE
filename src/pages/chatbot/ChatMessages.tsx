@@ -1,6 +1,12 @@
 import React from 'react';
 import ChatBubble from './ChatBubble';
-import { TypingIndicator, CardLoadingIndicator } from './ChatSkeleton';
+import {
+  TypingIndicator,
+  CardLoadingIndicator,
+  UBTILoadingIndicator,
+  LikesLoadingIndicator,
+} from './ChatSkeleton';
+
 import { Message } from '@/types/chat';
 import { PlanRecommendation, SubscriptionRecommendationsData } from '@/types/streaming';
 import { StreamingState } from '@/hooks/useStreamingChat';
@@ -29,6 +35,10 @@ export const ChatMessages: React.FC<ChatMessagesProps> = React.memo(
           return <TypingIndicator />;
         case 'receiving_cards':
           return <CardLoadingIndicator />;
+        case 'ubti_loading':
+          return <UBTILoadingIndicator />;
+        case 'likes_loading':
+          return <LikesLoadingIndicator />;
         case 'receiving_text':
           return null;
         default:
