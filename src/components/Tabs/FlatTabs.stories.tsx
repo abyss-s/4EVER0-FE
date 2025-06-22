@@ -3,7 +3,7 @@ import { FlatTabs } from './FlatTabs';
 import { useState } from 'react';
 
 const meta: Meta<typeof FlatTabs> = {
-  title: 'Components/TossTabs',
+  title: 'Components/FlatTabs',
   component: FlatTabs,
   tags: ['autodocs'],
   argTypes: {
