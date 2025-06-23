@@ -96,7 +96,7 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
       </div>
 
       {/* 크로스플랫폼 대응 */}
-      <div className="hidden md:block" style={{ aspectRatio: '581/168' }}>
+      <div className="hidden md:block" style={{ aspectRatio: '581/200' }}>
         <img
           src={currentBanner.desktopImage}
           alt={`배너 이미지 ${currentSlide + 1}`}
