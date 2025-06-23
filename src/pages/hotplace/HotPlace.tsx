@@ -8,6 +8,9 @@ import { Card, CardContent } from '@/components/Card';
 import { MapPin, Store, TrendingUp } from 'lucide-react';
 import { IMAGES } from '@/constant/imagePath';
 import LoadingMooner from '@/pages/common/LoadingMooner';
+import { fetchLikedCoupons } from '@/apis/like/getLikeCoupons';
+
+const allBrandIds = [1, 2, 3, 4, 5, 6, 7, 8];
 
 const HotPlace = () => {
   const [bestDeals, setBestDeals] = useState<TopCoupon[]>([]);
@@ -15,13 +18,34 @@ const HotPlace = () => {
   const [option, setOption] = useState<'popup' | 'store'>('popup');
   const [mapLoading, setMapLoading] = useState(true);
   const [showMapLoader, setShowMapLoader] = useState(false);
+
   const [searchParams] = useSearchParams();
   const subscribedBrandIdsParam = searchParams.get('subscribedBrandIds');
-  const subscribedBrandIds = subscribedBrandIdsParam
-    ? subscribedBrandIdsParam.split(',').map((id) => Number(id))
-    : [1, 3, 4];
-  const selectedBrandIds: number[] = subscribedBrandIds;
-  const allBrandIds = [1, 2, 3, 4, 5, 6, 7, 8];
+  const [selectedBrandIds, setSelectedBrandIds] = useState<number[] | null>(null);
+
+  //렌더링 시 하트 설정 방법
+  useEffect(() => {
+    if (subscribedBrandIdsParam) {
+      // 쿼리 파라미터가 있으면 최우선
+      const brandIds = subscribedBrandIdsParam
+        .split(',')
+        .map((id) => Number(id))
+        .filter((id) => !isNaN(id));
+      setSelectedBrandIds(brandIds.length > 0 ? brandIds : [1, 3, 4]);
+    } else {
+      // 쿼리 파라미터 없으면, API 호출
+      const loadLikedBrandIds = async () => {
+        try {
+          const likedCoupons = await fetchLikedCoupons();
+          const brandIds = Array.from(new Set(likedCoupons.map((c) => c.brand_id)));
+          setSelectedBrandIds(brandIds.length > 0 ? brandIds : [1, 3, 4]);
+        } catch {
+          setSelectedBrandIds([1, 3, 4]);
+        }
+      };
+      loadLikedBrandIds();
+    }
+  }, [subscribedBrandIdsParam]);
 
   useEffect(() => {
     if (mapLoading) {
@@ -46,15 +70,6 @@ const HotPlace = () => {
     fetchCoupons();
   }, []);
 
-  useEffect(() => {
-    if (mapLoading) {
-      const timer = setTimeout(() => setShowMapLoader(true), 2000);
-      return () => clearTimeout(timer);
-    } else {
-      setShowMapLoader(false);
-    }
-  }, [mapLoading]);
-
   const getDiscountLabel = (deal: TopCoupon) => {
     if (!deal) return '';
     return deal.discountType === 'PERCENT'
@@ -68,7 +83,7 @@ const HotPlace = () => {
       <div className="px-4">
         <h2 className="title-1 mt-6 flex items-center text-brand-darkblue gap-2">
           <img src={IMAGES.MOONER['mooner-hotplace']} alt="문어 아이콘" className="w-15 h-15" />
-          요즘 뜨는핫플레이스를 찾고, <br></br>내 근처 쿠폰을 저장해보세요!
+          요즘 뜨는핫플레이스를 찾고, <br />내 근처 쿠폰을 저장해보세요!
         </h2>
 
         {/* MZ PICK 배너 */}
@@ -132,9 +147,11 @@ const HotPlace = () => {
               <PopupMap onLoadingChange={setMapLoading} />
             ) : (
               <StoreMap
+                key={selectedBrandIds?.join('-') ?? ''}
                 allBrandIds={allBrandIds}
-                selectedIds={selectedBrandIds}
+                selectedIds={selectedBrandIds ?? []}
                 onLoadingChange={setMapLoading}
+                onChangeSelectedIds={setSelectedBrandIds}
               />
             )}
           </CardContent>

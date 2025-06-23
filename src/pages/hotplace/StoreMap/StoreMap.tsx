@@ -14,6 +14,7 @@ interface StoreMapProps {
   allBrandIds: number[];
   selectedIds: number[];
   onLoadingChange?: (loading: boolean) => void;
+  onChangeSelectedIds?: (ids: number[]) => void;
 }
 
 interface StoreData {
@@ -30,9 +31,8 @@ export default function StoreMap({
   selectedIds,
   allBrandIds,
   onLoadingChange,
+  onChangeSelectedIds,
 }: StoreMapProps) {
-  const [selectedBrandIds, setSelectedBrandIds] = useState<number[]>([]);
-
   const [nearbyStores, setNearbyStores] = useState<StoreData[]>([]);
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lng: number }>({
     lat: 37.503325874722,
@@ -55,11 +55,6 @@ export default function StoreMap({
   const currentLocationMarkerRef = useRef<naver.maps.Marker | null>(null);
   const mapEventListenersRef = useRef<naver.maps.MapEventListener[]>([]);
   const markersInitializedRef = useRef(false);
-
-  // selectedIds prop이 바뀌면 내부 상태 동기화
-  useEffect(() => {
-    setSelectedBrandIds(selectedIds);
-  }, [selectedIds]);
 
   const openPopover = useCallback((store: StoreData) => {
     setSelectedStore(store);
@@ -84,7 +79,7 @@ export default function StoreMap({
           return;
         }
 
-        if (selectedBrandIds.length === 0) {
+        if (selectedIds.length === 0) {
           setNearbyStores([]);
           setLoading(false);
           return;
@@ -93,7 +88,7 @@ export default function StoreMap({
         const response = await getNearbyCoupons(
           currentLocation.lat,
           currentLocation.lng,
-          selectedBrandIds,
+          selectedIds,
         );
 
         if (Array.isArray(response)) {
@@ -117,9 +112,8 @@ export default function StoreMap({
     };
 
     fetchStores();
-  }, [currentLocation, selectedBrandIds]);
+  }, [currentLocation, selectedIds]);
 
-  // 현재 위치 가져오기
   const getCurrentLocation = useCallback(() => {
     if (!navigator.geolocation) {
       alert('이 브라우저는 위치 서비스를 지원하지 않습니다.');
@@ -365,8 +359,8 @@ export default function StoreMap({
         loadingLocation={loadingLocation}
         onGetCurrentLocation={getCurrentLocation}
         brandIds={allBrandIds}
-        selectedIds={selectedBrandIds}
-        onChangeSelectedIds={setSelectedBrandIds}
+        selectedIds={selectedIds}
+        onChangeSelectedIds={onChangeSelectedIds ?? (() => {})}
       />
 
       <MapLegend popupCount={nearbyStores.length} hasCurrentLocation={!!currentLocation} />

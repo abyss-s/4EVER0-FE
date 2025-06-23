@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/Popover';
 import { Heart, HeartIcon } from 'lucide-react';
+import { changeCouponLike } from '@/apis/coupon/changeCouponlike';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-// 내부에서 brandId로 매칭
 const BRAND_META = [
   { id: 1, name: '리디셀렉트', logoUrl: '/logo/ridi.png' },
   { id: 2, name: '배스킨라빈스', logoUrl: '/logo/baskin.png' },
@@ -27,6 +28,18 @@ const SelectorPopover = ({
 }: BrandSelectorPopoverProps) => {
   const [open, setOpen] = useState(false);
   const [localSelected, setLocalSelected] = useState<number[]>(selectedIds || []);
+  const queryClient = useQueryClient();
+
+  // 좋아요 변경 mutation (배열 처리)
+  const { mutateAsync: changeLikeMutate } = useMutation({
+    mutationFn: async (ids: number[]) => {
+      // 추가/삭제 모두 처리 (실패 무시)
+      await Promise.all(ids.map((id) => changeCouponLike(id).catch(() => {})));
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userLikeCoupons'] });
+    },
+  });
 
   useEffect(() => {
     if (open) {
@@ -40,19 +53,27 @@ const SelectorPopover = ({
     );
   };
 
-  const handleApply = () => {
+  const handleApply = async () => {
     setOpen(false);
+
+    // 추가된 brand_id, 제거된 brand_id 구분
+    const added = localSelected.filter((id) => !selectedIds.includes(id));
+    const removed = selectedIds.filter((id) => !localSelected.includes(id));
+    const idsToChange = [...added, ...removed];
+
+    // mutation으로 API와 쿼리 무효화 처리
+    if (idsToChange.length > 0) {
+      await changeLikeMutate(idsToChange);
+    }
+
     if (onChange) {
       onChange(localSelected);
     }
   };
 
-  // brandIds 안전 처리 강화
   if (!brandIds || !Array.isArray(brandIds)) {
-    return null; // 또는 에러 상태 표시
+    return null;
   }
-
-  // brandIds만 들어왔으니, 해당하는 브랜드만 렌더
   const brandsToShow = BRAND_META.filter((b) => brandIds.includes(b.id));
 
   return (
@@ -63,9 +84,7 @@ const SelectorPopover = ({
           <span className="text-xs font-medium text-gray-700 whitespace-nowrap">브랜드 선택</span>
         </div>
       </PopoverTrigger>
-
       <PopoverContent variant="light" sideOffset={8} className="w-64 max-h-80 p-4 flex flex-col">
-        {/* 스크롤 영역 */}
         <div className="flex-1 flex flex-col space-y-2 overflow-y-auto pr-1 mb-3">
           {brandsToShow.map((brand) => (
             <button
