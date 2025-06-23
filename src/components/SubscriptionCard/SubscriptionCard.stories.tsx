@@ -33,14 +33,14 @@ const mockMainSubscription: MainSubscription = {
   title: '넷플릭스',
   category: 'OTT',
   price: 13900,
-  image_url: 'https://via.placeholder.com/80x40?text=Netflix',
+  image_url: '',
 };
 
 const mockLifeBrand: LifeBrand = {
   id: 1,
   name: '스타벅스 아메리카노',
   description: '매일 아침 커피 한잔의 여유',
-  image_url: 'https://via.placeholder.com/80x40?text=Starbucks',
+  image_url: '',
 };
 
 const onSubscribe = (s: MainSubscription) => alert(`구독하러 가기: ${s.title}`);
