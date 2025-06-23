@@ -25,11 +25,15 @@ const BillSummaryCard = ({
     <div className="w-full rounded-xl p-4 shadow-sm bg-card text-card-foreground border border-gray-50 hover:shadow-md transition-all">
       <div className="flex justify-between items-center mb-1">
         <p className="title-2">{phoneNumber}</p>
-        <button onClick={handleToggle} className="text-gray-500 hover:text-black transition">
+        <button
+          onClick={handleToggle}
+          className="w-8 h-8 p-1 flex items-center justify-center text-gray-700 hover:bg-gray-100 rounded-full transition"
+          aria-label="상세 요금 펼치기"
+        >
           {expanded ? (
-            <ChevronUpIcon className="w-4 h-4" />
+            <ChevronUpIcon className="w-5 h-5" />
           ) : (
-            <ChevronDownIcon className="w-4 h-4" />
+            <ChevronDownIcon className="w-5 h-5" />
           )}
         </button>
       </div>

@@ -38,7 +38,7 @@ export const SubscriptionSteps = ({ className }: SubscriptionStepsProps) => {
   const subscribeMutation = usePostSubscription({
     onSuccess: (data) => {
       console.log('구독 성공:', data.data);
-      navigate('/subscription/success');
+      navigate('/me/subscriptions');
     },
     onError: (error) => {
       console.error('구독 실패:', error);
