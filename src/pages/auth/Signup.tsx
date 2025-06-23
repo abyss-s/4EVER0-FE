@@ -89,13 +89,13 @@ const Signup: React.FC = () => {
         name: formData.name,
         birth: formData.birthDate,
       });
+      await loginViaProvider(provider);
 
       setAlert({
         variant: 'default',
         title: '회원가입 완료',
         description: '환영합니다! 서비스 이용을 시작하세요.',
       });
-      loginViaProvider(provider);
     } catch (error: unknown) {
       setAlert({
         variant: 'destructive',

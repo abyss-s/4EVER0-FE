@@ -26,7 +26,9 @@ const MyPage: React.FC = () => {
   const { data: coupons = [] } = useQuery({
     queryKey: ['userCoupons'],
     queryFn: fetchUserCoupons,
+    refetchOnMount: true,
   });
+
   const availableCoupons = coupons.filter((c) => c.isUsed === false);
 
   const [shouldShowLoading, setShouldShowLoading] = useState(false);
@@ -167,12 +169,14 @@ const MyPage: React.FC = () => {
             </Card>
           </Link>
 
-          <Card clickable>
-            <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
-              <FolderHeart className="w-6 h-6" />
-              <span className="caption-1">좋아요한 쿠폰 목록</span>
-            </CardContent>
-          </Card>
+          <Link to="likes">
+            <Card clickable>
+              <CardContent className="flex flex-col items-center justify-center py-4 gap-1 whitespace-nowrap text-center">
+                <FolderHeart className="w-6 h-6" />
+                <span className="caption-1">좋아요한 쿠폰 목록</span>
+              </CardContent>
+            </Card>
+          </Link>
         </div>
       </div>
     </div>

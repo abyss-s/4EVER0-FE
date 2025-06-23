@@ -7,11 +7,13 @@ import { UplusBenefitPreview } from './Uplus/UplusBenefitPreview';
 import { useState } from 'react';
 import { UplusBanner } from './Uplus/UplusBanner';
 import { MissionBanner } from './Mission/MissionBanner';
+import { CategoryFilter } from './Uplus/CategoryFilter';
 
 const TABS = ['출석', '유플투쁠', '미션'];
 
 const MissionPage = () => {
   const [selectedTab, setSelectedTab] = useState('출석');
+  const [selectedCategory, setSelectedCategory] = useState('전체');
 
   return (
     <div className="p-4 pt-1">
@@ -28,8 +30,16 @@ const MissionPage = () => {
         {selectedTab === '유플투쁠' && (
           <>
             <UplusBanner />
-            <UplusCalendar />
-            <UplusBenefitPreview />
+            {/* 카테고리 필터 버튼 뷰 (공통) */}
+            <CategoryFilter selected={selectedCategory} onSelect={setSelectedCategory} />
+
+            {/* 선택된 카테고리에 따라 컴포넌트에 전달 */}
+            <div className="mt-4">
+              <UplusCalendar selectedCategory={selectedCategory} />
+            </div>
+            <div className="mt-4">
+              <UplusBenefitPreview selectedCategory={selectedCategory} />
+            </div>
           </>
         )}
 

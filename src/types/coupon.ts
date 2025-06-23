@@ -14,19 +14,19 @@ export type Coupon = {
   endDate?: string;
 };
 export type RawCoupon = {
-  couponId: number;
+  coupon_id: number;
   title: string;
-  discount_value: number;
-  discount_type: 'PERCENT' | 'FIXED';
+  discount_value?: number;
+  discount_type?: 'PERCENT' | 'FIXED';
+  is_used: boolean;
+  start_date: string;
+  end_date: string;
   brand: {
     id: number;
     name: string;
-    imageUrl: string;
+    image_url: string;
     category?: string | null;
   };
-  isUsed: boolean;
-  start_date: string;
-  end_date: string;
 };
 export interface PlaceInfo {
   id?: number; // 서버에서 id가 없다면 선택적
