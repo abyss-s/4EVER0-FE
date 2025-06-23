@@ -214,9 +214,11 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
                     ? '원하는 서비스를 선택해보세요 ✨'
                     : '지금 바로 로그인하러 가볼까요? 🔐'}
                 </p>
-                <Button size="lg" variant="login" onClick={() => navigate('/login')}>
-                  로그인하기
-                </Button>
+                {!isLoggedIn && (
+                  <Button size="lg" variant="login" onClick={() => navigate('/login')}>
+                    로그인하기
+                  </Button>
+                )}
               </div>
             </motion.div>
           </>
