@@ -98,22 +98,37 @@ export const UBTI: React.FC = () => {
     }
   };
 
-  // 초기 데이터 로딩
   useEffect(() => {
     const state = location.state as UBTIResultResponse | undefined;
 
     if (state?.data) {
-      setShowResultLoading(true); // 결과 로딩 표시 시작
+      setShowResultLoading(true);
       setTimeout(() => {
         setResult(state.data);
+
+        // 동적 타코 이미지 설정 - ID별 매핑
+        const typeMapping: Record<number, { front: string; back: string }> = {
+          1: { front: 'taco-sub-front', back: 'taco-sub-back' }, // 말 많은 수다타코 (기본)
+          2: { front: 'taco-spicy-front', back: 'taco-spicy-back' }, // 열정 넘치는 매운타코
+          3: { front: 'taco-eggy-front', back: 'taco-eggy-back' }, // 집콕영상 마요타코
+          4: { front: 'taco-greeny-front', back: 'taco-greeny-back' }, // 감성뮤직 초록타코
+          5: { front: 'taco-milky-front', back: 'taco-milky-back' }, // 느긋한 라이트타코
+          6: { front: 'taco-berry-front', back: 'taco-berry-back' }, // 달콤상큼 베리타코
+          7: { front: 'taco-crunch-front', back: 'taco-crunch-back' }, // 달달꿀 허니타코
+          8: { front: 'taco-wasab-front', back: 'taco-wasab-back' }, // 시원한 민트타코
+        };
+
+        const tacoImages = typeMapping[state.data.ubti_type.id] || typeMapping[1]; // 기본값 설정
+
         setUbtiType({
-          front_image: IMAGES.TACO['taco-spicy-front'],
-          back_image: IMAGES.TACO['taco-spicy-back'],
+          front_image: IMAGES.TACO[tacoImages.front as keyof typeof IMAGES.TACO],
+          back_image: IMAGES.TACO[tacoImages.back as keyof typeof IMAGES.TACO],
         });
+
         setIsDataReady(true);
         setShowResultLoading(false);
         loadDetailedData(state.data);
-      }, 1500); // 결과 로딩 여부와 상관없이 지연 효과 추가
+      }, 1500);
     } else {
       console.log('데이터 로딩 실패');
       setShowResultLoading(false);
