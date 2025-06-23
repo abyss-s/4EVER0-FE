@@ -1,6 +1,12 @@
 import React from 'react';
 import ChatBubble from './ChatBubble';
-import { TypingIndicator, CardLoadingIndicator } from './ChatSkeleton';
+import {
+  TypingIndicator,
+  CardLoadingIndicator,
+  UBTILoadingIndicator,
+  LikesLoadingIndicator,
+} from './ChatSkeleton';
+
 import { Message } from '@/types/chat';
 import { PlanRecommendation, SubscriptionRecommendationsData } from '@/types/streaming';
 import { StreamingState } from '@/hooks/useStreamingChat';
@@ -29,6 +35,10 @@ export const ChatMessages: React.FC<ChatMessagesProps> = React.memo(
           return <TypingIndicator />;
         case 'receiving_cards':
           return <CardLoadingIndicator />;
+        case 'ubti_loading':
+          return <UBTILoadingIndicator />;
+        case 'likes_loading':
+          return <LikesLoadingIndicator />;
         case 'receiving_text':
           return null;
         default:
@@ -37,7 +47,7 @@ export const ChatMessages: React.FC<ChatMessagesProps> = React.memo(
     }, [streamingState]);
 
     return (
-      <div ref={scrollRef} className="flex-1 overflow-y-auto pb-4">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto py-4 px-1">
         <div className="flex flex-col space-y-2">
           {messages.map((message: Message, index: number) => {
             const isLastMessage = index === messages.length - 1;

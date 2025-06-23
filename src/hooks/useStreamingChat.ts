@@ -20,7 +20,9 @@ export type StreamingState =
   | 'waiting'
   | 'receiving_cards'
   | 'receiving_text'
-  | 'completed';
+  | 'completed'
+  | 'ubti_loading'
+  | 'likes_loading';
 
 export const useStreamingChat = () => {
   const { isLoggedIn } = useAuthStore();
@@ -231,7 +233,7 @@ export const useStreamingChat = () => {
 
   // 공통 스트리밍 처리 로직
   const createStreamingHandlers = useCallback(
-    (userMessage: string, isUBTI: boolean = false) => {
+    (userMessage: string, isUBTI: boolean = false, isLikes: boolean = false) => {
       if (!currentSessionId || currentSession?.isCompleted) return null;
 
       // 로그인 체크
@@ -276,8 +278,17 @@ export const useStreamingChat = () => {
       setCurrentPlanRecommendations([]);
       setCurrentSubscriptionRecommendations(null);
       setCurrentUsageAnalysis(null);
-      setStreamingState('waiting');
-      setExpectingCards(userMessage.includes('추천') || userMessage.includes('요금제'));
+
+      // 각 기능별 로딩 상태 설정
+      if (isUBTI) {
+        setStreamingState('ubti_loading');
+      } else if (isLikes) {
+        setStreamingState('likes_loading');
+      } else {
+        setStreamingState('waiting');
+      }
+
+      setExpectingCards(userMessage.includes('추천') || userMessage.includes('요금제') || isLikes);
 
       return {
         // createStreamingHandlers의 onChunk 함수 개선 (일반 텍스트 처리 부분)
@@ -421,19 +432,41 @@ export const useStreamingChat = () => {
             }
           }
         },
+
         onError: (error: Error) => {
           console.error('[ERROR] Streaming error:', error);
           setStreamingState('idle');
           setExpectingCards(false);
-          updateLastBotMessage(currentSessionId, '요청 처리 중 오류가 발생했습니다.');
+
+          // 서버 연결 오류 구체적 처리 + 새로 시작하기 버튼 트리거
+          let errorMessage = '요청 처리 중 오류가 발생했습니다.';
+
+          if (
+            error.message.includes('fetch') ||
+            error.message.includes('network') ||
+            error.message.includes('Failed to fetch')
+          ) {
+            errorMessage = '서버에 연결할 수 없습니다. 잠시 후 다시 시도하거나 새로 시작해주세요.';
+          } else if (error.message.includes('timeout')) {
+            errorMessage = '요청 시간이 초과되었습니다. 새로 시작해주세요.';
+          } else if (
+            error.message.includes('500') ||
+            error.message.includes('Internal Server Error')
+          ) {
+            errorMessage = '시스템 오류가 발생했습니다. 새로 시작해주세요.';
+          }
+
+          updateLastBotMessage(currentSessionId, errorMessage);
           setCurrentPlanRecommendations([]);
           setCurrentSubscriptionRecommendations(null);
+
           // ref도 초기화
           cardDataRef.current = {
             plans: [],
             subscriptions: null,
             usageAnalysis: null,
           };
+
           if (isUBTI) {
             setUbtiInProgress(false);
             setCurrentUBTIStep(-1);

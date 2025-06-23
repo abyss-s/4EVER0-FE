@@ -332,6 +332,21 @@ const ChatBubble: React.FC<ChatBubbleProps> = React.memo(
               <UsageAnalysisCard data={message.usageAnalysis} className="max-w-sm" />
             </div>
           )}
+
+          {/*  서버 오류시 새로 시작하기 버튼 */}
+          {isBot &&
+            (message.content.includes('서버에 연결할 수 없습니다') ||
+              message.content.includes('요청 처리 중 오류가 발생했습니다') ||
+              message.content.includes('시스템 오류가 발생했습니다')) && (
+              <div className="mt-3">
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-4 py-2 bg-brand-darkblue text-white rounded-lg text-sm hover:bg-brand-darkblue/90 transition-colors"
+                >
+                  🔄 새로 시작하기
+                </button>
+              </div>
+            )}
         </div>
       </div>
     );
