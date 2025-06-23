@@ -1,4 +1,4 @@
-import { VITE_API_BASE_URL } from '@/lib/api/apiconfig';
+import { API_BASE_URL } from '@/lib/api/apiconfig';
 import { StreamingThrottle } from '@/lib/streaming/StreamingThrottle';
 import { processStreamWithThrottle } from '@/lib/streaming/streamProcessor';
 import { createStreamingHeaders, STREAMING_PRESETS } from '@/lib/streaming/utils';
@@ -15,7 +15,7 @@ export async function getLikesRecommendationStreaming(
   onChunk: (chunk: LikesRecommendationChunk) => void,
 ): Promise<void> {
   try {
-    const response = await fetch(`${VITE_API_BASE_URL}/chat/likes`, {
+    const response = await fetch(`${API_BASE_URL}/chat/likes`, {
       method: 'POST',
       headers: createStreamingHeaders(),
       body: JSON.stringify(req),

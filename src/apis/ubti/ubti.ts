@@ -1,6 +1,6 @@
 import { apiWithToken } from '@/lib/api/apiconfig';
 import type { UBTIResultResponse } from '@/types/ubti';
-import { VITE_API_BASE_URL } from '@/lib/api/apiconfig';
+import { API_BASE_URL } from '@/lib/api/apiconfig';
 import { StreamingThrottle } from '@/lib/streaming/StreamingThrottle';
 import {
   processStreamWithThrottle,
@@ -21,7 +21,7 @@ export async function sendUBTIAnswerStreamingWithQuestion(
   onQuestionExtracted?: (question: string) => void,
 ): Promise<void> {
   try {
-    const response = await fetch(`${VITE_API_BASE_URL}/ubti/question`, {
+    const response = await fetch(`${API_BASE_URL}/ubti/question`, {
       method: 'POST',
       headers: createStreamingHeaders(),
       body: JSON.stringify(req),

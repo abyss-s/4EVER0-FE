@@ -1,4 +1,4 @@
-import { VITE_API_BASE_URL } from '@/lib/api/apiconfig';
+import { API_BASE_URL } from '@/lib/api/apiconfig';
 import { StreamingThrottle } from '@/lib/streaming/StreamingThrottle';
 import { processStreamWithThrottle, processStreamFast } from '@/lib/streaming/streamProcessor';
 import { createStreamingHeaders, STREAMING_PRESETS } from '@/lib/streaming/utils';
@@ -15,7 +15,7 @@ export async function sendChatMessageStreaming(
   onChunk: (chunk: SendChatMessageStreamChunk) => void,
 ): Promise<void> {
   try {
-    const response = await fetch(`${VITE_API_BASE_URL}/chat`, {
+    const response = await fetch(`${API_BASE_URL}/chat`, {
       method: 'POST',
       headers: createStreamingHeaders(),
       body: JSON.stringify(req),
@@ -40,7 +40,7 @@ export async function sendChatMessageStreamingFast(
   onChunk: (chunk: SendChatMessageStreamChunk) => void,
 ): Promise<void> {
   try {
-    const response = await fetch(`${VITE_API_BASE_URL}/chat`, {
+    const response = await fetch(`${API_BASE_URL}/chat`, {
       method: 'POST',
       headers: createStreamingHeaders(),
       body: JSON.stringify(req),
