@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { fetchUserCoupons } from '@/apis/coupon/getUserCoupons';
 import type { Coupon } from '@/types/coupon';
@@ -7,6 +7,7 @@ import Empty from '@/pages/common/Empty';
 import { IMAGES } from '@/constant/imagePath';
 import { Coupon as CouponCard } from '@/components/Coupon/Coupon';
 import { Skeleton } from '@/components/Skeleton';
+import CouponBarcodeModal from '@/components/Modal/CouponBarcodeModal';
 
 const Coupons: React.FC = () => {
   const { data: coupons = [], isLoading } = useQuery<Coupon[]>({
@@ -15,6 +16,9 @@ const Coupons: React.FC = () => {
   });
 
   const availableCoupons = coupons.filter((c) => !c.isUsed);
+  const [barcodeModalOpen, setBarcodeModalOpen] = useState(false);
+  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
+
   if (isLoading) {
     return (
       <div className="px-4 py-6 pb-24 space-y-4">
@@ -50,7 +54,7 @@ const Coupons: React.FC = () => {
           buttonLink="/home"
         />
       ) : (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-5">
           {availableCoupons.map((coupon, index) => (
             <CouponCard
               key={coupon.couponId ?? `coupon-${index}`}
@@ -59,9 +63,21 @@ const Coupons: React.FC = () => {
               description={coupon.title}
               dateRange={`${coupon.startDate?.replace(/-/g, '.')} - ${coupon.endDate?.replace(/-/g, '.')}`}
               imageUrl={coupon.brand.imageUrl}
+              onClickUse={() => {
+                setSelectedCoupon(coupon);
+                setBarcodeModalOpen(true);
+              }}
             />
           ))}
         </div>
+      )}
+      {selectedCoupon && (
+        <CouponBarcodeModal
+          open={barcodeModalOpen}
+          onClose={() => setBarcodeModalOpen(false)}
+          brandName={selectedCoupon.brand.name}
+          barcodeValue={selectedCoupon.couponId.toString()}
+        />
       )}
     </div>
   );

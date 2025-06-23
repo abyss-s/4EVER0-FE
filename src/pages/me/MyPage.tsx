@@ -10,12 +10,14 @@ import { IMAGES } from '@/constant/imagePath';
 import { fetchUserCoupons } from '@/apis/coupon/getUserCoupons';
 import LoadingMooner from '@/pages/common/LoadingMooner';
 import { Progress } from '@/components/Progress/Progress';
+import Empty from '@/pages/common/Empty';
 
 const MyPage: React.FC = () => {
   const {
     data: plan,
     isLoading,
     error,
+    refetch,
   } = useQuery({
     queryKey: ['currentPlan'],
     queryFn: fetchCurrentPlan,
@@ -44,7 +46,17 @@ const MyPage: React.FC = () => {
   }, [isLoading]);
 
   if (isLoading && shouldShowLoading) return <LoadingMooner />;
-  if (error || !plan) return <p className="p-4">요금제를 불러오지 못했습니다.</p>;
+  if (error || !plan) {
+    return (
+      <Empty
+        imageSrc={IMAGES.MOONER['mooner-sad']}
+        altText="요금제 에러"
+        message="요금제를 불러오지 못했습니다"
+        buttonText="다시 시도하기"
+        onClickButton={refetch}
+      />
+    );
+  }
 
   const formatUsage = (
     label: string,
@@ -98,7 +110,7 @@ const MyPage: React.FC = () => {
         <div className="px-2 rounded-xl bg-white space-y-1">
           <p className="text-sm text-gray-500">패밀리 등급까지</p>
           <p className="text-m font-bold text-brand-darkblue">
-            {(5000 - profile.point).toLocaleString()}P 남음
+            <span className="text-yellow-500">{(5000 - profile.point).toLocaleString()}P</span> 남음
           </p>
 
           <Progress
