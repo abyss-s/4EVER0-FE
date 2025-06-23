@@ -17,6 +17,7 @@ export const IMAGES = {
     MOONER: '/images/mooner-origin.svg',
     MOONER_GAME: '/images/mooner-game.svg',
     MOONER_PRESENT: '/images/mooner-present.svg',
+    MOONER_PENCIL: '/images/mooner-pencil.svg',
     'mooner-hotplace': '/images/mooner-hotplace.png',
     'mooner-share': 'https://d3e0ocbonj571p.cloudfront.net/MoonoZ.png',
     rotation_1: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_1.png',
