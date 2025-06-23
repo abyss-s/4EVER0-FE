@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 import { IMAGES } from '@/constant/imagePath';
+import { NavigateFunction } from 'react-router-dom';
 
 interface PromotionalBannerProps {
-  navigate: (path: string) => void;
+  navigate: NavigateFunction;
 }
 
 interface BannerItem {
@@ -39,7 +40,7 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
     },
     {
       id: 4,
-      action: () => navigate('/uptp'),
+      action: () => navigate('/mission', { state: { scrollTo: 'uplus' } }),
       mobileImage: IMAGES.BANNER.UPTP,
       desktopImage: IMAGES.BANNER.UPTP_DESKTOP,
     },
