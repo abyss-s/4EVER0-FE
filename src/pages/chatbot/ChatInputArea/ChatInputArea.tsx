@@ -222,7 +222,7 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
       {/* 메인 입력 영역 */}
       <div className="bottom-0 left-0 right-0 flex flex-col space-y-3 bg-white py-3 border-t border-gray-100">
         {/* 입력창 + 플러스 버튼 */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 ">
           {!ubtiInProgress && (
             <div className="relative">
               <Button
@@ -234,10 +234,10 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
                 }}
                 onMouseEnter={() => setShowTooltip(true)}
                 onMouseLeave={() => setShowTooltip(false)}
-                className="shrink-0 rounded-full w-10 h-10 border-gray-300 hover:border-brand-yellow hover:bg-brand-yellow/10 transition-all"
+                className="shrink-0 h-[40px] w-[40px] flex items-center justify-center rounded-lg border border-gray-300 hover:border-brand-yellow hover:bg-brand-yellow/10 transition-all"
                 disabled={buttonDisabled}
               >
-                <Plus className="h-5 w-5 text-gray-600" />
+                <Plus className="h-4 w-4 text-gray-600" />
               </Button>
 
               {/* 툴팁 */}
