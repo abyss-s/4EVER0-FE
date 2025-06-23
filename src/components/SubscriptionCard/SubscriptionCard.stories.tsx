@@ -28,7 +28,7 @@ const meta: Meta<typeof SubscriptionCard> = {
 export default meta;
 type Story = StoryObj<typeof SubscriptionCard>;
 
-const mockMainSubscription = {
+const mockMainSubscription: MainSubscription = {
   id: 1,
   title: '넷플릭스',
   category: 'OTT',
@@ -36,7 +36,7 @@ const mockMainSubscription = {
   image_url: 'https://via.placeholder.com/80x40?text=Netflix',
 };
 
-const mockLifeBrand = {
+const mockLifeBrand: LifeBrand = {
   id: 1,
   name: '스타벅스 아메리카노',
   description: '매일 아침 커피 한잔의 여유',
