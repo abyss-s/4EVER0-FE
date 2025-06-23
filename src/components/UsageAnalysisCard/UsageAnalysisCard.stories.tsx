@@ -5,6 +5,24 @@ import type { UsageAnalysisData } from '@/types/streaming';
 const meta: Meta<typeof UsageAnalysisCard> = {
   title: 'Components/UsageAnalysisCard',
   component: UsageAnalysisCard,
+  tags: ['autodocs'],
+  parameters: {
+    docs: {
+      description: {
+        component: `
+📊 **UsageAnalysisCard**
+
+- 사용자의 요금제 정보와 데이터/음성/SMS 사용량을 분석하여 시각적으로 표시합니다.
+- 사용률에 따라 원형 프로그래스바 색상과 권장사항 메시지가 달라집니다.
+- 예시:
+  - 20%: 여유 있음
+  - 50%: 적정 사용
+  - 75%: 주의 필요
+  - 95%: 요금제 업그레이드 권장
+        `,
+      },
+    },
+  },
 };
 
 export default meta;
