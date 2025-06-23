@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ChatInput } from './ChatInput';
 import { ServiceCard } from './ServiceCard';
 import { Button } from '@/components/Button';
@@ -36,6 +37,7 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
   const [showServiceDrawer, setShowServiceDrawer] = React.useState(false);
   const [showTooltip, setShowTooltip] = React.useState(false);
   const { isLoggedIn } = useAuthStore();
+  const navigate = useNavigate();
 
   // Alert 상태
   const [alert, setAlert] = React.useState<AlertState | null>(null);
@@ -194,7 +196,6 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
                   </div>
                 </div>
               )}
-
               {/* Services Grid - 2x2 그리드 */}
               <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto">
                 {services.map((service) => (
@@ -208,11 +209,14 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
               </div>
 
               <div className="text-center mt-6">
-                <p className="text-xs text-gray-500">
+                <p className="text-caption-1 text-gray-500 pb-3">
                   {isLoggedIn
                     ? '원하는 서비스를 선택해보세요 ✨'
-                    : '지금 로그인하고 모든 기능을 이용해보세요! 🔐'}
+                    : '지금 바로 로그인하러 가볼까요? 🔐'}
                 </p>
+                <Button size="lg" variant="login" onClick={() => navigate('/login')}>
+                  로그인하기
+                </Button>
               </div>
             </motion.div>
           </>
