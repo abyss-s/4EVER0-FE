@@ -12,6 +12,7 @@ export type Coupon = {
   isUsed: boolean;
   startDate?: string;
   endDate?: string;
+  barcodeImageUrl?: string;
 };
 export type RawCoupon = {
   coupon_id: number;

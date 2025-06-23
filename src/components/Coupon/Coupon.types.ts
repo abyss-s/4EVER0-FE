@@ -5,4 +5,5 @@ export interface CouponProps {
   dateRange: string;
   imageUrl?: string;
   isUrgent?: boolean;
+  onClickUse?: () => void;
 }

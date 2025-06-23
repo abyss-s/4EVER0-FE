@@ -10,6 +10,7 @@ export const Coupon: React.FC<CouponProps> = ({
   description,
   dateRange,
   imageUrl,
+  onClickUse,
 }) => {
   const isOwned = type === 'owned';
   const isLiked = type === 'liked';
@@ -19,13 +20,13 @@ export const Coupon: React.FC<CouponProps> = ({
 
   return (
     <div className="relative flex w-full max-w-md overflow-hidden border border-gray-200 rounded-[1rem] bg-white">
-      <div className="flex-1 px-4 py-3 relative bg-white rounded-l-[1rem]">
+      <div className="flex-1 px-4 py-7 relative bg-white rounded-l-[1rem]">
         <div className="flex items-center gap-2">
           {imageUrl && (
             <img
               src={imageUrl}
               alt={`${brandName} 로고`}
-              className="w-10 h-10 mr-3 object-contain rounded-full"
+              className="w-13 h-11 mr-3 object-contain rounded-full"
             />
           )}
           <div>
@@ -56,11 +57,21 @@ export const Coupon: React.FC<CouponProps> = ({
 
         <div
           className={cn(
-            'h-full w-full flex flex-col items-center justify-center px-1 text-white text-center whitespace-pre',
+            'h-full w-full flex flex-col items-center justify-center px-1 text-white text-center',
             couponVariants({ type: styleType }),
           )}
         >
-          {isOwned && <span className="caption-2">발급 완료</span>}
+          {isOwned && (
+            <>
+              <span className="caption-2">발급 완료</span>
+              <button
+                onClick={onClickUse}
+                className="mt-1 px-2 py-0.5 text-xs rounded border border-gray-300 bg-gray-200 text-black hover:bg-gray-700 hover:text-white transition"
+              >
+                쿠폰 사용
+              </button>
+            </>
+          )}
 
           {isHot && (
             <>
