@@ -91,20 +91,42 @@ export const ChatContainer: React.FC = () => {
     if (!isInitializedRef.current) {
       isInitializedRef.current = true;
       const newSessionId = createSession();
-      addMessage(
-        newSessionId,
-        '안녕하세요! 😊 저는 LG유플러스의 AI 어시스턴트예요. 궁금한 점이 있으시면 언제든지 물어보세요!',
-        'bot',
-      );
-    }
-  }, [createSession, addMessage]);
 
-  // 컴포넌트 마운트 시 초기화
+      const getInitialGreeting = () => {
+        if (isMunerTone) {
+          return '안뇽! 🤟 나는 무너야~ 🐙\n\n완전 럭키비키하게 만났네! ✨\n요금제나 구독 뭐든지 물어봐~ 💜';
+        } else {
+          return '안녕하세요! 😊 저는 LG유플러스의 AI 어시스턴트예요. 궁금한 점이 있으시면 언제든지 물어보세요!';
+        }
+      };
+
+      addMessage(newSessionId, getInitialGreeting(), 'bot');
+    }
+  }, [createSession, addMessage, isMunerTone]);
+
+  // 톤 변경시 새 인사 추가
+  const handleToneToggle = useCallback(
+    (isMuner: boolean) => {
+      setIsMunerTone(isMuner);
+
+      // 톤 변경시 새로운 인사 메시지 추가
+      if (currentSessionId) {
+        const toneChangeGreeting = isMuner
+          ? '무너 모드로 바뀌었어! 🐙✨\n이제 완전 칠가이하게 대화해보자~ 💜'
+          : '정중한 모드로 변경되었습니다! 😊\n전문적으로 상담해드리겠습니다.';
+
+        addMessage(currentSessionId, toneChangeGreeting, 'bot');
+      }
+    },
+    [setIsMunerTone, currentSessionId, addMessage],
+  );
+
+  // 톤 변경시 자동 재초기화 방지
   useEffect(() => {
     if (!currentSessionId) {
       initializeChat();
     }
-  }, [currentSessionId, initializeChat]);
+  }, [currentSessionId, initializeChat]); // isMunerTone 의존성 제거해야 함
 
   // 자동 스크롤
   useEffect(() => {
@@ -164,18 +186,17 @@ export const ChatContainer: React.FC = () => {
 
   // UBTI 시작
   const handleUBTIStart = useCallback(async () => {
-    // sessionId가 없으면 새로 생성
     const sessionId = currentSessionId ?? useChatStore.getState().createSession();
 
     startUBTI();
 
     const message = 'UBTI 분석을 시작해주세요';
-    const handlers = createStreamingHandlers(message, true);
+    const handlers = createStreamingHandlers(message, true, false); // isUBTI = true
     if (!handlers) return;
 
     try {
       await ubtiMutation.mutateAsync({
-        sessionId, // ← 여기서 보장된 sessionId 사용
+        sessionId,
         message,
         onChunk: handlers.onChunk,
         tone: isMunerTone ? 'muneoz' : 'general',
@@ -189,7 +210,7 @@ export const ChatContainer: React.FC = () => {
   // 좋아요 추천 시작
   const handleLikesRecommendation = useCallback(async () => {
     const message = '좋아요한 서비스 기반으로 추천해 주세요';
-    const handlers = createStreamingHandlers(message, false);
+    const handlers = createStreamingHandlers(message, false, true); // isLikes = true
     if (!handlers) return;
 
     try {
@@ -207,7 +228,7 @@ export const ChatContainer: React.FC = () => {
   // 사용량 기반 추천
   const handleUsageRecommendation = useCallback(async () => {
     const message = '내 사용량 기반으로 요금제 추천해 주세요';
-    const handlers = createStreamingHandlers(message, false);
+    const handlers = createStreamingHandlers(message, false, false); // 전부 false
     if (!handlers) return;
 
     try {
@@ -240,10 +261,6 @@ export const ChatContainer: React.FC = () => {
     createSession,
     addMessage,
   ]);
-  // 톤 변경
-  const handleToneToggle = useCallback((isMuner: boolean) => {
-    setIsMunerTone(isMuner);
-  }, []);
 
   // 버튼 상태
   const buttonDisabled = useMemo(
