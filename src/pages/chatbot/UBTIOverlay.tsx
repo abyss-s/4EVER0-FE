@@ -42,7 +42,7 @@ export const UBTIOverlay: React.FC<UBTIOverlayProps> = ({
         <div className="absolute inset-0 bg-gradient-to-r from-brand-red-light via-brand-yellow-light to-brand-darkblue-light rounded-xl blur-sm opacity-80"></div>
 
         <Card className="relative w-full border-0 bg-gradient-to-r from-brand-red-light/95 via-brand-yellow-light/95 to-brand-darkblue-light/95 backdrop-blur-md shadow-xl rounded-xl">
-          <CardHeader className="pb-2">
+          <CardHeader>
             {/* 타이틀과 단계 표시 */}
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
@@ -54,18 +54,6 @@ export const UBTIOverlay: React.FC<UBTIOverlayProps> = ({
                 </div>
               </div>
             </div>
-
-            {/* 결과 보기 버튼 - 별도 행으로 분리 */}
-            {ubtiReadyToSubmit && (
-              <div className="mb-2">
-                <button
-                  onClick={onResultClick}
-                  className="w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-yellow to-brand-red text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] hover:from-brand-yellow-hover hover:to-brand-red-hover"
-                >
-                  🎉 결과 보기
-                </button>
-              </div>
-            )}
 
             {/* 진행 표시 */}
             <div className="space-y-2">
@@ -97,16 +85,27 @@ export const UBTIOverlay: React.FC<UBTIOverlayProps> = ({
               </div>
             </div>
           </CardHeader>
-
-          <CardContent className="pt-0 pb-3">
+          <CardContent className="pt-0 pb-2">
+            <p className="text-brand-darkblue/80 text-sm my-2 text-center font-medium">
+              💬 아래 채팅창에서 답변해주세요!
+            </p>
             <div className="bg-white/70 backdrop-blur-sm rounded-lg p-3 border border-white/40 shadow-sm">
               <p className="text-brand-darkblue text-sm leading-relaxed font-medium">
                 {questionTextToShow}
               </p>
             </div>
-            <p className="text-brand-darkblue/80 text-xs mt-2 text-center font-medium">
-              💬 아래 채팅창에서 답변해주세요!
-            </p>
+
+            {/* 결과 보기 버튼 - 별도 행으로 분리 */}
+            {ubtiReadyToSubmit && (
+              <div className="mb-2">
+                <button
+                  onClick={onResultClick}
+                  className="w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-yellow to-brand-red text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] hover:from-brand-yellow-hover hover:to-brand-red-hover"
+                >
+                  🎉 결과 보기
+                </button>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
