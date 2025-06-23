@@ -1,19 +1,42 @@
+// src/lib/api/apiconfig.ts
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { refreshAccessToken, logout as apiLogout } from '@/utils/auth';
 import { useAuthStore } from '@/stores/useAuthStore';
 
-export const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api`;
+// Mixed Content 방지를 위해 강제로 HTTPS 사용
+const getApiBaseUrl = () => {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL;
+  // HTTP를 HTTPS로 강제 변환
+  if (baseUrl && baseUrl.startsWith('http://')) {
+    return baseUrl.replace('http://', 'https://') + '/api';
+  }
+  return `${baseUrl}/api`;
+};
+
+export const API_BASE_URL = getApiBaseUrl();
 
 // 인증 필요 인스턴스
 export const apiWithToken = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
+  // Mixed Content 방지를 위한 추가 설정
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 export const apiWithoutToken = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
+
+// 개발 환경에서 Mixed Content 경고 로그
+if (import.meta.env.DEV && API_BASE_URL.startsWith('http://')) {
+  console.warn('API_BASE_URL이 HTTP로 설정되어 있습니다. HTTPS를 사용하세요:', API_BASE_URL);
+}
 
 let isRefreshing = false;
 let queue: Array<() => void> = [];
