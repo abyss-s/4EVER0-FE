@@ -20,5 +20,5 @@ export const getMonthlyAttendance = async (
   month: number,
 ): Promise<MonthlyAttendanceResponse> => {
   const res = await apiWithToken.get(`/attendances/month?year=${year}&month=${month}`);
-  return res.data.data;
+  return res.data.data ?? [];
 };
