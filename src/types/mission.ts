@@ -1,5 +1,3 @@
-// src/types/mission.ts
-
 export type MissionType = 'INVITE' | 'SHARE' | 'ATTENDANCE';
 export type MissionStatus = 'INP' | 'COM' | 'REC'; // 진행중, 완료, 보상받음
 

@@ -67,6 +67,45 @@ export const Playground: Story = {
   },
 };
 
+export const AllVariants: Story = {
+  render: () => (
+    <div className="grid grid-cols-2 gap-4">
+      {(
+        [
+          { variant: 'default', label: 'Default' },
+          { variant: 'elevated', label: 'Elevated' },
+          { variant: 'outline', label: 'Outline' },
+          { variant: 'subscription', label: 'Subscription' },
+          { variant: 'selected', label: 'Selected' },
+          { variant: 'success', label: 'Success' },
+        ] as {
+          variant:
+            | 'default'
+            | 'elevated'
+            | 'outline'
+            | 'ghost'
+            | 'subscription'
+            | 'selected'
+            | 'success'
+            | 'warning'
+            | 'error';
+          label: string;
+        }[]
+      ).map((item) => (
+        <Card key={item.variant} variant={item.variant}>
+          <CardHeader>
+            <CardTitle>{item.label}</CardTitle>
+            <CardDescription>카드 variant 예시</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm">카드 내용입니다.</p>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  ),
+};
+
 export const SubscriptionCard: Story = {
   name: '구독 상품 카드',
   render: () => (
@@ -163,44 +202,5 @@ export const PaymentSummary: Story = {
         <span className="text-lg font-bold text-pink-600">9,730원</span>
       </CardFooter>
     </Card>
-  ),
-};
-
-export const AllVariants: Story = {
-  render: () => (
-    <div className="grid grid-cols-2 gap-4">
-      {(
-        [
-          { variant: 'default', label: 'Default' },
-          { variant: 'elevated', label: 'Elevated' },
-          { variant: 'outline', label: 'Outline' },
-          { variant: 'subscription', label: 'Subscription' },
-          { variant: 'selected', label: 'Selected' },
-          { variant: 'success', label: 'Success' },
-        ] as {
-          variant:
-            | 'default'
-            | 'elevated'
-            | 'outline'
-            | 'ghost'
-            | 'subscription'
-            | 'selected'
-            | 'success'
-            | 'warning'
-            | 'error';
-          label: string;
-        }[]
-      ).map((item) => (
-        <Card key={item.variant} variant={item.variant}>
-          <CardHeader>
-            <CardTitle>{item.label}</CardTitle>
-            <CardDescription>카드 variant 예시</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm">카드 내용입니다.</p>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
   ),
 };

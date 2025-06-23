@@ -1,18 +1,10 @@
 import { cn } from '@/lib/utils';
+import { BRAND_CATEGORIES } from '@/types/brand';
 
 interface CategoryFilterProps {
   selected: string;
   onSelect: (category: string) => void;
 }
-
-const BRAND_CATEGORIES: { value: string; label: string }[] = [
-  { value: '전체', label: '전체' },
-  { value: '디저트/음료', label: '디저트/음료' },
-  { value: '편의점/쇼핑', label: '편의점/쇼핑' },
-  { value: '카페/음료', label: '카페/음료' },
-  { value: '베이커리', label: '베이커리' },
-  { value: '도서/콘텐츠', label: '도서/콘텐츠' },
-];
 
 export const CategoryFilter = ({ selected, onSelect }: CategoryFilterProps) => {
   return (

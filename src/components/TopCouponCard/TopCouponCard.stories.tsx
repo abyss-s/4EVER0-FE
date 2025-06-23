@@ -17,7 +17,7 @@ const mockCoupon: TopCoupon & { imageUrl: string } = {
 };
 
 const meta: Meta<typeof TopCouponCard> = {
-  title: 'COMPONENTS/Card/TopCouponCard',
+  title: 'Components/TopCouponCard',
   component: TopCouponCard,
   tags: ['autodocs'],
 };
