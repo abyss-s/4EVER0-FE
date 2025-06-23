@@ -1,18 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 interface FlatTabsProps {
   tabs: string[];
   defaultTab?: string;
+  value?: string;
   onChange?: (value: string) => void;
   className?: string;
 }
 
-export const FlatTabs = ({ tabs, defaultTab, onChange, className }: FlatTabsProps) => {
+export const FlatTabs = ({ tabs, defaultTab, value, onChange, className }: FlatTabsProps) => {
+  const isControlled = value !== undefined;
+
   const [selected, setSelected] = useState(defaultTab ?? tabs[0]);
 
+  useEffect(() => {
+    if (isControlled) {
+      setSelected(value!);
+    }
+  }, [value, isControlled]);
+
   const handleClick = (tab: string) => {
-    setSelected(tab);
+    if (!isControlled) {
+      setSelected(tab);
+    }
     onChange?.(tab);
   };
 
