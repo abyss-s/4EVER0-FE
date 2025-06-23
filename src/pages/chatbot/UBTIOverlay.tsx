@@ -22,9 +22,6 @@ export const UBTIOverlay: React.FC<UBTIOverlayProps> = ({
 }) => {
   if (!ubtiInProgress) return null;
 
-  const progress = ((currentUBTIStep + 1) / 4) * 100;
-  // const stepIcons = [Heart, Brain, Zap, Star];
-
   const questionTextToShow =
     currentUBTIQuestionText !== null ? currentUBTIQuestionText : '질문을 준비하고 있어요...';
 
@@ -34,6 +31,9 @@ export const UBTIOverlay: React.FC<UBTIOverlayProps> = ({
     { icon: Zap, color: 'text-[#FF914D]' },
     { icon: Star, color: 'text-[#FF914D]' },
   ];
+
+  const totalSteps = stepIcons.length;
+  const progress = (currentUBTIStep / (totalSteps - 1)) * 100;
 
   return (
     <div className="absolute top-0 left-0 right-0 z-10 p-3">
