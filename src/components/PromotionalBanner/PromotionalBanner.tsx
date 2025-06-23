@@ -39,7 +39,7 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
     },
     {
       id: 4,
-      action: () => navigate('/uptp'),
+      action: () => navigate('/upltuple/'),
       mobileImage: IMAGES.BANNER.UPTP,
       desktopImage: IMAGES.BANNER.UPTP_DESKTOP,
     },
