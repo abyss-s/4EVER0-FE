@@ -2,16 +2,16 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { refreshAccessToken, logout as apiLogout } from '@/utils/auth';
 import { useAuthStore } from '@/stores/useAuthStore';
 
-export const API_BASE_URL = 'http://localhost:5050/api';
+export const VITE_API_BASE_URL = 'http://localhost:5050/api';
 
 // 인증 필요 인스턴스
 export const apiWithToken = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: VITE_API_BASE_URL,
   withCredentials: true,
 });
 
 export const apiWithoutToken = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: VITE_API_BASE_URL,
   withCredentials: true,
 });
 

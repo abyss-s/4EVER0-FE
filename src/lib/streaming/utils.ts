@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '@/lib/api/apiconfig';
+import { VITE_API_BASE_URL } from '@/lib/api/apiconfig';
 
 /**
  * 스트리밍 지원 여부 확인
@@ -14,7 +14,7 @@ export function isStreamingSupported(): boolean {
  */
 export async function testStreamingConnection(): Promise<boolean> {
   try {
-    const response = await fetch(`${API_BASE_URL}/health`, {
+    const response = await fetch(`${VITE_API_BASE_URL}/health`, {
       method: 'GET',
       credentials: 'omit',
     });
