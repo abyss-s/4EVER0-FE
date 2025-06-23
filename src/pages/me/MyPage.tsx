@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { IMAGES } from '@/constant/imagePath';
 import { fetchUserCoupons } from '@/apis/coupon/getUserCoupons';
 import LoadingMooner from '@/pages/common/LoadingMooner';
+import { Progress } from '@/components/Progress/Progress';
 
 const MyPage: React.FC = () => {
   const {
@@ -92,15 +93,28 @@ const MyPage: React.FC = () => {
         <img src={IMAGES.MOONER['mooner-phone']} alt="문어 아이콘" className="w-15 h-15" />
         {profile?.name ?? '고객'} 님 안녕하세요!
       </h2>
-      <h1 className="text-xl font-bold text-brand-darkblue mb-4">내 요금제</h1>
-      <BillSummaryCard
-        phoneNumber={profile?.phoneNumber ?? '010-****-****'}
-        planName={plan.name}
-        month={month}
-        amount={Number(plan.price)}
-        usageData={usageData}
-      />
-      <h1 className="text-xl font-bold text-brand-darkblue mb-4">내 정보</h1>
+
+      {typeof profile?.point === 'number' && (
+        <div className="px-2 rounded-xl bg-white space-y-1">
+          <p className="text-sm text-gray-500">패밀리 등급까지</p>
+          <p className="text-m font-bold text-brand-darkblue">
+            {(5000 - profile.point).toLocaleString()}P 남음
+          </p>
+
+          <Progress
+            variant="mission"
+            size="lg"
+            current={profile.point}
+            total={5000}
+            showFraction={false}
+          />
+
+          <div className="flex justify-between text-xs text-gray-400 pt-1">
+            <span>0P</span>
+            <span>5,000P</span>
+          </div>
+        </div>
+      )}
       <div className="grid grid-cols-2 gap-4">
         <Link to="coupons">
           <Card clickable>
@@ -124,6 +138,16 @@ const MyPage: React.FC = () => {
           </CardContent>
         </Card>
       </div>
+
+      <h1 className="text-xl font-bold text-brand-darkblue mb-4">내 요금제</h1>
+
+      <BillSummaryCard
+        phoneNumber={profile?.phoneNumber ?? '010-****-****'}
+        planName={plan.name}
+        month={month}
+        amount={Number(plan.price)}
+        usageData={usageData}
+      />
 
       <h1 className="text-xl font-bold text-brand-darkblue mb-4">요금제 설정</h1>
       <div className="grid grid-cols-2 gap-4">

@@ -3,6 +3,7 @@ import { fetchLikedCoupons } from '@/apis/like/getLikeCoupons';
 import { fetchCoupons } from '@/apis/coupon/getCoupons';
 import { Coupon } from '@/components/Coupon';
 import { Gift } from 'lucide-react';
+import { Skeleton } from '@/components/Skeleton';
 
 const Likes: React.FC = () => {
   // 좋아요한 쿠폰
@@ -18,7 +19,19 @@ const Likes: React.FC = () => {
   });
 
   if (loadingUser || loadingCoupons) {
-    return <div className="p-4 text-center">로딩 중...</div>;
+    return (
+      <div className="p-6 space-y-4 pb-24">
+        {[...Array(3)].map((_, i) => (
+          <div key={i} className="flex gap-4 items-center">
+            <Skeleton className="w-20 h-20 rounded-lg" />
+            <div className="flex-1 space-y-2">
+              <Skeleton className="h-4 w-3/4" />
+              <Skeleton className="h-4 w-1/2" />
+            </div>
+          </div>
+        ))}
+      </div>
+    );
   }
 
   // userLikeCoupons 기준으로 이미지 등 추가정보 merge → 변수명 likedCoupons로 사용
