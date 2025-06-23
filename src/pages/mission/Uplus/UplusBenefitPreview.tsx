@@ -8,10 +8,15 @@ import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
 import { getBrandBackgroundColor } from '@/utils/brandColor';
 import { getDday } from '@/utils/format/getDday';
+import { cn } from '@/lib/utils';
 
-export const UplusBenefitPreview = () => {
+interface UplusBenefitPreviewProps {
+  selectedCategory: string;
+}
+
+export const UplusBenefitPreview = ({ selectedCategory }: UplusBenefitPreviewProps) => {
   const [benefits, setBenefits] = useState<Benefit[] | null>(null);
-  const [showTooltip, setShowTooltip] = useState(false); // ✅ 툴팁 표시 상태
+  const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
     getMonthlyBenefits()
@@ -26,6 +31,16 @@ export const UplusBenefitPreview = () => {
   if (benefits === null) {
     return <p className="text-sm text-gray-400 px-2">혜택을 불러오는 중입니다...</p>;
   }
+
+  // 카테고리 필터링 적용
+  const filteredBenefits =
+    selectedCategory === '전체'
+      ? (benefits ?? [])
+      : (benefits ?? []).filter((benefit) => benefit.category === selectedCategory);
+
+  const sortedBenefits = [...(filteredBenefits ?? [])].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  );
 
   return (
     <div
@@ -42,18 +57,26 @@ export const UplusBenefitPreview = () => {
         className="benefit-swiper overflow-visible"
         style={{ paddingBottom: '30px' }}
       >
-        {benefits.map((benefit, index) => {
-          const dday = getDday(new Date(benefit.date));
+        {sortedBenefits.map((benefit, index) => {
+          const benefitDate = new Date(benefit.date);
+          const isPast = benefitDate < new Date(new Date().setHours(0, 0, 0, 0));
+          const dday = getDday(benefitDate);
+
           return (
             <SwiperSlide
               key={`${benefit.brand}-${benefit.date}-${index}`}
               className="!w-auto pt-2.5"
             >
               <div
-                className={`w-[100px] h-[100px] ${getBrandBackgroundColor(benefit.brand)} 
-                            cursor-pointer flex-shrink-0 rounded-3xl relative overflow-hidden 
-                            transform transition-transform hover:scale-105 hover:shadow-lg`}
+                className={cn(
+                  'w-[100px] h-[100px] cursor-pointer flex-shrink-0 rounded-3xl relative overflow-hidden transform transition-transform hover:scale-105',
+                  getBrandBackgroundColor(benefit.brand),
+                )}
               >
+                {/* 지난 혜택일 경우 어둡게 오버레이 추가 */}
+                {isPast && (
+                  <div className="absolute inset-0 bg-black/40 z-20 pointer-events-none" />
+                )}
                 {/* D-day - 왼쪽 상단 */}
                 <div className="absolute top-2.5 left-4 text-white font-semibold text-base z-10 tracking-wider">
                   {dday}
@@ -86,7 +109,7 @@ export const UplusBenefitPreview = () => {
         })}
       </Swiper>
 
-      {/* ✅ 툴팁 메시지 - 하단 중앙 고정 */}
+      {/* 툴팁 메시지 */}
       {showTooltip && (
         <div
           className="absolute left-1/2 bottom-[-36px] -translate-x-1/2 z-50 px-3 py-1.5

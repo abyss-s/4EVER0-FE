@@ -75,6 +75,7 @@ export function Banner({
                   ? 'text-base md:text-lg'
                   : 'text-sm md:text-base',
               'drop-shadow-sm',
+              'whitespace-pre-line',
             )}
           >
             {description}

@@ -6,7 +6,11 @@ import { Benefit } from '@/types/uplus';
 import { getBrandDotColor } from '@/utils/brandColor';
 import { BenefitDetailModal } from './UplusBenefitDetail';
 
-export const UplusCalendar = () => {
+interface UplusCalendarProps {
+  selectedCategory: string;
+}
+
+export const UplusCalendar = ({ selectedCategory }: UplusCalendarProps) => {
   const [benefits, setBenefits] = useState<Benefit[] | null>(null);
   const [month, setMonth] = useState(new Date());
 
@@ -36,14 +40,21 @@ export const UplusCalendar = () => {
     return <p className="text-sm text-gray-400">혜택 불러오는 중...</p>;
   }
 
+  // 선택된 카테고리에 따라 필터링
+  const filteredBenefits =
+    selectedCategory === '전체'
+      ? benefits
+      : benefits.filter((b) => b.category === selectedCategory);
   return (
     <>
       <BaseCalendar
         currentMonth={month}
         onMonthChange={setMonth}
         renderDay={(date, isCurrentMonth) => {
-          // 해당 날짜의 모든 혜택 찾기
-          const dayBenefits = benefits.filter((benefit) => isSameDay(new Date(benefit.date), date));
+          // 해당 날짜의 모든 혜택 찾기 (필터된 데이터에서만)
+          const dayBenefits = filteredBenefits.filter((benefit) =>
+            isSameDay(new Date(benefit.date), date),
+          );
 
           return (
             <div
@@ -62,8 +73,8 @@ export const UplusCalendar = () => {
                       title={benefit.brand}
                     />
                   ))}
-                  {/* 3개 이상의 혜택이 있으면 +표시 */}
-                  {dayBenefits.length > 3 && (
+                  {/* 2개 이상의 혜택이 있으면 +표시 */}
+                  {dayBenefits.length > 2 && (
                     <div className="w-1.5 h-1.5 bg-gray-400 rounded-full flex items-center justify-center">
                       <span className="text-[4px] text-white font-bold leading-none">+</span>
                     </div>

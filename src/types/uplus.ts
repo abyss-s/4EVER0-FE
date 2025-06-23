@@ -24,4 +24,6 @@ export interface BenefitDetail {
 }
 
 // 기존 Benefit 인터페이스를 BenefitPreview로 대체하거나 유지
-export interface Benefit extends BenefitPreview {}
+export interface Benefit extends BenefitPreview {
+  category?: string;
+}

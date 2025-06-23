@@ -24,7 +24,7 @@ export const AttendanceBanner = () => {
           ? '오늘 이미 출석하셨어요! \n 내일 또 만나요 😊'
           : '아직 출석 안하셨네요? \n 오늘도 출석체크를 해주세요!'
       }
-      image={IMAGES.MOONER.MOONER}
+      image={IMAGES.MOONER.MOONER_PENCIL}
       actionButton={
         !isChecked && (
           <Button

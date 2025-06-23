@@ -48,7 +48,12 @@ const MissionItem = ({ mission }: MissionItemProps) => {
           )}
 
           <div className="mt-1">
-            <Progress current={current} total={mission.target_count} className="h-2" />
+            <Progress
+              current={current}
+              total={mission.target_count}
+              variant="mission"
+              className="h-2"
+            />
             <div className="flex justify-between text-[11px] text-gray-500 mt-1">
               <span>
                 {current}/{mission.target_count}

@@ -63,7 +63,7 @@ const HotPlace = () => {
   };
 
   return (
-    <div className="pb-20 space-y-4">
+    <div className="pb-20 space-y-4 min-h-full">
       {/* 헤더 섹션 - 마이페이지 스타일 적용 */}
       <div className="px-4">
         <h2 className="title-1 mt-6 flex items-center text-brand-darkblue gap-2">
@@ -121,7 +121,7 @@ const HotPlace = () => {
       </div>
 
       {/* 지도 컨텐츠 */}
-      <div className="px-4">
+      <div className="px-4 pt-2 pb-4">
         <Card>
           <CardContent className="p-0">
             {showMapLoader ? (
@@ -148,7 +148,7 @@ const HotPlace = () => {
         </h1>
 
         {/* 쿠폰 리스트 */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 pt-4">
           {[0, 1, 2].map((index) => (
             <TopCouponCard
               key={index}
