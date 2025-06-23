@@ -95,7 +95,7 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
       </div>
 
       {/* 크로스플랫폼 대응 */}
-      <div className="hidden md:block" style={{ aspectRatio: '581/168' }}>
+      <div className="hidden md:block" style={{ aspectRatio: '581/200' }}>
         <img
           src={currentBanner.desktopImage}
           alt={`배너 이미지 ${currentSlide + 1}`}
@@ -108,9 +108,9 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
       <button
         onClick={prevSlide}
         className="absolute top-1/2 transform -translate-y-1/2 left-2
-                   w-7 h-7 flex items-center justify-center
-                   bg-black/10 hover:bg-black/30 
-                   rounded-full transition-all duration-200 backdrop-blur-sm"
+                  w-7 h-7 flex items-center justify-center
+                  bg-black/10 hover:bg-black/30 
+                  rounded-full transition-all duration-200 backdrop-blur-sm"
         aria-label="이전 슬라이드"
       >
         <ChevronLeft className="text-white w-3 h-3 md:w-5 md:h-5" />
@@ -119,9 +119,9 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
       <button
         onClick={nextSlide}
         className="absolute top-1/2 transform -translate-y-1/2 right-2
-                   w-7 h-7 flex items-center justify-center
-                   bg-black/10 hover:bg-black/30 
-                   rounded-full transition-all duration-200 backdrop-blur-sm"
+                  w-7 h-7 flex items-center justify-center
+                  bg-black/10 hover:bg-black/30 
+                  rounded-full transition-all duration-200 backdrop-blur-sm"
         aria-label="다음 슬라이드"
       >
         <ChevronRight className="text-white w-3 h-3 md:w-5 md:h-5" />
@@ -141,11 +141,11 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
               key={index}
               onClick={() => goToSlide(index)}
               className={`rounded-full transition-all duration-200 
-                         ${
-                           index === currentSlide
-                             ? 'bg-white w-4 h-2'
-                             : 'bg-white/50 hover:bg-white/70 w-2 h-2'
-                         }`}
+                        ${
+                          index === currentSlide
+                            ? 'bg-white w-4 h-2'
+                            : 'bg-white/50 hover:bg-white/70 w-2 h-2'
+                        }`}
               aria-label={`슬라이드 ${index + 1}로 이동`}
             />
           ))}
@@ -155,8 +155,8 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
         <button
           onClick={togglePlayPause}
           className="w-6 h-6 flex items-center justify-center
-                     bg-white/20 hover:bg-white/30 rounded-full 
-                     transition-all duration-200 ml-2"
+                    bg-white/20 hover:bg-white/30 rounded-full 
+                    transition-all duration-200 ml-2"
           aria-label={isPlaying ? '자동 재생 정지' : '자동 재생 시작'}
         >
           {isPlaying ? (
