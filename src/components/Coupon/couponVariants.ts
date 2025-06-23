@@ -8,7 +8,7 @@ export const couponVariants = cva(
         owned: 'bg-[#c0c0c0]',
         hot: 'bg-[#5ebcbc]',
         hotUrgent: 'bg-[#5ebcbc]',
-        liked: 'bg-pink-400',
+        liked: 'bg-pink-300',
       },
     },
     defaultVariants: {

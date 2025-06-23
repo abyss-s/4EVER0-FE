@@ -5,9 +5,9 @@ import { getMainSubscriptions } from '@/apis/subscription/getMainSubscriptions';
 import { Card, CardContent } from '@/components/Card';
 import { Package } from 'lucide-react';
 import { formatPrice } from '@/utils/priceUtils';
-import LoadingMooner from '@/pages/common/LoadingMooner';
 import Empty from '@/pages/common/Empty';
 import { IMAGES } from '@/constant/imagePath';
+import { Skeleton } from '@/components/Skeleton';
 
 const Subscriptions: React.FC = () => {
   const { data: userSubscriptions = [], isLoading: loadingUser } = useQuery({
@@ -34,7 +34,25 @@ const Subscriptions: React.FC = () => {
   }, [loadingUser, loadingMain]);
 
   if ((loadingUser || loadingMain) && shouldShowLoading) {
-    return <LoadingMooner />;
+    return (
+      <div className="p-4">
+        <div className="text-center flex flex-col items-center gap-1 mb-6">
+          <Package className="w-8 h-8" />
+          <div className="text-xl">구독상품 목록</div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 w-full">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="p-3 pt-0 border rounded-xl shadow-sm space-y-2">
+              <Skeleton className="w-32 h-32 mx-auto rounded-lg" />
+              <Skeleton className="h-4 w-3/4 mx-auto" />
+              <Skeleton className="h-3 w-1/2 mx-auto" />
+              <Skeleton className="h-4 w-1/3 mx-auto" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   }
   const merged = userSubscriptions.map((sub) => {
     const matched = mainSubscriptions.find((m) => m.title === sub.main_title);
@@ -46,9 +64,12 @@ const Subscriptions: React.FC = () => {
 
   return (
     <div className="p-4">
-      <div className="text-center flex flex-col items-center gap-1">
-        <Package className="w-8 h-8" />
-        <div className="text-xl mb-6">구독상품 목록</div>
+      <div className="text-center mb-6">
+        <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+          <Package className="w-8 h-8 text-black-500" />
+        </div>
+        <h2 className="text-lg font-medium text-gray-900 mb-2">구독상품 목록</h2>
+        <p className="text-gray-500 text-sm">{merged.length}개의 구독상품을 보유 중입니다.</p>
       </div>
       {merged.length === 0 ? (
         <Empty

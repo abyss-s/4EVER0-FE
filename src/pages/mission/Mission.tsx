@@ -4,20 +4,32 @@ import { AttendanceCalendar } from './Attendance/AttendanceCalendar';
 import { MissionList } from '@/components/MissionList/MissionList';
 import { UplusCalendar } from './Uplus/UplusCalendar';
 import { UplusBenefitPreview } from './Uplus/UplusBenefitPreview';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { UplusBanner } from './Uplus/UplusBanner';
 import { MissionBanner } from './Mission/MissionBanner';
 import { CategoryFilter } from './Uplus/CategoryFilter';
+import { useLocation } from 'react-router-dom';
 
 const TABS = ['출석', '유플투쁠', '미션'];
 
 const MissionPage = () => {
+  const location = useLocation();
+  const scrollTo = location.state?.scrollTo;
   const [selectedTab, setSelectedTab] = useState('출석');
   const [selectedCategory, setSelectedCategory] = useState('전체');
 
+  useEffect(() => {
+    if (scrollTo === 'mission-list') {
+      setSelectedTab('미션');
+    } else if (scrollTo === 'attendance') {
+      setSelectedTab('출석');
+    } else if (scrollTo === 'uplus') {
+      setSelectedTab('유플투쁠');
+    }
+  }, [scrollTo]);
   return (
     <div className="p-4 pt-1">
-      <FlatTabs tabs={TABS} defaultTab="출석" onChange={setSelectedTab} />
+      <FlatTabs tabs={TABS} value={selectedTab} onChange={setSelectedTab} />
 
       <div className="mt-6">
         {selectedTab === '출석' && (
