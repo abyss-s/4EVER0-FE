@@ -109,14 +109,21 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = React.memo(
 
                 <div className="flex items-center gap-2">
                   <img
-                    src={life_brand.image_url}
+                    src={life_brand.image_url || ''}
                     alt={life_brand.name}
-                    className="w-12 h-8 rounded object-cover flex-shrink-0"
+                    className="w-12 h-8 rounded object-cover flex-shrink-0 bg-gray-200 flex items-center justify-center"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
-                      target.src = '/placeholder-brand.png';
+                      // 이미지 오류 발생 시 이모지 대체
+                      target.style.display = 'none';
+                      const fallback = document.createElement('div');
+                      fallback.textContent = '🎁';
+                      fallback.className =
+                        'w-12 h-8 flex items-center justify-center bg-gray-200 text-xl rounded';
+                      target.parentElement?.appendChild(fallback);
                     }}
                   />
+
                   <div className="flex-1 min-w-0">
                     <h4 className="text-xs font-bold text-gray-800 truncate">{life_brand.name}</h4>
                     <p className="text-xs text-gray-600 truncate line-clamp-1">
