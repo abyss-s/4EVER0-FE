@@ -97,12 +97,15 @@ export const UBTIOverlay: React.FC<UBTIOverlayProps> = ({
 
             {/* 결과 보기 버튼 - 별도 행으로 분리 */}
             {ubtiReadyToSubmit && (
-              <div className="mb-2">
+              <div className="mt-3 space-y-2 text-center">
+                <p className="text-brand-darkblue font-semibold text-sm">
+                  🎉 모든 질문이 완료됐어요!
+                </p>
                 <button
                   onClick={onResultClick}
                   className="w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-yellow to-brand-red text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] hover:from-brand-yellow-hover hover:to-brand-red-hover"
                 >
-                  🎉 결과 보기
+                  결과 확인하기
                 </button>
               </div>
             )}
