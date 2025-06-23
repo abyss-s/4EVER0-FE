@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { getTopCoupons, TopCoupon } from '@/apis/coupon/getTopCoupons';
-import TopCouponCard from '@/components/Card/TopCouponCard';
+import TopCouponCard from '@/components/TopCouponCard/TopCouponCard';
 import PopupMap from './PopupMap/PopupMap';
 import StoreMap from './StoreMap/StoreMap';
 import { Card, CardContent } from '@/components/Card';
