@@ -1,8 +1,20 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePlanDetail } from '@/hooks/usePlanDetail';
+import { useUserProfile } from '@/stores/useUserProfile'; // 🔧 추가
 import PlanCard from '@/components/PlanCard/PlanCard';
-import { Share2, Heart, Wifi, Shield, Gift, Smartphone, Star, MapPin, Loader2 } from 'lucide-react';
+import {
+  Share2,
+  Heart,
+  Wifi,
+  Shield,
+  Gift,
+  Smartphone,
+  Star,
+  MapPin,
+  Loader2,
+  Check,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PlanResponse } from '@/types/plans';
 import { Plan } from '@/types/plan';
@@ -27,9 +39,13 @@ const PlanDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { openModal } = useModalStore();
   const navigate = useNavigate();
-  const { data: plan, isLoading, error } = usePlanDetail(id ?? '');
+  const { data: plan, error } = usePlanDetail(id ?? '');
+  const { data: userProfile } = useUserProfile(); // 🔧 사용자 정보 가져오기
   const [isChanging, setIsChanging] = useState(false);
   const { isLoggedIn } = useAuthStore();
+
+  // 🔧 현재 사용 중인 요금제인지 확인
+  const isCurrentPlan = userProfile?.planId === plan?.id;
 
   const getThemeColor = (price: number) => {
     if (price <= 30000) return 'yellow';
@@ -68,6 +84,14 @@ const PlanDetail: React.FC = () => {
       return;
     }
 
+    // 🔧 현재 요금제인 경우 알림
+    if (isCurrentPlan) {
+      toast.info('현재 사용 중인 요금제입니다', {
+        description: '이미 이 요금제를 사용하고 계세요 😊',
+      });
+      return;
+    }
+
     openModal({
       id: 'plan-change-confirm-modal',
       title: '요금제 변경 확인',
@@ -96,25 +120,16 @@ const PlanDetail: React.FC = () => {
     try {
       const result = await changePlan(Number(id));
 
-      if (result.status === 200) {
-        toast.success(result.data?.message || '요금제 변경이 완료되었습니다!', {
-          description: result.data?.plan_name
-            ? `${result.data.plan_name}으로 변경되었습니다. 마이페이지에서 확인하실 수 있습니다.`
-            : '마이페이지에서 변경 내역을 확인하실 수 있습니다.',
+      if (result?.message) {
+        toast.success('요금제 변경이 완료되었습니다! 🎉', {
+          description: `${result.plan_name || plan.name}로 성공적으로 변경되었습니다.`,
         });
-
-        // 성공 후 /me로 이동
         setTimeout(() => {
           navigate('/me');
         }, 2000);
       } else {
-        toast.error(result.message || '요금제 변경에 실패했습니다.', {
-          description:
-            result.status === 409
-              ? '이미 사용중인 요금제입니다.'
-              : result.status === 404
-                ? '존재하지 않는 요금제입니다.'
-                : '다시 시도해주세요.',
+        toast.error('요금제 변경에 실패했습니다.', {
+          description: '잠시 후 다시 시도해주세요.',
         });
       }
     } catch (error) {
@@ -135,17 +150,6 @@ const PlanDetail: React.FC = () => {
       setIsChanging(false);
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="h-full flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-4 border-brand-yellow border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">로딩 중...</p>
-        </div>
-      </div>
-    );
-  }
 
   if (error || !plan) {
     return (
@@ -168,13 +172,27 @@ const PlanDetail: React.FC = () => {
     <div className="h-full overflow-y-auto">
       <div className="space-y-6 pb-6">
         <PlanCard plan={normalizePlan(plan)} />
+
+        {/* 현재 요금제 표시 */}
+        {isCurrentPlan && (
+          <div className="bg-green-50 border border-green-200 rounded-xl p-4 flex items-center gap-3">
+            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+              <Check className="w-5 h-5 text-green-600" />
+            </div>
+            <div>
+              <div className="font-medium text-green-800">현재 사용 중인 요금제</div>
+              <div className="text-sm text-green-600">이미 이 요금제를 사용하고 계세요</div>
+            </div>
+          </div>
+        )}
+
         <div className="flex gap-3">
           <Button
             onClick={handlePlanChange}
-            disabled={isChanging}
+            disabled={isChanging || isCurrentPlan} // 현재 요금제면 변경 버튼 비활성화
             className={cn(
               'flex-1 text-white py-3 rounded-xl font-medium transition-all',
-              themeColors[themeColor],
+              isCurrentPlan ? 'bg-gray-400 cursor-not-allowed' : themeColors[themeColor],
               isChanging && 'opacity-70 cursor-not-allowed',
             )}
           >
@@ -182,6 +200,11 @@ const PlanDetail: React.FC = () => {
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                 변경 중...
+              </>
+            ) : isCurrentPlan ? (
+              <>
+                <Check className="w-4 h-4 mr-2" />
+                현재 요금제
               </>
             ) : (
               <>
@@ -200,6 +223,7 @@ const PlanDetail: React.FC = () => {
           </Button>
         </div>
 
+        {/* 나머지 기존 내용들... */}
         <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
           <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
             <Star className="w-5 h-5 text-brand-yellow" />
