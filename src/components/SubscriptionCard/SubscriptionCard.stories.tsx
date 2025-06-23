@@ -5,6 +5,24 @@ import { LifeBrand, MainSubscription } from '@/types/streaming';
 const meta: Meta<typeof SubscriptionCard> = {
   title: 'Components/SubscriptionCard',
   component: SubscriptionCard,
+  tags: ['autodocs'],
+  parameters: {
+    docs: {
+      description: {
+        component: `
+💡 **SubscriptionCard**
+
+- 메인 구독 서비스와 라이프 브랜드 쿠폰을 함께 보여주는 추천 카드입니다.
+- 다양한 조합(메인만, 라이프만, 둘 다)에 대응하며, 유저 액션에 따라 버튼을 제공합니다.
+
+### 🔘 지원 시나리오
+- 메인 구독만 있을 경우 → '구독하러 가기' 버튼
+- 라이프 브랜드만 있을 경우 → '쿠폰 찜하기' 버튼
+- 둘 다 있을 경우 → 버튼 두 개 나란히 표시
+        `,
+      },
+    },
+  },
 };
 
 export default meta;
