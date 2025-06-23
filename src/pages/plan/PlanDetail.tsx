@@ -39,7 +39,7 @@ const PlanDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { openModal } = useModalStore();
   const navigate = useNavigate();
-  const { data: plan, error } = usePlanDetail(id ?? '');
+  const { data: plan, error, isLoading } = usePlanDetail(id ?? '');
   const { data: userProfile } = useUserProfile(); // 🔧 사용자 정보 가져오기
   const [isChanging, setIsChanging] = useState(false);
   const { isLoggedIn } = useAuthStore();
@@ -150,6 +150,17 @@ const PlanDetail: React.FC = () => {
       setIsChanging(false);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="animate-spin w-8 h-8 border-4 border-brand-yellow border-t-transparent rounded-full" />
+          <p className="text-gray-600 text-sm">요금제 정보를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (error || !plan) {
     return (
