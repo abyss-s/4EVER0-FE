@@ -22,6 +22,7 @@ export const UBTITypeCard: React.FC<UBTITypeCardProps> = ({ ubtiType }) => {
       <div className="absolute bottom-0 left-0 w-24 h-24 bg-orange-200/30 rounded-full translate-y-12 -translate-x-12" />
 
       <div className="text-center relative z-10">
+        {/* image_url이 있으면 이미지, 없으면 이모지 */}
         {ubtiType.image_url ? (
           <motion.div
             className="mb-6 flex justify-center"
@@ -35,25 +36,7 @@ export const UBTITypeCard: React.FC<UBTITypeCardProps> = ({ ubtiType }) => {
               src={ubtiType.image_url}
               alt={ubtiType.name}
               className="w-32 h-32 object-contain rounded-2xl shadow-lg"
-              onError={(e) => {
-                // 이미지 로드 실패 시 이모지로 대체
-                e.currentTarget.style.display = 'none';
-                const emojiElement = e.currentTarget.nextElementSibling as HTMLElement;
-                if (emojiElement) {
-                  emojiElement.style.display = 'block';
-                }
-              }}
             />
-            <motion.div
-              className="text-8xl hidden"
-              animate={{
-                rotate: [0, 5, -5, 0],
-                scale: [1, 1.1, 1],
-              }}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
-              {ubtiType.emoji}
-            </motion.div>
           </motion.div>
         ) : (
           <motion.div
