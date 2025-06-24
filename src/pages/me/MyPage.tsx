@@ -53,7 +53,7 @@ const MyPage: React.FC = () => {
   }, [isLoading]);
 
   if (isLoading && shouldShowLoading) return <LoadingMooner />;
-  if (!isLoading && (error || !plan)) {
+  if (isLoading && (error || !plan)) {
     return (
       <Empty
         imageSrc={IMAGES.MOONER['mooner-sad']}
@@ -185,7 +185,7 @@ const MyPage: React.FC = () => {
 
                 <div className="flex justify-between items-center text-xs text-brand-darkblue mt-3">
                   <span className="font-medium">시작</span>
-                  <span className="bg-white px-2 py-1 font-lg rounded-full font-bold text-[#007340]">
+                  <span className="bg-white px-2 py-1 font-lg rounded-full font-bold text-[#e63e3e]">
                     {((profile.point / 5000) * 100).toFixed(0)}% 완주 🏃‍♂️
                   </span>
                   <span className="font-medium">
