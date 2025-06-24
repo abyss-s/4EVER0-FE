@@ -24,7 +24,9 @@ const Empty: React.FC<EmptyProps> = ({
   const navigate = useNavigate();
 
   return (
-    <div className={`flex flex-col items-center justify-center py-12 ${className}`}>
+    <div
+      className={`fixed inset-0 flex flex-col items-center justify-center px-4 text-center bg-white ${className}`}
+    >
       <img src={imageSrc} alt={altText} className="w-40 h-auto mb-4" />
       <p className="text-gray-500 text-sm text-center mb-4">{message}</p>
 

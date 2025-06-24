@@ -232,6 +232,7 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
           {!ubtiInProgress && (
             <div className="relative">
               <Button
+                id="tutorial-plus-button"
                 variant="outline"
                 size="icon"
                 onClick={() => {

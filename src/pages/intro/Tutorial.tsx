@@ -6,6 +6,7 @@ import { ArrowRightIcon } from '@radix-ui/react-icons';
 import TutorialStep2Background from './TutorialStep2Background';
 import { IMAGES } from '@/constant/imagePath';
 import BackButton from '@/pages/intro/BackButton';
+import { Button } from '@/components/Button';
 
 const BottomNavHint = ({
   left,
@@ -22,7 +23,7 @@ const BottomNavHint = ({
     <div className="absolute bottom-[37px] z-30 pointer-events-none" style={{ left }}>
       <div className={`flex flex-col items-center`}>
         <p
-          className={`text-[11px] text-white leading-tight whitespace-pre-line font-medium ${
+          className={`text-[clamp(9px,3vw,12px)] text-white leading-tight whitespace-pre-line font-medium ${
             align === 'left'
               ? 'ml-2'
               : align === 'center'
@@ -114,20 +115,20 @@ const Tutorial = () => {
           <TutorialStep2Background />
         </div>
 
-        <div className="absolute inset-0 z-10 bg-black/70 text-white flex justify-center overflow-y-auto">
-          <div className="w-full h-screen px-6 pt-[80px] pb-6 text-center flex flex-col justify-between max-w-[420px] mx-auto relative">
+        <div className="absolute inset-0 z-10 bg-black/75 text-white flex justify-center overflow-y-auto">
+          <div className="w-full h-screen px-6 pt-[80px] pb-6 text-center flex flex-col justify-between max-w-full sm:max-w-[420px] md:max-w-[640px] lg:max-w-[768px] mx-auto relative">
             <div className="absolute top-5 left-6 z-20">
               <BackButton onClick={handleBack} color="white" />
             </div>
 
-            <div className="flex flex-col mt-30 items-center relative">
+            <div className="flex flex-col mt-24 items-center relative">
               <div className="relative w-[180px] mt-10">
                 <img
                   src={IMAGES.bubble}
                   alt="말풍선"
                   className="absolute -top-16 -right-15 w-22 h-auto"
                 />
-                <div className="absolute -top-13 -right-14 w-20 h-10 flex items-center justify-center caption-1 text-black text-center pointer-events-none">
+                <div className="absolute -top-13 -right-14 w-20 h-10 flex items-center justify-center caption-1 text-black font-semibold text-center pointer-events-none">
                   무너 등장
                 </div>
 
@@ -137,12 +138,9 @@ const Tutorial = () => {
                   className="w-full h-auto mb-10"
                 />
               </div>
-              <button
-                onClick={goToHome}
-                className="py-3 px-6 mt-11 bg-[var(--color-brand-yellow)] hover:bg-[var(--color-brand-yellow-hover)] text-black rounded-full font-semibold text-sm transition-colors"
-              >
+              <Button variant="startMoonoz" onClick={goToHome}>
                 MoonoZ 시작하기 →
-              </button>
+              </Button>
             </div>
 
             <div className="relative w-full h-[0px] mx-auto translate-y-[14px]">
@@ -158,7 +156,7 @@ const Tutorial = () => {
                 }
               />
               <BottomNavHint
-                left="17%"
+                left="18%"
                 align="center"
                 rotate={-90}
                 text={
@@ -169,7 +167,7 @@ const Tutorial = () => {
                 }
               />
               <BottomNavHint
-                left="57%"
+                left="59%"
                 align="center"
                 rotate={-90}
                 text={
