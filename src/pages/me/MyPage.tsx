@@ -118,7 +118,7 @@ const MyPage: React.FC = () => {
             <h1 className="text-xl font-bold text-gray-900">
               안녕하세요, {profile?.name ?? '고객'} 님! 👋
             </h1>
-            <p className="text-sm text-gray-500">오늘도 무너와 함께 레벨업 해봐요! 🚀</p>
+            <p className="text-sm text-gray-500">오늘도 무너와 함께 레벨업 해봐요!ㅇㅇ</p>
           </div>
         </div>
 
