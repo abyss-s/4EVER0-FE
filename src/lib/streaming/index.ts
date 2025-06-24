@@ -11,7 +11,6 @@ export type {
   StreamingStats,
 } from './types';
 
-// 핵심 클래스
 export { StreamingThrottle } from './StreamingThrottle';
 
 // 스트림 처리 함수

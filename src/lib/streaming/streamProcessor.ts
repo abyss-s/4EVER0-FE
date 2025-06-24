@@ -58,7 +58,7 @@ function extractUBTIQuestionText(data: string): string | null {
 }
 
 /**
- * JSON 구조인지 확인하는 함수 (개선된 버전)
+ * JSON 구조인지 확인하는 함수
  */
 function isJSONStructure(data: string): boolean {
   try {
