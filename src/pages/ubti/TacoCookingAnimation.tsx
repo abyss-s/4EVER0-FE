@@ -23,7 +23,6 @@ export const TacoCookingAnimation: React.FC<TacoCookingAnimationProps> = ({
   isBaked,
   isRevealed,
   ubtiType,
-  stepMessages,
 }) => {
   return (
     <div className="relative min-h-full flex flex-col py-2 items-center justify-centers">
@@ -59,9 +58,7 @@ export const TacoCookingAnimation: React.FC<TacoCookingAnimationProps> = ({
           transition={{ type: 'spring', damping: 15 }}
         >
           <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white border-l-3 border-t-3 border-pink-300 rotate-45" />
-          <span className="text-medium font-semibold text-gray-700 block text-center">
-            {stepMessages[currentStep]?.[messageIndex] || stepMessages[0][0]}
-          </span>
+          <span className="text-medium font-semibold text-gray-700 block text-center"></span>
         </motion.div>
       </AnimatePresence>
 
@@ -87,7 +84,7 @@ export const TacoCookingAnimation: React.FC<TacoCookingAnimationProps> = ({
           }}
         />
 
-        {/* 요리 효과 */}
+        {/* 요리 효과들 - 기존과 동일 */}
         {currentStep >= 1 && (
           <>
             {/* 증기 효과 */}
@@ -194,22 +191,42 @@ export const TacoCookingAnimation: React.FC<TacoCookingAnimationProps> = ({
           </>
         )}
 
-        {/* 타코야끼 그리드 */}
+        {/* 🔧 타코야끼 그리드 - 동적 이미지 로직 개선 */}
         <div className="absolute top-[14%] left-[16%] w-[68%] h-[68%] grid grid-cols-3 grid-rows-3 place-items-center z-10">
           {[...Array(9)].map((_, i) => {
             const isCenter = i === 4;
 
-            const frontImage = isRevealed
-              ? isCenter
-                ? ubtiType?.front_image || IMAGES.TACO['taco-wasab-front']
-                : IMAGES.TACO['taco-sub-front']
-              : IMAGES.TACO['taco-main-front'];
+            // 동적 이미지 선택 로직 개선
+            const frontImage = (() => {
+              if (isRevealed) {
+                if (isCenter && ubtiType?.front_image) {
+                  // 중앙에 실제 UBTI 타입 이미지 사용
+                  return ubtiType.front_image;
+                } else {
+                  // 주변에는 기본 이미지
+                  return IMAGES.TACO['taco-sub-front'];
+                }
+              } else {
+                // 아직 공개되지 않음
+                return IMAGES.TACO['taco-main-front'];
+              }
+            })();
 
-            const backImage = isBaked
-              ? isCenter
-                ? ubtiType?.back_image || IMAGES.TACO['taco-wasab-back']
-                : IMAGES.TACO['taco-sub-back']
-              : IMAGES.TACO['taco-main-back'];
+            const backImage = (() => {
+              if (isBaked) {
+                if (isCenter && ubtiType?.back_image) {
+                  // 중앙에 실제 UBTI 타입 이미지 사용
+
+                  return ubtiType.back_image;
+                } else {
+                  // 주변에는 기본 이미지
+                  return IMAGES.TACO['taco-sub-back'];
+                }
+              } else {
+                // 아직 구워지지 않음
+                return IMAGES.TACO['taco-main-back'];
+              }
+            })();
 
             return (
               <motion.div
@@ -243,6 +260,10 @@ export const TacoCookingAnimation: React.FC<TacoCookingAnimationProps> = ({
                         : {}
                     }
                     transition={{ type: 'spring', damping: 10 }}
+                    // 이미지 로드 에러 시 기본 앞면
+                    onError={(e) => {
+                      e.currentTarget.src = IMAGES.TACO['taco-main-front'];
+                    }}
                   />
 
                   <motion.img
@@ -259,6 +280,10 @@ export const TacoCookingAnimation: React.FC<TacoCookingAnimationProps> = ({
                         : {}
                     }
                     transition={{ duration: 2, repeat: Infinity }}
+                    // 이미지 로드 에러 시 기본 뒷면
+                    onError={(e) => {
+                      e.currentTarget.src = IMAGES.TACO['taco-main-back'];
+                    }}
                   />
                 </ReactCardFlip>
               </motion.div>

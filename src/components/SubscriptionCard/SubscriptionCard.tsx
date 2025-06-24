@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/Button';
-import { Heart, Plus, Play, Coffee, Bookmark } from 'lucide-react';
+import { Plus, Play, Coffee, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { MainSubscription, LifeBrand, SubscriptionRecommendationsData } from '@/types/streaming';
 
@@ -40,11 +40,8 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = React.memo(
       >
         {/* 헤더 */}
         <div className="px-3 pt-3 pb-2">
-          <div className="flex items-center gap-2">
-            <Heart className="w-4 h-4 text-pink-500 flex-shrink-0" />
-            <span className="text-sm font-bold text-purple-800 truncate">무너의 추천 조합</span>
-            <span className="text-base">🐙</span>
-          </div>
+          <span className="text-sm font-bold text-purple-800 truncate pl-1">무너의 추천 조합</span>
+          <span className="text-base">🐙</span>
         </div>
 
         <CardContent className="px-3 pb-3 space-y-3">
@@ -159,8 +156,8 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = React.memo(
                   onClick={handleBrandClick}
                   className="border-green-600 text-green-600 hover:bg-green-50 text-xs py-1.5 h-auto"
                 >
-                  <Bookmark className="w-3 h-3 mr-1" />
-                  쿠폰 찜하기
+                  <Heart className="w-3 h-3 mr-1" />
+                  쿠폰 좋아요
                 </Button>
               </div>
             )}
@@ -171,11 +168,12 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = React.memo(
               onSubscribe && (
                 <Button
                   size="default"
-                  onClick={handleSubscribeClick}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-1.5 h-auto"
+                  variant="outline"
+                  onClick={handleBrandClick}
+                  className="border-red-400 text-red-500 hover:bg-red-50 text-xs py-1.5 h-auto"
                 >
-                  <Play className="w-3 h-3 mr-1" />
-                  구독하러 가기
+                  <Heart className="w-3 h-3 mr-1 text-red-500" />
+                  좋아요
                 </Button>
               )}
 
@@ -188,10 +186,10 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = React.memo(
                   size="default"
                   variant="outline"
                   onClick={handleBrandClick}
-                  className="w-full border-green-600 text-green-600 hover:bg-green-50 py-1.5 h-auto"
+                  className="border-red-400 text-red-500 hover:bg-red-50 text-xs py-1.5 h-auto"
                 >
-                  <Bookmark className="w-3 h-3 mr-1" />
-                  쿠폰 찜하기
+                  <Heart className="w-3 h-3 mr-1 text-red-500" />
+                  좋아요
                 </Button>
               )}
           </div>
