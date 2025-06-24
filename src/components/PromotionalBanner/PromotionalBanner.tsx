@@ -67,7 +67,7 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
   // 자동 슬라이드 효과
   useEffect(() => {
     if (isPlaying) {
-      intervalRef.current = setInterval(nextSlide, 3000);
+      intervalRef.current = setInterval(nextSlide, 5000);
     } else {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);

@@ -11,6 +11,8 @@ import { cn } from '@/lib/utils';
 import { IMAGES } from '@/constant/imagePath';
 import { useNavigate } from 'react-router-dom';
 import { PlanSwiper } from '@/components/PlanCard/PlanSwiper';
+import { toast } from 'sonner';
+import { changeCouponLike } from '@/apis/coupon/changeCouponlike';
 
 interface ChatBubbleProps {
   message: Message;
@@ -211,20 +213,43 @@ const ChatBubble: React.FC<ChatBubbleProps> = React.memo(
       navigate(`/plans/${plan.id}`);
     }, []);
 
-    const handleSubscriptionSelect = React.useCallback(
-      (
-        subscription: NonNullable<typeof message.subscriptionRecommendations>['main_subscription'],
-      ) => {
-        console.log('[DEBUG] Subscription selected:', subscription);
-        navigate('/');
-      },
-      [navigate],
-    );
+    const handleSubscriptionSelect = React.useCallback(() => {
+      navigate('/home#subscription');
+    }, [navigate]);
 
     const handleBrandSelect = React.useCallback(
-      (brand: NonNullable<typeof message.subscriptionRecommendations>['life_brand']) => {
-        console.log('[DEBUG] Brand selected:', brand);
-        navigate('/hotplace');
+      (
+        brand:
+          | NonNullable<typeof message.subscriptionRecommendations>['life_brand']
+          | null
+          | undefined,
+      ) => {
+        if (!brand) {
+          toast.error('브랜드 정보가 없습니다.', {
+            description: '잠시 후 다시 시도해주세요',
+          });
+          return;
+        }
+        changeCouponLike(brand.id)
+          .then((response) => {
+            const isLiked = response.data.data.liked;
+
+            if (isLiked) {
+              toast.success('쿠폰을 찜했어요! 💜', {
+                description: '좋아요한 쿠폰함에서 확인할 수 있어요',
+              });
+            } else {
+              toast.success('쿠폰 찜을 해제했어요', {
+                description: '언제든 다시 찜할 수 있어요',
+              });
+            }
+          })
+          .catch((error) => {
+            console.error('쿠폰 좋아요 토글 실패:', error);
+            toast.error('쿠폰 찜하기에 실패했어요', {
+              description: '잠시 후 다시 시도해주세요',
+            });
+          });
       },
       [navigate],
     );

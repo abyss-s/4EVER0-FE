@@ -111,9 +111,37 @@ const PlanPage: React.FC = () => {
 
   // 요금제 상세 페이지 이동
   if (id) {
+    if (detailLoading) {
+      return (
+        <div className="flex items-center justify-center h-full">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="animate-spin w-8 h-8 border-4 border-brand-yellow border-t-transparent rounded-full" />
+            <p className="text-gray-600 text-sm">요금제 상세 정보를 불러오는 중...</p>
+          </div>
+        </div>
+      );
+    }
+
+    if (detailError || !planDetail) {
+      return (
+        <div className="flex items-center justify-center h-full">
+          <div className="text-center">
+            <div className="text-red-500 text-lg font-medium mb-2">요금제를 찾을 수 없습니다</div>
+            <p className="text-gray-600 mb-4">요청하신 요금제가 존재하지 않습니다.</p>
+            <button
+              onClick={() => navigate('/plans')}
+              className="px-4 py-2 bg-brand-yellow text-white rounded-lg hover:bg-brand-yellow-hover"
+            >
+              목록으로 돌아가기
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className="h-full">
-        <PlanCard plan={normalizePlan(planDetail!)} />
+        <PlanCard plan={normalizePlan(planDetail)} />
       </div>
     );
   }

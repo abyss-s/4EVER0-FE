@@ -174,17 +174,17 @@ export const UBTILoadingIndicator: React.FC = () => {
       <div className="bg-brand-yellow-light px-4 py-3 rounded-lg rounded-tl-none shadow-sm">
         <div className="flex items-center gap-2">
           <div className="flex gap-1">
-            <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"></div>
+            <div className="w-2 h-2 bg-bg-gray-300 rounded-full animate-bounce"></div>
             <div
-              className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"
+              className="w-2 h-2 bg-gray-300 rounded-full animate-bounce"
               style={{ animationDelay: '0.1s' }}
             ></div>
             <div
-              className="w-2 h-2 bg-purple-500 rounded-full animate-bounce"
+              className="w-2 h-2 bg-gray-300 rounded-full animate-bounce"
               style={{ animationDelay: '0.2s' }}
             ></div>
           </div>
-          <span className="text-sm text-purple-600">🐙 타코시그널 분석 중...</span>
+          <span className="text-sm tbg-gray-600">🐙 타코시그널 분석 중...</span>
         </div>
       </div>
     </div>

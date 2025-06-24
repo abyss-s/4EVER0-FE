@@ -57,7 +57,7 @@ export const MatchingTypeCard: React.FC<MatchingTypeCardProps> = ({ matchingType
           💕 나와 찰떡궁합인 타입
         </motion.h2>
 
-        {/* API에서 받은 이미지가 있으면 이미지 사용, 없으면 이모지 사용 */}
+        {/* image_url이 있으면 이미지, 없으면 이모지 */}
         {matchingType.image_url ? (
           <motion.div
             className="mb-6 flex justify-center relative"
@@ -69,28 +69,12 @@ export const MatchingTypeCard: React.FC<MatchingTypeCardProps> = ({ matchingType
             <img
               src={matchingType.image_url}
               alt={matchingType.name}
-              className="w-24 h-24 object-contain rounded-2xl shadow-lg"
-              onError={(e) => {
-                // 이미지 로드 실패 시 이모지로 대체
-                e.currentTarget.style.display = 'none';
-                const emojiElement = e.currentTarget.nextElementSibling as HTMLElement;
-                if (emojiElement) {
-                  emojiElement.style.display = 'block';
-                }
-              }}
+              className="w-24 h-24 object-contain rounded-2xl shadow-lg relative z-10"
             />
-            <motion.div
-              className="text-6xl hidden absolute inset-0 flex items-center justify-center" // 기본적으로 숨김
-              animate={{
-                scale: [1, 1.1, 1],
-              }}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
-              {matchingType.emoji}
-            </motion.div>
 
+            {/* 반짝이 효과 */}
             <motion.div
-              className="absolute -top-2 -right-2 text-yellow-400 text-xl"
+              className="absolute -top-2 -right-2 text-yellow-400 text-xl z-20"
               animate={{
                 scale: [0, 1.2, 0],
                 opacity: [0, 1, 0],

@@ -13,6 +13,7 @@ import { ChatHeader } from '../ChatHeader';
 import { ChatMessages } from '../ChatMessages';
 import { ChatInputArea } from '../ChatInputArea/ChatInputArea';
 import { LoadingOverlay } from '../../ubti/LoadingOverlay';
+import { ChatbotIntroTutorial } from '../ChatbotIntroTutorial';
 import { SubscriptionRecommendationsData } from '@/types/streaming';
 import { fetchUBTIResult } from '@/apis/ubti/ubti';
 import { useScrollTracker } from '@/hooks/useScrollTracker';
@@ -26,6 +27,7 @@ export const ChatContainer: React.FC = () => {
   const [isMunerTone, setIsMunerTone] = useState(false);
   const [isLoadingResult, setIsLoadingResult] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [showTutorial, setShowTutorial] = useState(false);
   const isInitializedRef = useRef(false);
   const navigate = useNavigate();
 
@@ -36,19 +38,32 @@ export const ChatContainer: React.FC = () => {
   const addMessage = useChatStore.getState().addMessage;
   const endSession = useChatStore.getState().endSession;
 
+  // 튜토리얼 초기화 로직
+  useEffect(() => {
+    const hasSeenTutorial = localStorage.getItem('hasSeenChatbotTutorial');
+    if (!hasSeenTutorial) {
+      // 1초 후에 튜토리얼 표시 (페이지 로딩 완료 후)
+      const timer = setTimeout(() => {
+        setShowTutorial(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleCloseTutorial = useCallback(() => {
+    setShowTutorial(false);
+  }, []);
+
   const handleUBTIResultClick = async () => {
     if (!currentSessionId) return;
     setIsLoadingResult(true); // 로딩 시작
 
     try {
       const result = await fetchUBTIResult(currentSessionId, isMunerTone ? 'muneoz' : 'general');
-
-      // 결과 페이지로 이동
       navigate('/ubti', { state: result });
     } catch (error) {
       console.error('UBTI 결과 불러오기 실패:', error);
-      setIsLoadingResult(false); // 에러 시 로딩 해제
-      // TODO: 에러 토스트 메시지 표시?
+      setIsLoadingResult(false);
     }
   };
 
@@ -94,9 +109,10 @@ export const ChatContainer: React.FC = () => {
 
       const getInitialGreeting = () => {
         if (isMunerTone) {
-          return '안뇽! 🤟 나는 무너야~ 🐙\n\n완전 럭키비키하게 만났네! ✨\n요금제나 구독 뭐든지 물어봐~ 💜';
+          return `안뇽! 🤟 나는 무너야~ 🐙\n완전 럭키비키하게 만났네! ✨\n요금제나 구독 뭐든지 물어봐~ 💜\n💡 이런 걸 물어봐도 돼:"요금제 추천해줘 or 구독 추천해줘"`;
         } else {
-          return '안녕하세요! 😊 저는 LG유플러스의 AI 어시스턴트예요. 궁금한 점이 있으시면 언제든지 물어보세요!';
+          return `안녕하세요! 😊 저는 LG유플러스의 AI 어시스턴트예요.\n📋 다음과 같은 도움을 드릴 수 있어요:\n요금제 추천해주세요
+                  \n구독 서비스 추천해주세요.\n궁금한 점이 있으시면 언제든지 물어보세요!`;
         }
       };
 
@@ -306,6 +322,9 @@ export const ChatContainer: React.FC = () => {
 
   return (
     <div className="flex flex-col relative h-full">
+      {/* 튜토리얼 오버레이 추가 */}
+      <ChatbotIntroTutorial isVisible={showTutorial} onClose={handleCloseTutorial} />
+
       {/* 결과 로딩 오버레이 */}
       <LoadingOverlay
         isVisible={isLoadingResult}
