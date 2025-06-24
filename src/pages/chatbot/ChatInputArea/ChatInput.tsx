@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/ui/input';
 import { Send } from 'lucide-react';
+import { isMobile } from '@/utils/deviceUtils';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -18,23 +19,31 @@ export const ChatInput: React.FC<ChatInputProps> = ({
 }) => {
   const [message, setMessage] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const [shouldAutoFocus, setShouldAutoFocus] = useState(true);
 
-  // 컴포넌트 마운트 시 포커스
+  // 모바일 기기에서는 자동포커스 비활성화
   useEffect(() => {
-    if (autoFocus && !disabled && inputRef.current) {
+    setShouldAutoFocus(!isMobile());
+  }, []);
+
+  // 컴포넌트 마운트 시 포커스 (모바일 제외)
+  useEffect(() => {
+    if (shouldAutoFocus && autoFocus && !disabled && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [autoFocus, disabled]);
+  }, [shouldAutoFocus, autoFocus, disabled]);
 
-  // 메시지 전송 후 포커스 복구
+  // 메시지 전송 후 포커스 복구 (모바일 제외)
   const focusInput = useCallback(() => {
+    if (!shouldAutoFocus) return;
+
     // 약간의 지연을 두어 DOM 업데이트 후 포커스
     setTimeout(() => {
       if (inputRef.current && !disabled) {
         inputRef.current.focus();
       }
     }, 100);
-  }, [disabled]);
+  }, [disabled, shouldAutoFocus]);
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -43,7 +52,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
       if (trimmedMessage && !disabled) {
         onSendMessage(trimmedMessage);
         setMessage('');
-        // 메시지 전송 후 포커스 복구
+        // 메시지 전송 후 포커스 복구 (모바일 제외)
         focusInput();
       }
     },
@@ -60,12 +69,12 @@ export const ChatInput: React.FC<ChatInputProps> = ({
     [handleSubmit],
   );
 
-  // disabled 상태가 변경될 때 포커스 관리
+  // disabled 상태가 변경될 때 포커스 관리 (모바일 제외)
   useEffect(() => {
-    if (!disabled && autoFocus) {
+    if (!disabled && shouldAutoFocus && autoFocus) {
       focusInput();
     }
-  }, [disabled, autoFocus, focusInput]);
+  }, [disabled, shouldAutoFocus, autoFocus, focusInput]);
 
   return (
     <form onSubmit={handleSubmit} className="flex w-full items-center h-10 space-x-2">
@@ -80,7 +89,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         className="flex-1 h-full px-3 text-sm rounded-lg border-gray-300 focus:border-brand-yellow focus:ring-brand-yellow/20"
         maxLength={500}
         autoComplete="off"
-        autoFocus={autoFocus}
+        autoFocus={shouldAutoFocus && autoFocus}
       />
       <Button
         type="submit"

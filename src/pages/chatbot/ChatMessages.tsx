@@ -66,7 +66,8 @@ export const ChatMessages: React.FC<ChatMessagesProps> = React.memo(
           })}
 
           {isStreaming && renderLoadingState()}
-          <div ref={messagesEndRef} />
+
+          <div ref={messagesEndRef} className="h-8" />
         </div>
       </div>
     );
