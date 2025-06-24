@@ -95,11 +95,8 @@ const scaleVariants = {
 
 const Landing = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const introRef = useRef(null);
   const lastRef = useRef(null);
 
-  // useInView 옵션 수정 - threshold 제거
-  const introInView = useInView(introRef, { once: true });
   const lastInView = useInView(lastRef, { once: true });
 
   // Mock data for demonstration
@@ -151,7 +148,7 @@ const Landing = () => {
     >
       {/* Start Section */}
       <motion.div
-        className="flex flex-col items-center w-full pt-32 sm:pt-24 h-[880px] relative"
+        className="flex flex-col items-center w-full pt-32 sm:pt-24 min-h-screen relative"
         variants={containerVariants}
         initial="hidden"
         animate={isLoaded ? 'visible' : 'hidden'}
@@ -177,7 +174,7 @@ const Landing = () => {
 
         {/* Illustration */}
         <motion.div
-          className="w-64 h-48 rounded-2xl flex items-center justify-center mb-6 shadow-lg"
+          className="w-64 h-48 rounded-2xl flex items-center justify-center mb-8 shadow-lg"
           style={{
             background: `linear-gradient(135deg, ${brandColors.yellow} 0%, ${brandColors.red}40 100%)`,
           }}
@@ -194,9 +191,33 @@ const Landing = () => {
           </motion.div>
         </motion.div>
 
+        {/* 텍스트 */}
+        <motion.div
+          className="text-center font-medium text-xl mb-6"
+          style={{ color: `${brandColors.darkblue}` }}
+          variants={slideUpVariants}
+        >
+          {`통신사 요금 고를 때,
+어떤 혜택을 고려할 지가 어렵지 않으셨나요?`}
+        </motion.div>
+
+        {/* 노란 박스 */}
+        <motion.div className="w-[calc(100%-42px)] mb-8" variants={slideUpVariants}>
+          <motion.div
+            className="w-full h-64 rounded-xl flex items-center justify-center shadow-lg"
+            style={{
+              background: `linear-gradient(90deg, ${brandColors.yellow}60 0%, ${brandColors.red}40 100%)`,
+            }}
+            whileHover={{ scale: 1.02, rotateY: 5 }}
+            transition={{ type: 'spring', damping: 20 }}
+          >
+            <div className="text-4xl">💬</div>
+          </motion.div>
+        </motion.div>
+
         {/* Scroll Indicator */}
         <motion.div
-          className="flex flex-row items-center gap-2 absolute bottom-2 font-semibold"
+          className="flex flex-row items-center gap-2 font-semibold mb-12"
           style={{ color: `${brandColors.darkblue}` }}
           variants={itemVariants}
           animate={{
@@ -216,37 +237,10 @@ const Landing = () => {
           </div>
           스크롤해보세요
         </motion.div>
-      </motion.div>
 
-      {/* Intro Section */}
-      <motion.div
-        ref={introRef}
-        className="flex flex-col items-center w-full h-[700px] text-xl gap-10 whitespace-pre-line"
-        style={{ color: `${brandColors.darkblue}` }}
-        variants={staggerContainerVariants}
-        initial="hidden"
-        animate={introInView ? 'visible' : 'hidden'}
-      >
-        <motion.div className="text-center font-medium" variants={slideUpVariants}>
-          {`통신사 요금 고를 때,
-어떤 혜택을 고려할 지가 어렵지 않으셨나요?`}
-        </motion.div>
-
-        <motion.div className="w-[calc(100%-42px)]" variants={slideUpVariants}>
-          <motion.div
-            className="w-full h-64 rounded-xl flex items-center justify-center shadow-lg"
-            style={{
-              background: `linear-gradient(90deg, ${brandColors.yellow}60 0%, ${brandColors.red}40 100%)`,
-            }}
-            whileHover={{ scale: 1.02, rotateY: 5 }}
-            transition={{ type: 'spring', damping: 20 }}
-          >
-            <div className="text-4xl">💬</div>
-          </motion.div>
-        </motion.div>
-
+        {/* MoonoZ 로고와 텍스트 */}
         <motion.div
-          className="mt-12 flex flex-col items-center gap-2"
+          className="flex flex-col items-center gap-2"
           variants={staggerContainerVariants}
         >
           <motion.div
@@ -257,7 +251,11 @@ const Landing = () => {
           >
             MoonoZ
           </motion.div>
-          <motion.div className="text-lg font-medium" variants={itemVariants}>
+          <motion.div
+            className="text-lg font-medium"
+            style={{ color: `${brandColors.darkblue}` }}
+            variants={itemVariants}
+          >
             무너즈가 도와드릴게요!
           </motion.div>
         </motion.div>
