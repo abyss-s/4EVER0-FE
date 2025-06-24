@@ -59,7 +59,7 @@
 
 // export default TopCouponCard;
 
-import { Card, CardContent, CardTitle, CardDescription } from '@/components/Card';
+import { Card, CardContent, CardTitle } from '@/components/Card';
 import { TopCoupon } from '@/apis/coupon/getTopCoupons';
 
 interface Props {
@@ -69,11 +69,11 @@ interface Props {
   getDiscountLabel: (deal: TopCoupon) => string;
 }
 
-const TopCouponCard = ({ deal, index, isLoading, getDiscountLabel }: Props) => {
+const TopCouponCard = ({ deal, index, isLoading }: Props) => {
   const showSkeleton = isLoading || !deal;
 
   return (
-    <Card className="w-full max-w-[160px] flex flex-col items-center px-3 py-3 gap-2 shadow-md rounded-xl">
+    <Card className="relative w-full max-w-[160px] flex flex-col items-center px-3 py-3 gap-2 shadow-md rounded-xl">
       {/* 순위 뱃지 */}
       <div
         className={`absolute -top-3 -left-3 w-7 h-7 rounded-full text-white text-[10px] flex items-center justify-center font-bold shadow ${
@@ -87,7 +87,7 @@ const TopCouponCard = ({ deal, index, isLoading, getDiscountLabel }: Props) => {
       {showSkeleton ? (
         <div className="w-20 h-4 bg-gray-200 mb-1 rounded animate-pulse" />
       ) : (
-        <p className="text-xs font-bold text-center">{deal.brand}</p>
+        <p className="text-xs font-bold text-center truncate max-w-full">{deal.brand}</p>
       )}
 
       {/* 이미지 */}
@@ -97,22 +97,17 @@ const TopCouponCard = ({ deal, index, isLoading, getDiscountLabel }: Props) => {
         className="w-full h-20 object-cover rounded-md"
       />
 
-      {/* 정보 */}
-      <CardContent className="flex flex-col items-start gap-1 p-0 w-full">
+      {/* 제목만 노출 */}
+      <CardContent className="flex flex-col items-center p-0 w-full min-h-[40px]">
         {showSkeleton ? (
-          <>
-            <div className="h-4 bg-gray-200 rounded-sm animate-pulse w-3/4" />
-            <div className="h-3 bg-gray-100 rounded-sm animate-pulse w-full" />
-            <div className="h-3 bg-gray-100 rounded-sm animate-pulse w-1/2" />
-          </>
+          <div className="h-4 bg-gray-200 rounded-sm animate-pulse w-3/4" />
         ) : (
-          <>
-            <CardTitle className="text-sm font-semibold leading-snug">{deal.title}</CardTitle>
-            <CardDescription className="text-xs leading-tight line-clamp-2">
-              {deal.description}
-            </CardDescription>
-            <span className="text-red-500 text-xs font-bold">{getDiscountLabel(deal)}</span>
-          </>
+          <CardTitle
+            className="text-sm text-red-500 font-semibold text-center break-words line-clamp-2"
+            style={{ wordBreak: 'keep-all' }}
+          >
+            {deal.title}
+          </CardTitle>
         )}
       </CardContent>
     </Card>
