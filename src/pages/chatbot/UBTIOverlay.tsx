@@ -86,16 +86,21 @@ export const UBTIOverlay: React.FC<UBTIOverlayProps> = ({
             </div>
           </CardHeader>
           <CardContent className="pt-0 pb-2">
-            <p className="text-brand-darkblue/80 text-sm my-2 text-center font-medium">
-              💬 아래 채팅창에서 답변해주세요!
-            </p>
-            <div className="bg-white/70 backdrop-blur-sm rounded-lg p-3 border border-white/40 shadow-sm">
-              <p className="text-brand-darkblue text-sm leading-relaxed font-medium">
-                {questionTextToShow}
-              </p>
-            </div>
+            {/* 검사 완료 전에만 보이는 안내 메시지와 질문 */}
+            {!ubtiReadyToSubmit && (
+              <>
+                <p className="text-brand-darkblue/80 text-sm my-2 text-center font-medium">
+                  💬 아래 채팅창에서 답변해주세요!
+                </p>
+                <div className="bg-white/70 backdrop-blur-sm rounded-lg p-3 border border-white/40 shadow-sm">
+                  <p className="text-brand-darkblue text-sm leading-relaxed font-medium">
+                    {questionTextToShow}
+                  </p>
+                </div>
+              </>
+            )}
 
-            {/* 결과 보기 버튼 - 별도 행으로 분리 */}
+            {/* 결과 보기 버튼 - 검사 완료 시에만 표시 */}
             {ubtiReadyToSubmit && (
               <div className="mt-3 space-y-2 text-center">
                 <p className="text-brand-darkblue font-semibold text-sm">
