@@ -6,5 +6,5 @@ import { apiWithToken } from '@/lib/api/apiconfig';
  */
 export const changePlan = async (planId: number) => {
   const res = await apiWithToken.post('/user/plans', { plan_id: planId });
-  return res?.data?.data;
+  return res?.data;
 };
