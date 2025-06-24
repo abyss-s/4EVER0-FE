@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useModalStore } from '@/stores/useModalStore';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/Badge';
 import type { SubscriptionItem } from '@/types/subscription';
 import type { Brand } from '@/types/brand';
