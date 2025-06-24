@@ -28,7 +28,6 @@ export const UplusCalendar = ({ selectedCategory }: UplusCalendarProps) => {
       });
   }, []);
 
-  // 날짜 클릭 핸들러 추가!
   const handleDateClick = (date: Date, isCurrentMonth: boolean) => {
     if (!isCurrentMonth) return;
 
@@ -59,7 +58,7 @@ export const UplusCalendar = ({ selectedCategory }: UplusCalendarProps) => {
           return (
             <div
               className="flex flex-col items-center justify-center h-full relative cursor-pointer hover:bg-gray-50 transition-colors rounded"
-              onClick={() => handleDateClick(date, isCurrentMonth)} // 클릭 이벤트 추가
+              onClick={() => handleDateClick(date, isCurrentMonth)}
             >
               <span className="relative z-10">{format(date, 'd')}</span>
 

@@ -40,7 +40,7 @@ export function LifeBenefitsStep({
         </p>
       </div>
 
-      {/* 카테고리 선택 - 모바일 친화적 가로 스크롤 */}
+      {/* 카테고리 선택 */}
       <div className="w-full overflow-x-auto scrollbar-hide touch-scroll">
         <div className="flex gap-2 px-1 py-2">
           {BRAND_CATEGORIES.map((cat) => (

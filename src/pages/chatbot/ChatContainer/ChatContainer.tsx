@@ -141,16 +141,16 @@ export const ChatContainer: React.FC = () => {
     if (!currentSessionId) {
       initializeChat();
     }
-  }, [currentSessionId, initializeChat]); // isMunerTone 의존성 제거
+  }, [currentSessionId, initializeChat]);
 
-  // 개선된 자동 스크롤 - 하단 여백 추가
+  // 개선된 자동 스크롤
   useEffect(() => {
     if (messages.length > 0) {
       // 약간의 지연으로 DOM 업데이트 완료 후 스크롤
       const timer = setTimeout(() => {
         messagesEndRef.current?.scrollIntoView({
           behavior: 'smooth',
-          block: 'end', // 'end'로 변경하여 하단 여백 확보
+          block: 'end',
         });
       }, 100);
 

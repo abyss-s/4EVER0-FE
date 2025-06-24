@@ -13,7 +13,7 @@ interface UplusBenefitPreviewProps {
 }
 export const UplusBenefitPreview = ({ onLoadComplete }: UplusBenefitPreviewProps) => {
   const [benefits, setBenefits] = useState<Benefit[]>([]);
-  const [showTooltip, setShowTooltip] = useState(false); // ✅ 툴팁 표시 상태
+  const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
     getMonthlyBenefits()
@@ -86,7 +86,7 @@ export const UplusBenefitPreview = ({ onLoadComplete }: UplusBenefitPreviewProps
         })}
       </Swiper>
 
-      {/* ✅ 툴팁 메시지 - 하단 중앙 고정 */}
+      {/* 툴팁 메시지 - 하단 중앙 고정 */}
       {showTooltip && (
         <div
           className="absolute left-1/2 bottom-[-36px] -translate-x-1/2 z-50 px-3 py-1.5
