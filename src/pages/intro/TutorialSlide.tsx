@@ -1,5 +1,6 @@
 import React from 'react';
 import BackButton from '@/pages/intro/BackButton';
+import { Button } from '@/components/Button';
 
 interface TutorialSlideProps {
   title: string;
@@ -41,13 +42,9 @@ const TutorialSlide: React.FC<TutorialSlideProps> = ({
           ))}
         </div>
       )}
-
-      <button
-        onClick={onButtonClick}
-        className="mt-auto w-full py-3 bg-[var(--color-brand-yellow)] hover:bg-[var(--color-brand-yellow-hover)] text-black rounded-lg button-text transition-colors"
-      >
+      <Button variant="yellowFull" onClick={onButtonClick}>
         {buttonText}
-      </button>
+      </Button>
     </div>
   );
 };

@@ -14,12 +14,16 @@ export const buttonVariants = cva(
         ghost:
           'text-foreground hover:bg-accent hover:text-accent-foreground dark:text-foreground dark:hover:bg-accent/50 dark:hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline dark:text-primary dark:hover:text-primary/80',
-        login: 'bg-[#25394B] text-white rounded-[8px] hover:bg-[#1d2f3d]',
+        login: 'bg-[#25394B] text-white rounded-md hover:bg-[#1d2f3d]',
         missionStatus:
           'bg-gray-100 text-gray-500 border border-gray-200 rounded-[6px] px-2 py-0.5 text-xs font-semibold cursor-default dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700',
         missionStatusCom:
           'bg-black text-white rounded-[6px] px-2 py-0.5 text-xs font-semibold hover:bg-black/80 inline-flex items-center gap-1',
         map: 'w-[120px] bg-white border border-gray-200 text-gray-700 rounded-md text-sm font-medium shadow-sm hover:shadow-md transition-shadow flex items-center justify-center gap-1.5 px-4 py-2 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600',
+        yellowFull:
+          'w-full mt-auto py-3 bg-[var(--color-brand-yellow)] hover:bg-[var(--color-brand-yellow-hover)] text-black rounded-md button-text transition-colors',
+        startMoonoz:
+          'py-3 px-6 mt-1 bg-[var(--color-brand-yellow)] hover:bg-[var(--color-brand-yellow-hover)] text-black rounded-md font-semibold text-sm transition-colors',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',
