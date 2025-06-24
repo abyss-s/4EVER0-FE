@@ -193,9 +193,9 @@ export const UBTI: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-gradient-to-br from-pink-100 via-orange-100 to-yellow-100 flex items-center justify-center min-h-screen">
+      <div className="bg-gradient-to-br from-pink-100 via-orange-100 to-yellow-100 flex items-center justify-center min-h-full px-4">
         <motion.div
-          className="text-center bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-2xl"
+          className="text-center bg-white/80 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-2xl max-w-sm w-full"
           animate={{
             scale: [1, 1.05, 1],
             rotate: [0, 1, -1, 0],
@@ -203,13 +203,15 @@ export const UBTI: React.FC = () => {
           transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
         >
           <motion.div
-            className="text-6xl mb-4"
+            className="text-4xl sm:text-6xl mb-4"
             animate={{ rotate: 360 }}
             transition={{ repeat: Infinity, duration: 3, ease: 'linear' }}
           >
             🍳
           </motion.div>
-          <div className="text-xl text-gray-700 font-medium">타코야끼를 준비하고 있어요...</div>
+          <div className="text-lg sm:text-xl text-gray-700 font-medium">
+            타코야끼를 준비하고 있어요...
+          </div>
           <div className="text-sm text-gray-500 mt-2">잠시만 기다려주세요 💕</div>
         </motion.div>
       </div>
@@ -218,21 +220,23 @@ export const UBTI: React.FC = () => {
 
   if (!result) {
     return (
-      <div className="min-h-full bg-gradient-to-br from-pink-100 via-orange-100 to-yellow-100 flex items-center justify-center">
+      <div className="min-h-full bg-gradient-to-br from-pink-100 via-orange-100 to-yellow-100 flex items-center justify-center px-4">
         <motion.div
-          className="text-center bg-white/90 p-10 rounded-3xl shadow-2xl border-4 border-pink-200"
+          className="text-center bg-white/90 p-6 sm:p-10 rounded-3xl shadow-2xl border-4 border-pink-200 max-w-sm w-full"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: 'spring', damping: 10 }}
         >
           <motion.div
-            className="text-6xl mb-6"
+            className="text-4xl sm:text-6xl mb-6"
             animate={{ rotate: [0, 10, -10, 0] }}
             transition={{ repeat: Infinity, duration: 1.5 }}
           >
             😅
           </motion.div>
-          <div className="text-xl text-gray-700 font-medium mb-2">앗! 타코야끼가 어디갔지?</div>
+          <div className="text-lg sm:text-xl text-gray-700 font-medium mb-2">
+            앗! 타코야끼가 어디갔지?
+          </div>
           <div className="text-gray-500 pb-3">데이터를 불러올 수 없어요!</div>
           <Button variant="outline" onClick={handleBackClick}>
             홈으로 돌아가기
@@ -248,14 +252,14 @@ export const UBTI: React.FC = () => {
     <div className="min-h-full bg-gradient-to-br from-pink-50 via-orange-50 via-yellow-50 to-red-50 relative">
       {/* 애니메이션 배경 요소들 */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(12)].map((_, i) => (
+        {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute text-pink-200"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              fontSize: `${20 + Math.random() * 20}px`,
+              fontSize: `${16 + Math.random() * 16}px`,
             }}
             animate={{
               y: [-30, -60, -30],
@@ -295,16 +299,16 @@ export const UBTI: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: 'spring', duration: 1, damping: 20 }}
           >
-            <div className="max-w-full mx-auto py-16 space-y-10">
+            <div className="max-w-md mx-auto px-4 py-8 sm:py-16 space-y-6 sm:space-y-10">
               {/* 헤더 */}
               <motion.div
-                className="text-center mb-12"
+                className="text-center mb-6 sm:mb-12"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, type: 'spring' }}
               >
                 <motion.h1
-                  className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-orange-600 bg-clip-text text-transparent mb-4"
+                  className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-pink-600 to-orange-600 bg-clip-text text-transparent mb-4"
                   animate={{
                     backgroundPosition: ['0%', '100%', '0%'],
                   }}
@@ -313,7 +317,7 @@ export const UBTI: React.FC = () => {
                   🎉 타코시그널 결과 🎉
                 </motion.h1>
                 <motion.p
-                  className="text-gray-600 text-lg font-semibold"
+                  className="text-gray-600 text-base sm:text-lg font-semibold"
                   animate={{ opacity: [0.7, 1, 0.7] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
@@ -326,61 +330,60 @@ export const UBTI: React.FC = () => {
 
               {/* 유형 요약 */}
               <motion.div
-                className="bg-white rounded-3xl px-4 py-6 shadow-xl border-2 border-orange-200"
+                className="bg-white rounded-2xl sm:rounded-3xl px-3 sm:px-4 py-4 sm:py-6 shadow-xl border-2 border-orange-200"
                 initial={{ opacity: 0, x: -100 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4, type: 'spring' }}
                 whileHover={{ scale: 1.02 }}
               >
-                <div className="flex items-center mb-6">
+                <div className="flex items-center mb-4 sm:mb-6">
                   <motion.span
-                    className="text-title-1 mr-4"
+                    className="text-lg sm:text-title-1 mr-3 sm:mr-4"
                     animate={{ rotate: [0, 10, -10, 0] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
                     📝
                   </motion.span>
-                  <h3 className="text-xl font-bold text-orange-700">당신의 특별한 매력</h3>
+                  <h3 className="text-lg sm:text-xl font-bold text-orange-700">
+                    당신의 특별한 매력
+                  </h3>
                 </div>
                 <ReactMarkdown components={markdownComponents}>{summary}</ReactMarkdown>
               </motion.div>
 
-              <div className="space-y-8 px-4">
+              <div className="space-y-6 sm:space-y-8">
                 {/* 추천 요금제 섹션 */}
                 <motion.div
                   initial={{ opacity: 0, x: 100 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.5, type: 'spring' }}
                 >
-                  <div className="flex items-center mb-6">
+                  <div className="flex items-center mb-4 sm:mb-6">
                     <motion.span
-                      className="text-xl mr-4"
+                      className="text-lg sm:text-xl mr-3 sm:mr-4"
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
                       📱
                     </motion.span>
-                    <h3 className="text-xl font-bold text-blue-700">맞춤 요금제 추천</h3>
+                    <h3 className="text-lg sm:text-xl font-bold text-blue-700">맞춤 요금제 추천</h3>
                   </div>
 
                   {isLoadingDetails ? (
-                    <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-blue-200">
+                    <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-blue-200">
                       <InlineLoading message="최적의 요금제를 찾고 있어요..." size="md" />
                     </div>
                   ) : (
-                    <div className="flex flex-col gap-4 justify-items-center">
+                    <div className="space-y-3 sm:space-y-4">
                       {detailedPlans.map((plan, index) => (
                         <motion.div
                           key={plan.id}
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.6 + index * 0.1 }}
+                          className="flex justify-center"
                         >
-                          <PlanCard
-                            plan={plan}
-                            onSelect={handlePlanSelect}
-                            className="w-full max-w-sm"
-                          />
+                          <PlanCard plan={plan} onSelect={handlePlanSelect} className="w-full" />
                         </motion.div>
                       ))}
                     </div>
@@ -393,19 +396,21 @@ export const UBTI: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6, type: 'spring' }}
                 >
-                  <div className="flex items-center mb-6">
+                  <div className="flex items-center mb-4 sm:mb-6">
                     <motion.span
-                      className="text-xl mr-4"
+                      className="text-lg sm:text-xl mr-3 sm:mr-4"
                       animate={{ rotate: [0, 360] }}
                       transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
                     >
                       🎵
                     </motion.span>
-                    <h3 className="text-xl font-bold text-purple-700">특별 구독 서비스</h3>
+                    <h3 className="text-lg sm:text-xl font-bold text-purple-700">
+                      특별 구독 서비스
+                    </h3>
                   </div>
 
                   {isLoadingDetails ? (
-                    <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-purple-200">
+                    <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-purple-200">
                       <InlineLoading message="구독 서비스 추천을 준비중이에요..." size="md" />
                     </div>
                   ) : (
@@ -413,7 +418,7 @@ export const UBTI: React.FC = () => {
                       <SubscriptionCard
                         data={convertToSubscriptionCard(recommendation.subscription)}
                         onSubscribe={handleSubscriptionSelect}
-                        className="w-full max-w-sm"
+                        className="w-full"
                       />
                     </div>
                   )}
@@ -427,13 +432,13 @@ export const UBTI: React.FC = () => {
 
               {/* 엔딩 메시지 */}
               <motion.div
-                className="text-center pt-8"
+                className="text-center pt-6 sm:pt-8"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.5 }}
               >
                 <motion.div
-                  className="text-2xl font-medium"
+                  className="text-lg sm:text-2xl font-medium"
                   animate={{
                     scale: [1, 1.2, 1],
                     rotate: [0, 5, -5, 0],
@@ -442,7 +447,9 @@ export const UBTI: React.FC = () => {
                 >
                   테스트 해주셔서 감사합니다! 💕
                 </motion.div>
-                <p className="text-gray-500 mt-2">오늘도 무너즈와 즐거운 하루 보내세요!</p>
+                <p className="text-gray-500 mt-2 text-sm sm:text-base">
+                  오늘도 무너즈와 즐거운 하루 보내세요!
+                </p>
               </motion.div>
             </div>
           </motion.div>
