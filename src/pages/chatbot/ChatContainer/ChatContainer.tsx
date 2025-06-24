@@ -156,7 +156,7 @@ export const ChatContainer: React.FC = () => {
 
       return () => clearTimeout(timer);
     }
-  }, [messages.length]);
+  }, [messages]);
 
   // 스트리밍 중에도 스크롤 유지
   useEffect(() => {
