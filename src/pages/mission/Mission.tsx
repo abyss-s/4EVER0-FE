@@ -28,7 +28,7 @@ const MissionPage = () => {
     }
   }, [scrollTo]);
   return (
-    <div className="p-4 pt-1">
+    <div>
       <FlatTabs tabs={TABS} value={selectedTab} onChange={setSelectedTab} />
 
       <div className="mt-6">
