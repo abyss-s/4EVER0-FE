@@ -93,15 +93,18 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
         {/* 톤 스위치 - 로그인 상태에 따라 제어 */}
         <div className="flex-shrink-0 relative">
           {isLoggedIn ? (
-            <ToneSwitch
-              isMunerTone={isMunerTone}
-              onToggle={onToneToggle}
-              disabled={buttonDisabled}
-            />
+            <div id="tutorial-tone-switch">
+              {/* 튜토리얼용 ID 추가 */}
+              <ToneSwitch
+                isMunerTone={isMunerTone}
+                onToggle={onToneToggle}
+                disabled={buttonDisabled}
+              />
+            </div>
           ) : (
             <div className="relative group">
-              {/* 비활성화된 톤 스위치 */}
-              <div className="opacity-50 pointer-events-none">
+              <div id="tutorial-tone-switch" className="opacity-50 pointer-events-none">
+                {/* 튜토리얼용 ID 추가 */}
                 <ToneSwitch isMunerTone={false} onToggle={() => {}} disabled={true} />
               </div>
 
