@@ -34,10 +34,10 @@ export const FlatTabs = ({ tabs, defaultTab, value, onChange, className }: FlatT
           key={tab}
           onClick={() => handleClick(tab)}
           className={cn(
-            'flex-1 text-center py-2 text-base transition-all duration-200 outline-none',
+            'flex-1 text-center py-2 text-xl transition-all duration-200 outline-none',
             selected === tab
-              ? 'text-xl font-bold text-brand-darkblue transform scale-105'
-              : 'text-gray-400 font-medium border-b-2 border-transparent',
+              ? 'font-bold text-brand-darkblue'
+              : 'font-medium text-gray-400 border-b-2 border-transparent',
           )}
         >
           {tab}
