@@ -73,7 +73,7 @@ const TopCouponCard = ({ deal, index, isLoading, getDiscountLabel }: Props) => {
   const showSkeleton = isLoading || !deal;
 
   return (
-    <Card className="relative w-[160px] flex flex-col items-center px-3 py-3 gap-2 shadow-md rounded-xl">
+    <Card className="w-full max-w-[160px] flex flex-col items-center px-3 py-3 gap-2 shadow-md rounded-xl">
       {/* 순위 뱃지 */}
       <div
         className={`absolute -top-3 -left-3 w-7 h-7 rounded-full text-white text-[10px] flex items-center justify-center font-bold shadow ${

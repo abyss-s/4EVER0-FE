@@ -109,7 +109,7 @@ const HotPlace = () => {
       {/* 인기 쿠폰 섹션 */}
       <div className="px-4">
         {/* 쿠폰 리스트 */}
-        <div className="flex flex-wrap gap-4 pt-4">
+        <div className="grid grid-cols-3 sm:grid-cols-3 xs:grid-cols-2 gap-4 justify-items-center pt-4">
           {[0, 1, 2].map((index) => (
             <TopCouponCard
               key={index}
