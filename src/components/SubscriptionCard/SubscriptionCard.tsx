@@ -28,7 +28,7 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = React.memo(
       }
     }, [life_brand, onBrandSelect]);
 
-    // 라이프 브랜드가 있는지 확인
+    // 라이프 브랜드 유무 확인
     const hasLifeBrand = !!life_brand;
 
     return (

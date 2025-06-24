@@ -1,4 +1,3 @@
-// src/stories/BaseCalendar.stories.tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { BaseCalendar } from './BaseCalendar';
 import { useState } from 'react';
@@ -87,7 +86,6 @@ export const InteractiveModern: Story = {
   },
 };
 
-// 스탬프/이벤트가 있는 캘린더 예시
 // 이벤트 표시만 있는 캘린더
 export const WithEventsOnly: Story = {
   args: {
@@ -165,7 +163,7 @@ export const WithMediumStamp: Story = {
   },
 };
 
-// 더 큰 크기 (살짝 더 큰 버전): WithLargeStamp 수정 - 모든 스탬프 크기 균일화
+// 더 큰 크기 (살짝 더 큰 버전)
 export const WithLargeStamp: Story = {
   args: {
     variant: 'modern',
@@ -193,7 +191,7 @@ export const WithLargeStamp: Story = {
   },
 };
 
-// 이벤트 + 스탬프 조합 (기존 WithEvents 개선)
+// 이벤트 + 스탬프 조합
 export const WithEventsAndStamp: Story = {
   args: {
     variant: 'modern',
