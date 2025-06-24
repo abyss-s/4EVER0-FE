@@ -216,13 +216,11 @@ export default function StoreMap({
                 background: var(--color-brand-red);
                 border: 3px solid white;
                 border-radius: 50%;
-                box-shadow: 0 3px 10px rgba(221, 70, 64, 0.4);
                 position: relative;
               ">
                 <div style="
                   width: 6px;
                   height: 6px;
-                  background: white;
                   border-radius: 50%;
                   position: absolute;
                   top: 50%;
