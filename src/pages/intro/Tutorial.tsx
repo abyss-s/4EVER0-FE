@@ -6,6 +6,7 @@ import { ArrowRightIcon } from '@radix-ui/react-icons';
 import TutorialStep2Background from './TutorialStep2Background';
 import { IMAGES } from '@/constant/imagePath';
 import BackButton from '@/pages/intro/BackButton';
+import { Button } from '@/components/Button';
 
 const BottomNavHint = ({
   left,
@@ -137,12 +138,9 @@ const Tutorial = () => {
                   className="w-full h-auto mb-10"
                 />
               </div>
-              <button
-                onClick={goToHome}
-                className="py-3 px-6 mt-1 bg-[var(--color-brand-yellow)] hover:bg-[var(--color-brand-yellow-hover)] text-black rounded-full font-semibold text-sm transition-colors"
-              >
+              <Button variant="startMoonoz" onClick={goToHome}>
                 MoonoZ 시작하기 →
-              </button>
+              </Button>
             </div>
 
             <div className="relative w-full h-[0px] mx-auto translate-y-[14px]">
