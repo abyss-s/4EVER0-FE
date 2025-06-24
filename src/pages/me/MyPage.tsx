@@ -53,7 +53,7 @@ const MyPage: React.FC = () => {
   }, [isLoading]);
 
   if (isLoading && shouldShowLoading) return <LoadingMooner />;
-  if (isLoading && (error || !plan)) {
+  if (!isLoading && (error || !plan)) {
     return (
       <Empty
         imageSrc={IMAGES.MOONER['mooner-sad']}
