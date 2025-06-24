@@ -73,10 +73,10 @@ const TopCouponCard = ({ deal, index, isLoading, getDiscountLabel }: Props) => {
   const showSkeleton = isLoading || !deal;
 
   return (
-    <Card className="relative w-[176px] flex flex-col items-center px-3 py-3 gap-3 shadow-md rounded-xl">
+    <Card className="relative w-[160px] flex flex-col items-center px-3 py-3 gap-2 shadow-md rounded-xl">
       {/* 순위 뱃지 */}
       <div
-        className={`absolute -top-3 -left-3 w-8 h-8 rounded-full text-white text-xs flex items-center justify-center font-bold shadow-md ${
+        className={`absolute -top-3 -left-3 w-7 h-7 rounded-full text-white text-[10px] flex items-center justify-center font-bold shadow ${
           index === 0 ? 'bg-red-500' : index === 1 ? 'bg-yellow-500' : 'bg-gray-500'
         }`}
       >
@@ -107,8 +107,10 @@ const TopCouponCard = ({ deal, index, isLoading, getDiscountLabel }: Props) => {
           </>
         ) : (
           <>
-            <CardTitle className="text-sm font-semibold">{deal.title}</CardTitle>
-            <CardDescription className="text-xs line-clamp-2">{deal.description}</CardDescription>
+            <CardTitle className="text-sm font-semibold leading-snug">{deal.title}</CardTitle>
+            <CardDescription className="text-xs leading-tight line-clamp-2">
+              {deal.description}
+            </CardDescription>
             <span className="text-red-500 text-xs font-bold">{getDiscountLabel(deal)}</span>
           </>
         )}
@@ -118,18 +120,3 @@ const TopCouponCard = ({ deal, index, isLoading, getDiscountLabel }: Props) => {
 };
 
 export default TopCouponCard;
-
-// 내일 HotPlace.tsx 수정 – 카드 목록을 flex-row로
-{
-  /* <div className="flex flex-wrap gap-4 pt-4 justify-center">
-  {[0, 1, 2].map((index) => (
-    <TopCouponCard
-      key={index}
-      deal={bestDeals[index]}
-      index={index}
-      isLoading={isLoading}
-      getDiscountLabel={getDiscountLabel}
-    />
-  ))}
-</div> */
-}
