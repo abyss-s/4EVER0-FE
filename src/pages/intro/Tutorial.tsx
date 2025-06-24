@@ -22,7 +22,7 @@ const BottomNavHint = ({
     <div className="absolute bottom-[37px] z-30 pointer-events-none" style={{ left }}>
       <div className={`flex flex-col items-center`}>
         <p
-          className={`text-[11px] text-white leading-tight whitespace-pre-line font-medium ${
+          className={`text-[clamp(9px,3vw,12px)] text-white leading-tight whitespace-pre-line font-medium ${
             align === 'left'
               ? 'ml-2'
               : align === 'center'
@@ -115,7 +115,7 @@ const Tutorial = () => {
         </div>
 
         <div className="absolute inset-0 z-10 bg-black/70 text-white flex justify-center overflow-y-auto">
-          <div className="w-full h-screen px-6 pt-[80px] pb-6 text-center flex flex-col justify-between max-w-[420px] mx-auto relative">
+          <div className="w-full h-screen px-6 pt-[80px] pb-6 text-center flex flex-col justify-between max-w-full sm:max-w-[420px] md:max-w-[640px] lg:max-w-[768px] mx-auto relative">
             <div className="absolute top-5 left-6 z-20">
               <BackButton onClick={handleBack} color="white" />
             </div>
@@ -158,7 +158,7 @@ const Tutorial = () => {
                 }
               />
               <BottomNavHint
-                left="17%"
+                left="18%"
                 align="center"
                 rotate={-90}
                 text={
@@ -169,7 +169,7 @@ const Tutorial = () => {
                 }
               />
               <BottomNavHint
-                left="57%"
+                left="59%"
                 align="center"
                 rotate={-90}
                 text={
