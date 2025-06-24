@@ -89,7 +89,6 @@ const MissionItem = ({ mission }: MissionItemProps) => {
               onClick={() => {
                 if (mission.status === 'COM') {
                   console.log(`보상 수령! missionId: ${mission.id}`);
-                  // 보상 수령 API 연동
                   claimReward();
                 }
               }}
@@ -129,9 +128,6 @@ export const MissionList = () => {
       </div>
     );
   }
-
-  // 전체 미션 로그
-  console.log('[🧩 전체 미션]', missions);
 
   // 출석 미션만 streak 기반으로 수정, 보상 수령 상태는 유지
   const updatedMissions = missions.map((mission) => {
