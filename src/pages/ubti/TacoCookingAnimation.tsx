@@ -13,7 +13,6 @@ interface TacoCookingAnimationProps {
     front_image: string;
     back_image: string;
   } | null;
-  stepMessages: string[][];
 }
 
 export const TacoCookingAnimation: React.FC<TacoCookingAnimationProps> = ({
@@ -24,6 +23,26 @@ export const TacoCookingAnimation: React.FC<TacoCookingAnimationProps> = ({
   isRevealed,
   ubtiType,
 }) => {
+  // stepMessages를 컴포넌트 내부에서 정의
+  const stepMessages = [
+    [
+      '타코야끼 팬을 달구는 중... 🔥',
+      '오늘의 운세를 점치고 있어요 ✨',
+      '마법의 재료를 넣고 있어요 🪄',
+    ],
+    [
+      '살살 뒤집어 주는 중! 🥢',
+      '타코야끼가 춤을 추고 있어요 💃',
+      '완벽한 동그라미가 될 때까지! ⭕',
+    ],
+    ['황금빛으로 익어가는 중... ✨', '마법이 일어나고 있어요! 🌟', '거의 다 완성되었어요! 🎉'],
+    [
+      '짠! 당신만의 타코야끼 완성! 💕',
+      '운명의 타코야끼가 나타났어요! 🥰',
+      '사랑스러운 결과를 확인해보세요! 💖',
+    ],
+  ];
+
   return (
     <div className="relative min-h-full flex flex-col py-2 items-center justify-centers">
       {/* 타코시그널 로고 */}
@@ -58,7 +77,9 @@ export const TacoCookingAnimation: React.FC<TacoCookingAnimationProps> = ({
           transition={{ type: 'spring', damping: 15 }}
         >
           <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white border-l-3 border-t-3 border-pink-300 rotate-45" />
-          <span className="text-medium font-semibold text-gray-700 block text-center"></span>
+          <span className="text-medium font-semibold text-gray-700 block text-center">
+            {stepMessages[currentStep]?.[messageIndex] || '타코야끼를 준비중이에요...'}
+          </span>
         </motion.div>
       </AnimatePresence>
 
@@ -84,7 +105,7 @@ export const TacoCookingAnimation: React.FC<TacoCookingAnimationProps> = ({
           }}
         />
 
-        {/* 요리 효과들 - 기존과 동일 */}
+        {/* 요리 효과들 */}
         {currentStep >= 1 && (
           <>
             {/* 증기 효과 */}
@@ -216,7 +237,6 @@ export const TacoCookingAnimation: React.FC<TacoCookingAnimationProps> = ({
               if (isBaked) {
                 if (isCenter && ubtiType?.back_image) {
                   // 중앙에 실제 UBTI 타입 이미지 사용
-
                   return ubtiType.back_image;
                 } else {
                   // 주변에는 기본 이미지

@@ -15,11 +15,12 @@ import { MatchingTypeCard } from './MatchingTypeCard';
 import { ActionButtons } from './ActionButtons';
 import { LoadingOverlay, InlineLoading } from './LoadingOverlay';
 import type { Plan } from '@/types/plan';
-import type { Brand } from '@/types/brand';
 import PlanCard from '@/components/PlanCard/PlanCard';
 import SubscriptionCard from '@/components/SubscriptionCard/SubscriptionCard';
 import { fetchPlanDetail } from '@/apis/plan/getPlanDetail';
-import { getBrands } from '@/apis/subscription/getLifeSubscriptions';
+import { SubscriptionRecommendationsData } from '@/types/streaming';
+import { changeCouponLike } from '@/apis/coupon/changeCouponlike';
+import { toast } from 'sonner';
 
 interface TacoCardType {
   front_image: string;
@@ -54,7 +55,6 @@ export const UBTI: React.FC = () => {
 
   // 상세 데이터 상태
   const [detailedPlans, setDetailedPlans] = useState<Plan[]>([]);
-  const [brands, setBrands] = useState<Brand[]>([]);
   const [isLoadingDetails, setIsLoadingDetails] = useState(true);
   const [showResultLoading, setShowResultLoading] = useState(false);
 
@@ -80,19 +80,14 @@ export const UBTI: React.FC = () => {
   const loadDetailedData = async (resultData: UBTIResultData) => {
     try {
       setIsLoadingDetails(true);
-      // 요금제 상세 정보 병렬 로딩
       const planPromises = resultData.recommendation.plans.map((plan) =>
         fetchPlanDetail(plan.id.toString()),
       );
-      // 브랜드 전체 조회
-      const [planDetails, brandsResponse] = await Promise.all([
-        Promise.all(planPromises),
-        getBrands(),
-      ]);
+      const planDetails = await Promise.all(planPromises);
+
       setDetailedPlans(planDetails);
-      setBrands(brandsResponse.data);
     } catch (error) {
-      setDetailedPlans(convertToPlanCards(resultData.recommendation.plans));
+      setDetailedPlans(convertToPlanCards(resultData.recommendation.plans)); // fallback
     } finally {
       setIsLoadingDetails(false);
     }
@@ -125,8 +120,9 @@ export const UBTI: React.FC = () => {
           back_image: IMAGES.TACO[tacoImages.back as keyof typeof IMAGES.TACO],
         });
 
-        setIsDataReady(true);
         setShowResultLoading(false);
+        setIsDataReady(true);
+
         loadDetailedData(state.data);
       }, 1500);
     } else {
@@ -136,6 +132,19 @@ export const UBTI: React.FC = () => {
 
     setIsLoading(false);
   }, [location.state]);
+
+  // 디버깅용 로그
+  useEffect(() => {
+    console.log('🎬 UBTI.tsx 상태 변화:', {
+      isDataReady,
+      currentStep,
+      isFlipped,
+      isBaked,
+      isRevealed,
+      showResults,
+      messageIndex,
+    });
+  }, [isDataReady, currentStep, isFlipped, isBaked, isRevealed, showResults, messageIndex]);
 
   // 컴포넌트 언마운트 시 타이머 정리
   useEffect(() => {
@@ -160,19 +169,24 @@ export const UBTI: React.FC = () => {
 
   const convertToSubscriptionCard = (
     subscription: UBTIResultData['recommendation']['subscription'],
-  ) => {
-    // 브랜드 목록에서 해당 ID 찾기
-    const matchedBrand = brands.find((brand) => brand.id === subscription.id);
-
+    brand: UBTIResultData['recommendation']['brand'],
+  ): SubscriptionRecommendationsData => {
     return {
       main_subscription: {
         id: subscription.id,
-        title: matchedBrand?.title || subscription.name,
-        category: matchedBrand?.category || '추천 구독',
+        title: subscription.name,
+        description: subscription.description,
         price: 0,
-        image_url: matchedBrand?.image_url || IMAGES.MOONER['moonoz-hello'],
+        category: '기타',
+        image_url: '',
       },
-      life_brand: undefined,
+      life_brand: {
+        id: brand.id,
+        name: brand.name,
+        image_url: brand.image_url,
+        description: brand.description,
+        category: brand.category,
+      },
     };
   };
 
@@ -287,7 +301,6 @@ export const UBTI: React.FC = () => {
         isBaked={isBaked}
         isRevealed={isRevealed}
         ubtiType={ubtiType}
-        stepMessages={stepMessages}
       />
 
       {/* 결과 섹션 */}
@@ -416,8 +429,34 @@ export const UBTI: React.FC = () => {
                   ) : (
                     <div className="flex justify-center">
                       <SubscriptionCard
-                        data={convertToSubscriptionCard(recommendation.subscription)}
+                        data={convertToSubscriptionCard(
+                          recommendation.subscription,
+                          recommendation.brand,
+                        )}
                         onSubscribe={handleSubscriptionSelect}
+                        onBrandSelect={(brand) => {
+                          if (!brand) return;
+
+                          changeCouponLike(brand.id)
+                            .then((response) => {
+                              const isLiked = response.data.data.liked;
+                              if (isLiked) {
+                                toast.success('쿠폰을 찜했어요! 💜', {
+                                  description: '좋아요한 쿠폰함에서 확인할 수 있어요',
+                                });
+                              } else {
+                                toast.success('쿠폰 찜을 해제했어요', {
+                                  description: '언제든 다시 찜할 수 있어요',
+                                });
+                              }
+                            })
+                            .catch((error) => {
+                              console.error('쿠폰 좋아요 토글 실패:', error);
+                              toast.error('쿠폰 찜하기에 실패했어요', {
+                                description: '잠시 후 다시 시도해주세요',
+                              });
+                            });
+                        }}
                         className="w-full"
                       />
                     </div>

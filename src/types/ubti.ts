@@ -11,15 +11,14 @@ export interface UBTIResultData {
   };
   summary: string;
   recommendation: {
-    plans: {
+    plans: { id: number; name: string; description: string }[];
+    subscription: { id: number; name: string; description: string };
+    brand: {
       id: number;
       name: string;
+      image_url: string;
       description: string;
-    }[];
-    subscription: {
-      id: number;
-      name: string;
-      description: string;
+      category: string;
     };
   };
   matching_type: {
@@ -39,6 +38,14 @@ export interface UBTIType {
   emoji: string;
   description: string;
   image_url: string;
+}
+
+export interface UBTIBrand {
+  id: number;
+  name: string;
+  image_url: string;
+  category: string;
+  description: string;
 }
 
 export interface MatchingType {

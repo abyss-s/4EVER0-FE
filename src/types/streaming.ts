@@ -40,6 +40,7 @@ export interface MainSubscription {
   price: number;
   category: string;
   image_url: string;
+  description: string;
 }
 
 export interface LifeBrand {
@@ -47,6 +48,7 @@ export interface LifeBrand {
   name: string;
   image_url: string;
   description: string;
+  category: string;
 }
 
 // 구독 추천 항목 유니온 타입 (API 응답용)

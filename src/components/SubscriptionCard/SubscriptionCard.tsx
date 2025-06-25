@@ -137,10 +137,9 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = React.memo(
             지금 바로 경험해보세요.
           </div>
 
-          {/* 액션 버튼들 - 동적 레이아웃 */}
           <div className="w-full">
-            {/* 둘 다 있는 경우: 2열 그리드 */}
-            {main_subscription && hasLifeBrand && life_brand && onSubscribe && onBrandSelect && (
+            {main_subscription && life_brand && onSubscribe && onBrandSelect ? (
+              // 둘 다 있는 경우
               <div className="grid grid-cols-2 gap-2">
                 <Button
                   size="default"
@@ -157,41 +156,21 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = React.memo(
                   className="border-green-600 text-green-600 hover:bg-green-50 text-xs py-1.5 h-auto"
                 >
                   <Heart className="w-3 h-3 mr-1" />
-                  쿠폰 좋아요
+                  쿠폰 찜하기
                 </Button>
               </div>
-            )}
-
-            {/* 메인 구독만 있는 경우: 풀 너비 */}
-            {main_subscription &&
-              (!hasLifeBrand || !life_brand || !onBrandSelect) &&
-              onSubscribe && (
-                <Button
-                  size="default"
-                  variant="outline"
-                  onClick={handleBrandClick}
-                  className="border-red-400 text-red-500 hover:bg-red-50 text-xs py-1.5 h-auto"
-                >
-                  <Heart className="w-3 h-3 mr-1 text-red-500" />
-                  좋아요
-                </Button>
-              )}
-
-            {/* 라이프 브랜드만 있는 경우: 풀 너비 */}
-            {(!main_subscription || !onSubscribe) &&
-              hasLifeBrand &&
-              life_brand &&
-              onBrandSelect && (
-                <Button
-                  size="default"
-                  variant="outline"
-                  onClick={handleBrandClick}
-                  className="border-red-400 text-red-500 hover:bg-red-50 text-xs py-1.5 h-auto"
-                >
-                  <Heart className="w-3 h-3 mr-1 text-red-500" />
-                  좋아요
-                </Button>
-              )}
+            ) : life_brand && onBrandSelect ? (
+              // 라이프 브랜드만 있는 경우
+              <Button
+                size="default"
+                variant="outline"
+                onClick={handleBrandClick}
+                className="border-green-600 text-green-600 hover:bg-green-50 text-xs py-1.5 h-auto w-full"
+              >
+                <Heart className="w-3 h-3 mr-1" />
+                쿠폰 찜하기
+              </Button>
+            ) : null}
           </div>
         </CardContent>
       </Card>
