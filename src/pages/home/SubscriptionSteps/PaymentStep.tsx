@@ -5,17 +5,22 @@ import { Badge } from '@/components/Badge';
 import type { SubscriptionItem } from '@/types/subscription';
 import type { Brand } from '@/types/brand';
 import { SelectedProductsCard } from '@/components/SelectedProductsCard/SelectedProductsCard';
+import { cn } from '@/lib/utils';
 
 interface PaymentStepProps {
   selectedMainItems: SubscriptionItem[];
   selectedLifeBrands: Brand[];
   isLoggedIn: boolean;
+  isProcessing?: boolean;
+  onSubscribe: () => void;
 }
 
 export function PaymentStep({
   selectedMainItems,
   selectedLifeBrands,
   isLoggedIn,
+  isProcessing,
+  onSubscribe,
 }: PaymentStepProps) {
   const totalPrice = selectedMainItems.reduce((sum, item) => sum + item.price, 0);
   const { openModal } = useModalStore();
@@ -52,6 +57,18 @@ export function PaymentStep({
           selectedLifeBrands={selectedLifeBrands}
           totalPrice={totalPrice}
         />
+      </div>
+      <div className="pt-4">
+        <button
+          disabled={isProcessing}
+          onClick={onSubscribe}
+          className={cn(
+            'w-full py-3 rounded-lg font-semibold text-white transition',
+            isProcessing ? 'bg-gray-300 cursor-not-allowed' : 'bg-pink-500 hover:bg-pink-600',
+          )}
+        >
+          {isProcessing ? '처리 중...' : '구독 완료하기'}
+        </button>
       </div>
     </div>
   );

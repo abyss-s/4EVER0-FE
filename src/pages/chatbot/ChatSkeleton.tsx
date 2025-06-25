@@ -56,7 +56,7 @@ export const ChatSkeleton: React.FC<ChatSkeletonProps> = ({ showCards = false, c
   );
 };
 
-// 간단한 타이핑 인디케이터
+// 타이핑 인디케이터
 export const TypingIndicator: React.FC = () => {
   return (
     <div className="flex w-full mb-4 justify-start">

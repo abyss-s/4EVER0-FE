@@ -39,7 +39,7 @@ apiWithToken.interceptors.response.use(
 
       isRefreshing = true;
       try {
-        // ✏️ 인터셉터 내부에서 매번 최신 userId 가져오기
+        // 인터셉터 내부에서 매번 최신 userId 가져오기
         const { userId, authId } = useAuthStore.getState();
         if (!userId) throw new Error('No userId for refresh');
         if (!authId) throw new Error('No authId for refresh');

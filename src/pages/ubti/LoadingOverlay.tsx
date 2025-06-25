@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { IMAGES } from '@/constant/imagePath';
 
 interface LoadingOverlayProps {
   isVisible: boolean;
@@ -19,7 +20,9 @@ export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({
       case 'cooking':
         return '🍳';
       case 'processing':
-        return '✨';
+        return (
+          <img src={IMAGES.TACO['taco-secret']} alt="타코물음표" className="w-16 h-auto mx-auto" />
+        );
       case 'loading':
       default:
         return '🔄';

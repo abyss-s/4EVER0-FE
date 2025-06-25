@@ -49,13 +49,13 @@ export function SubscriptionHeader({
           <p className="text-sm text-brand-darkblue">{stepConfig[currentStep].description}</p>
         </div>
 
-        {/* 다음 버튼 */}
+        {/* 다음 버튼: 완료 버튼은 비활성화 */}
         <Button
           variant="ghost"
           size="sm"
-          onClick={onNext}
-          disabled={!canGoNext || isProcessing}
-          className="absolute right-0 flex items-center px-0 cursor-pointer"
+          onClick={currentStep === 'payment' ? undefined : onNext}
+          disabled={currentStep === 'payment' || !canGoNext || isProcessing}
+          className="absolute right-0 flex items-center px-0 cursor-default"
         >
           {currentStep === 'payment' ? (
             isProcessing ? (
@@ -64,9 +64,7 @@ export function SubscriptionHeader({
               '완료'
             )
           ) : (
-            <>
-              <ChevronRight className="w-4 h-4" />
-            </>
+            <ChevronRight className="w-4 h-4" />
           )}
         </Button>
       </div>

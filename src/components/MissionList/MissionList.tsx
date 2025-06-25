@@ -1,7 +1,7 @@
 import { useMissions } from '@/hooks/useMissions';
 import { useUserProfile } from '@/stores/useUserProfile';
 import { Progress } from '@/components/Progress';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/Button';
 import type { Mission, MissionStatus } from '@/types/mission';
 import { cn } from '@/lib/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -72,15 +72,9 @@ const MissionItem = ({ mission }: MissionItemProps) => {
             </span>
             <Button
               size="sm"
-              variant={
-                mission.status === 'COM'
-                  ? 'default'
-                  : mission.status === 'INP'
-                    ? 'outline'
-                    : 'secondary'
-              }
+              variant={mission.status === 'COM' ? 'missionStatusCom' : 'missionStatus'}
               className={cn(
-                'h-6 px-3 text-xs rounded-full',
+                'h-6 px-3 text-xs rounded-[6px]',
                 mission.status === 'COM'
                   ? 'cursor-pointer hover:opacity-90 hover:scale-105'
                   : 'cursor-default',
@@ -89,7 +83,6 @@ const MissionItem = ({ mission }: MissionItemProps) => {
               onClick={() => {
                 if (mission.status === 'COM') {
                   console.log(`보상 수령! missionId: ${mission.id}`);
-                  // 보상 수령 API 연동
                   claimReward();
                 }
               }}
@@ -129,9 +122,6 @@ export const MissionList = () => {
       </div>
     );
   }
-
-  // 전체 미션 로그
-  console.log('[🧩 전체 미션]', missions);
 
   // 출석 미션만 streak 기반으로 수정, 보상 수령 상태는 유지
   const updatedMissions = missions.map((mission) => {

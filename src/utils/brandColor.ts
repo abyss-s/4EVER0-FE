@@ -1,3 +1,4 @@
+
 const tailwindColors: { [key: string]: string } = {
   'bg-pink-500': '#ec4899',
   'bg-emerald-500': '#10b981',
@@ -9,6 +10,7 @@ const tailwindColors: { [key: string]: string } = {
   'bg-teal-500': '#14b8a6',
   'bg-gray-500': '#6b7280',
 };
+
 
 export const getBrandBackgroundColor = (brand: string): string => {
   const colorMap: { [key: string]: string } = {
@@ -43,7 +45,7 @@ export const getrawBackgroundColor = (brand: string): string => {
   return tailwindColors[tailwindClass] || '#000000'; // 색상 코드 반환
 };
 
-/** 브랜드별 dot 색상 (조금 더 밝은 색상 계열) */
+
 export const getBrandDotColor = (brand: string): string => {
   const dotColorMap: { [key: string]: string } = {
     배스킨라빈스: 'bg-pink-300',

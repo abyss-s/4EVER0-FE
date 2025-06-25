@@ -11,7 +11,7 @@ export interface ServiceData {
   description: string;
   action: () => void;
   color?: string;
-  requiresLogin: boolean; // 필수 props
+  requiresLogin: boolean;
   disabled?: boolean;
 }
 

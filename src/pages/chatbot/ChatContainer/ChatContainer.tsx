@@ -18,6 +18,7 @@ import { SubscriptionRecommendationsData } from '@/types/streaming';
 import { fetchUBTIResult } from '@/apis/ubti/ubti';
 import { useScrollTracker } from '@/hooks/useScrollTracker';
 import { ScrollToTopButton } from '@/components/common/ScrollToTopButton/ScrollToTopButton';
+import { fetchLikedCoupons, LikedCoupon } from '@/apis/like/getLikeCoupons';
 
 export const ChatContainer: React.FC = () => {
   // 스크롤 이벤트 감지용
@@ -30,6 +31,13 @@ export const ChatContainer: React.FC = () => {
   const [showTutorial, setShowTutorial] = useState(false);
   const isInitializedRef = useRef(false);
   const navigate = useNavigate();
+  const [likedCoupons, setLikedCoupons] = useState<LikedCoupon[]>([]);
+
+  useEffect(() => {
+    fetchLikedCoupons()
+      .then((coupons) => setLikedCoupons(coupons))
+      .catch((err) => console.error('내 좋아요 쿠폰 에러', err));
+  }, []);
 
   // Zustand store에서 상태와 액션 분리
   const sessions = useChatStore((state) => state.sessions);
@@ -141,16 +149,16 @@ export const ChatContainer: React.FC = () => {
     if (!currentSessionId) {
       initializeChat();
     }
-  }, [currentSessionId, initializeChat]); // isMunerTone 의존성 제거
+  }, [currentSessionId, initializeChat]);
 
-  // 개선된 자동 스크롤 - 하단 여백 추가
+  // 개선된 자동 스크롤
   useEffect(() => {
     if (messages.length > 0) {
       // 약간의 지연으로 DOM 업데이트 완료 후 스크롤
       const timer = setTimeout(() => {
         messagesEndRef.current?.scrollIntoView({
           behavior: 'smooth',
-          block: 'end', // 'end'로 변경하여 하단 여백 확보
+          block: 'end',
         });
       }, 100);
 
@@ -410,6 +418,7 @@ export const ChatContainer: React.FC = () => {
         onLikesRecommendation={handleLikesRecommendation}
         onUsageRecommendation={handleUsageRecommendation}
         onResetChat={resetChat}
+        likedCoupons={likedCoupons}
       />
 
       <ScrollToTopButton scrollRef={scrollRef} />

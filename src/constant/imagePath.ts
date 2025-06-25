@@ -4,10 +4,12 @@ export const IMAGES = {
     NERGET_PLAN: '/images/banner-2.png',
     HOTPLACE: '/images/banner-3.png',
     UPTP: '/images/banner-4.png',
+    GUIDE: '/images/banner-5.png',
     TACO_SIGNAL_DESKTOP: '/images/banner-1-desktop.png',
     NERGET_PLAN_DESKTOP: '/images/banner-2-desktop.png',
     HOTPLACE_DESKTOP: '/images/banner-3-desktop.png',
     UPTP_DESKTOP: '/images/banner-4-desktop.png',
+    GUIDE_DESKTOP: '/images/banner-5-desktop.png',
   },
   MOONER: {
     'mooner-phone': '/images/mooner-phone.svg',
@@ -25,6 +27,7 @@ export const IMAGES = {
     rotation_3: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_3.png',
     rotation_4: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_4.png',
     'mooner-sad': '/images/mooner-sad.svg',
+    'mooner-zone': '/images/moonerzone.png',
   },
   COUPON: {
     TICKET_RED: '/images/ticket-red.svg',
@@ -40,6 +43,7 @@ export const IMAGES = {
     COUPON_8: 'https://d3e0ocbonj571p.cloudfront.net/CU.jpg',
   },
   TACO: {
+    'taco-secret': 'images/taco-secret.png',
     'taco-signal': 'images/taco-signal.png',
     'taco-main-front': 'images/taco-main-front.png',
     'taco-main-back': 'images/taco-main-back.png',
@@ -62,4 +66,5 @@ export const IMAGES = {
     'taco-milky-front': 'images/taco-milky-front.png',
   },
   bubble: '/images/bubble.png',
+  yellowBubble: '/images/yellowBubble.png',
 } as const;

@@ -1,8 +1,6 @@
-// utils/markdownComponents.tsx
 import React from 'react';
 import type { Components } from 'react-markdown';
 
-// Hook으로 만들어서 useMemo 사용
 export const useMarkdownComponents = (): Components => {
   return React.useMemo(
     () => ({
@@ -49,7 +47,6 @@ export const useMarkdownComponents = (): Components => {
         </blockquote>
       ),
       hr: () => <hr className="border-t-2 border-orange-200 my-4" />,
-      // 테이블 지원
       table: ({ children }) => (
         <table className="w-full border-collapse border border-pink-200 rounded-lg overflow-hidden mb-4">
           {children}

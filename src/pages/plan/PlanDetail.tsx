@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { usePlanDetail } from '@/hooks/usePlanDetail';
-import { useUserProfile } from '@/stores/useUserProfile'; // 🔧 추가
+import { useUserProfile } from '@/stores/useUserProfile';
 import PlanCard from '@/components/PlanCard/PlanCard';
 import {
   Share2,
@@ -40,11 +40,11 @@ const PlanDetail: React.FC = () => {
   const { openModal } = useModalStore();
   const navigate = useNavigate();
   const { data: plan, error, isLoading } = usePlanDetail(id ?? '');
-  const { data: userProfile } = useUserProfile(); // 🔧 사용자 정보 가져오기
+  const { data: userProfile } = useUserProfile(); // 사용자 정보 가져오기
   const [isChanging, setIsChanging] = useState(false);
   const { isLoggedIn } = useAuthStore();
 
-  // 🔧 현재 사용 중인 요금제인지 확인
+  // 현재 사용 중인 요금제인지 확인
   const isCurrentPlan = userProfile?.planId === plan?.id;
 
   const getThemeColor = (price: number) => {
@@ -84,7 +84,7 @@ const PlanDetail: React.FC = () => {
       return;
     }
 
-    // 🔧 현재 요금제인 경우 알림
+    // 현재 요금제인 경우 알림
     if (isCurrentPlan) {
       toast.info('현재 사용 중인 요금제입니다', {
         description: '이미 이 요금제를 사용하고 계세요 😊',
