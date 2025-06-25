@@ -9,6 +9,8 @@ import { UplusBanner } from './Uplus/UplusBanner';
 import { MissionBanner } from './Mission/MissionBanner';
 import { CategoryFilter } from './Uplus/CategoryFilter';
 import { useLocation } from 'react-router-dom';
+import { Benefit } from '@/types/uplus';
+import { getMonthlyBenefits } from '@/apis/uplus/benefit';
 
 const TABS = ['출석', '유플투쁠', '미션'];
 
@@ -17,6 +19,7 @@ const MissionPage = () => {
   const scrollTo = location.state?.scrollTo;
   const [selectedTab, setSelectedTab] = useState('출석');
   const [selectedCategory, setSelectedCategory] = useState('전체');
+  const [benefits, setBenefits] = useState<Benefit[] | null>(null);
 
   useEffect(() => {
     if (scrollTo === 'mission-list') {
@@ -27,6 +30,21 @@ const MissionPage = () => {
       setSelectedTab('유플투쁠');
     }
   }, [scrollTo]);
+
+  // 유플투쁠 탭이 선택되었을 때만 혜택 데이터 로딩
+  useEffect(() => {
+    if (selectedTab === '유플투쁠' && benefits === null) {
+      getMonthlyBenefits()
+        .then((data) => {
+          console.log('✅ 응답 성공:', data);
+          setBenefits(data);
+        })
+        .catch((err) => {
+          console.error('❌ 유플 혜택 조회 실패:', err.response?.data || err.message);
+        });
+    }
+  }, [selectedTab, benefits]);
+
   return (
     <div>
       <FlatTabs tabs={TABS} value={selectedTab} onChange={setSelectedTab} />
@@ -45,13 +63,21 @@ const MissionPage = () => {
             {/* 카테고리 필터 버튼 뷰 (공통) */}
             <CategoryFilter selected={selectedCategory} onSelect={setSelectedCategory} />
 
-            {/* 선택된 카테고리에 따라 컴포넌트에 전달 */}
-            <div className="mt-4">
-              <UplusCalendar selectedCategory={selectedCategory} />
-            </div>
-            <div className="mt-4">
-              <UplusBenefitPreview selectedCategory={selectedCategory} />
-            </div>
+            {benefits === null ? (
+              <div className="text-sm text-gray-500 text-center py-10">
+                혜택을 불러오는 중입니다...
+              </div>
+            ) : (
+              <>
+                {/* 선택된 카테고리에 따라 컴포넌트에 전달 */}
+                <div className="mt-4">
+                  <UplusCalendar selectedCategory={selectedCategory} benefits={benefits} />
+                </div>
+                <div className="mt-4">
+                  <UplusBenefitPreview selectedCategory={selectedCategory} benefits={benefits} />
+                </div>
+              </>
+            )}
           </>
         )}
 
