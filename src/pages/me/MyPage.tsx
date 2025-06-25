@@ -1,9 +1,9 @@
-import { BillSummaryCard } from '@/components/ui/billsummarycard';
-import React, { useEffect, useState } from 'react';
-import { Card, CardContent } from '@/components/Card';
-import { useQuery } from '@tanstack/react-query';
-import { fetchCurrentPlan } from '@/apis/plan/getCurrentPlan';
-import { useUserProfile } from '@/stores/useUserProfile';
+import { BillSummaryCard } from "@/components/ui/billsummarycard";
+import React, { useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/Card";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCurrentPlan } from "@/apis/plan/getCurrentPlan";
+import { useUserProfile } from "@/stores/useUserProfile";
 import {
   Ticket,
   Package,
@@ -13,12 +13,12 @@ import {
   Calendar,
   Crown,
   ChevronRight,
-} from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { IMAGES } from '@/constant/imagePath';
-import { fetchUserCoupons } from '@/apis/coupon/getUserCoupons';
-import LoadingMooner from '@/pages/common/LoadingMooner';
-import Empty from '@/pages/common/Empty';
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import { IMAGES } from "@/constant/imagePath";
+import { fetchUserCoupons } from "@/apis/coupon/getUserCoupons";
+import LoadingMooner from "@/pages/common/LoadingMooner";
+import Empty from "@/pages/common/Empty";
 
 const MyPage: React.FC = () => {
   const {
@@ -27,7 +27,7 @@ const MyPage: React.FC = () => {
     error,
     refetch,
   } = useQuery({
-    queryKey: ['currentPlan'],
+    queryKey: ["currentPlan"],
     queryFn: fetchCurrentPlan,
   });
   const { data: profile } = useUserProfile();
@@ -35,7 +35,7 @@ const MyPage: React.FC = () => {
   const month = `${new Date().getMonth() + 1}월`;
 
   const { data: coupons = [] } = useQuery({
-    queryKey: ['userCoupons'],
+    queryKey: ["userCoupons"],
     queryFn: fetchUserCoupons,
     refetchOnMount: true,
   });
@@ -57,7 +57,7 @@ const MyPage: React.FC = () => {
   if (error || !plan) {
     return (
       <Empty
-        imageSrc={IMAGES.MOONER['mooner-sad']}
+        imageSrc={IMAGES.MOONER["mooner-sad"]}
         altText="요금제 에러"
         message="요금제를 불러오지 못했습니다"
         buttonText="다시 시도하기"
@@ -68,7 +68,7 @@ const MyPage: React.FC = () => {
 
   const formatUsage = (
     label: string,
-    variant: 'data' | 'call' | 'sharedData' | 'sms',
+    variant: "data" | "call" | "sharedData" | "sms",
     value: string,
   ) => {
     if (!value) {
@@ -77,35 +77,35 @@ const MyPage: React.FC = () => {
         variant,
         current: 0,
         total: 1,
-        displayText: '0',
+        displayText: "0",
       };
     }
-    const isUnlimited = value.includes('무제한');
+    const isUnlimited = value.includes("무제한");
     const total =
-      variant === 'data'
+      variant === "data"
         ? 30
-        : variant === 'sharedData'
+        : variant === "sharedData"
           ? 60
-          : variant === 'sms'
+          : variant === "sms"
             ? 200
-            : variant === 'call'
+            : variant === "call"
               ? 1000
               : 1;
-    const numeric = isUnlimited ? total : Number(value.replace(/[^0-9.]/g, ''));
+    const numeric = isUnlimited ? total : Number(value.replace(/[^0-9.]/g, ""));
     return {
       label,
       variant,
       current: numeric,
       total,
-      displayText: isUnlimited ? '무제한' : variant === 'sms' ? `${numeric}건` : value,
+      displayText: isUnlimited ? "무제한" : variant === "sms" ? `${numeric}건` : value,
     };
   };
 
   const usageData = [
-    formatUsage('데이터', 'data', plan.data),
-    formatUsage('통화', 'call', plan.voice),
-    formatUsage('공유데이터', 'sharedData', plan.share_data),
-    formatUsage('문자', 'sms', plan.sms),
+    formatUsage("데이터", "data", plan.data),
+    formatUsage("통화", "call", plan.voice),
+    formatUsage("공유데이터", "sharedData", plan.share_data),
+    formatUsage("문자", "sms", plan.sms),
   ];
 
   return (
@@ -114,13 +114,13 @@ const MyPage: React.FC = () => {
       <div className="bg-white pt-8 pb-6">
         <div className="flex items-center gap-3 mb-4">
           <img
-            src={IMAGES.MOONER['mooner-phone'] || '/placeholder.svg'}
+            src={IMAGES.MOONER["mooner-phone"] || "/placeholder.svg"}
             alt="문어 아이콘"
             className="w-12 h-12"
           />
           <div>
             <h1 className="text-xl font-bold text-gray-900">
-              안녕하세요, {profile?.name ?? '고객'} 님! 👋
+              안녕하세요, {profile?.name ?? "고객"} 님! 👋
             </h1>
             <p className="text-sm text-gray-500">오늘도 무너와 함께 레벨업 해봐요! 🚀</p>
           </div>
@@ -136,7 +136,7 @@ const MyPage: React.FC = () => {
       <h1 className="text-xl font-bold text-brand-darkblue mb-4">등급 안내</h1>
       <div className="space-y-4">
         {/* 포인트 & 등급 카드 (최상단으로 이동) */}
-        {typeof profile?.point === 'number' && (
+        {typeof profile?.point === "number" && (
           <Card className="bg-white p-0 shadow-sm border-0 overflow-hidden">
             <CardContent className="p-0">
               {/* 포인트 헤더 */}
@@ -203,7 +203,7 @@ const MyPage: React.FC = () => {
               </div>
 
               {/* 출석 정보 */}
-              {typeof profile?.attendanceStreak === 'number' && (
+              {typeof profile?.attendanceStreak === "number" && (
                 <div className="p-3 bg-positive-bg border-t">
                   <div className="flex items-center justify-center gap-2">
                     <Calendar className="w-4 h-4 text-positive" />
@@ -245,7 +245,7 @@ const MyPage: React.FC = () => {
 
         <h1 className="text-xl font-bold text-brand-darkblue mb-4 align-center">내 요금제</h1>
         <BillSummaryCard
-          phoneNumber={profile?.phoneNumber ?? '010-****-****'}
+          phoneNumber={profile?.phoneNumber ?? "010-****-****"}
           planName={plan.name}
           month={month}
           amount={Number(plan.price)}
@@ -266,7 +266,7 @@ const MyPage: React.FC = () => {
             </div>
           </Link>
 
-          <Link to="/mission" state={{ scrollTo: 'mission-list' }}>
+          <Link to="/mission" state={{ scrollTo: "mission-list" }}>
             <div className="flex items-center justify-between py-3 px-1 hover:bg-gray-50 rounded-lg transition-colors">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-brand-yellow-light rounded-full flex items-center justify-center">
@@ -278,7 +278,7 @@ const MyPage: React.FC = () => {
             </div>
           </Link>
 
-          <Link to="/mission" state={{ scrollTo: 'attendance' }}>
+          <Link to="/mission" state={{ scrollTo: "attendance" }}>
             <div className="flex items-center justify-between py-3 px-1 hover:bg-gray-50 rounded-lg transition-colors">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-positive-bg rounded-full flex items-center justify-center">
