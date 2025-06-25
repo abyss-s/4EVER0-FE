@@ -99,34 +99,31 @@ const Landing = () => {
 
   const lastInView = useInView(lastRef, { once: true });
 
-  // Mock data for demonstration
+  // 실제 휴대폰 이미지가 포함된 컨텐츠 데이터
   const CONTENTS = [
     {
       id: 1,
       titleHeader: '무너톡한테 물어보기',
       title: '간단하게 무너톡에게\n물어보세요',
-      images: [
-        'https://via.placeholder.com/300x400/FFE066/1E3A8A?text=Landing+2',
-        'https://via.placeholder.com/300x400/1E3A8A/FFE066?text=Landing+3',
-      ],
+      imagePath: IMAGES.PHONE.PHONE_MOONOTALK,
     },
     {
       id: 2,
       titleHeader: '내 근처에 있는 정보 탐색하기',
       title: '내 근처의 팝업스토어/쿠폰 등의 \n다양한 혜택을 즐겨보세요',
-      images: ['https://via.placeholder.com/350x450/DC2626/FFE066?text=Landing+4'],
+      imagePath: IMAGES.PHONE.PHONE_HOTPLACE,
     },
     {
       id: 3,
       titleHeader: '매일매일 다양한 혜택이 우수수!',
       title: '나만의 캘린더와 함께\nU+의 혜택을 확인하고, 보상 포인트까지!',
-      images: ['https://via.placeholder.com/300x400/1E3A8A/FFE066?text=Landing+5'],
+      imagePath: IMAGES.PHONE.PHONE_MISSON,
     },
     {
       id: 4,
       titleHeader: '모든 걸 한번에 모아두다!',
       title: '내가 저장해둔 혜택들과 요금제를\n한눈에 확인해볼까요?',
-      images: ['https://via.placeholder.com/300x400/FFE066/1E3A8A?text=Landing+6'],
+      imagePath: IMAGES.PHONE.PHONE_MYPAGE,
     },
   ];
 
@@ -148,7 +145,7 @@ const Landing = () => {
     >
       {/* Start Section */}
       <motion.div
-        className="flex flex-col items-center w-full pt-32 sm:pt-24 min-h-screen relative"
+        className="flex flex-col items-center w-full pt-6 min-h-screen relative"
         variants={containerVariants}
         initial="hidden"
         animate={isLoaded ? 'visible' : 'hidden'}
@@ -160,16 +157,6 @@ const Landing = () => {
           variants={itemVariants}
         >
           MoonoZ
-        </motion.div>
-
-        {/* Logo Header */}
-        <motion.div className="w-[calc(100%-230px)] mb-6" variants={itemVariants}>
-          <div
-            className="w-full h-8 rounded-lg flex items-center justify-center font-semibold"
-            style={{ backgroundColor: `${brandColors.yellow}`, color: `${brandColors.darkblue}` }}
-          >
-            사용설명서
-          </div>
         </motion.div>
 
         {/* Illustration */}
@@ -189,16 +176,6 @@ const Landing = () => {
               className="h-50 w-50 mx-auto"
             />
           </motion.div>
-        </motion.div>
-
-        {/* 텍스트 */}
-        <motion.div
-          className="text-center font-medium text-xl mb-6"
-          style={{ color: `${brandColors.darkblue}` }}
-          variants={slideUpVariants}
-        >
-          {`통신사 요금 고를 때,
-어떤 혜택을 고려할 지가 어렵지 않으셨나요?`}
         </motion.div>
 
         {/* 노란 박스 */}
@@ -262,7 +239,7 @@ const Landing = () => {
       </motion.div>
 
       {/* Contents Section */}
-      <div className="flex flex-col gap-40 sm:gap-48 pt-64 whitespace-pre-line">
+      <div className="flex flex-col gap-24 pt-32 whitespace-pre-line">
         {CONTENTS.map((item, index) => {
           const ref = useRef(null);
           const inView = useInView(ref, { once: true });
@@ -271,16 +248,14 @@ const Landing = () => {
             <motion.div
               key={item.id}
               ref={ref}
-              className={`flex flex-col items-center w-full text-xl ${
-                index === 3 ? 'gap-px -mt-16' : ''
-              }`}
+              className="flex flex-col items-center w-full text-xl"
               variants={staggerContainerVariants}
               initial="hidden"
               animate={inView ? 'visible' : 'hidden'}
             >
               {/* Title Section */}
               <motion.div
-                className="flex flex-col justify-center items-center gap-2 text-center whitespace-pre-line pb-11"
+                className="flex flex-col justify-center items-center gap-2 text-center whitespace-pre-line pb-8"
                 variants={slideUpVariants}
               >
                 <motion.div
@@ -299,29 +274,29 @@ const Landing = () => {
                 </motion.div>
               </motion.div>
 
-              {/* Images */}
-              <motion.div className="flex flex-col gap-4" variants={containerVariants}>
-                {item.images.map((image, imgIndex) => (
-                  <motion.img
-                    key={imgIndex}
-                    src={image}
-                    alt={`Landing ${item.id}-${imgIndex + 1}`}
-                    className={`rounded-xl shadow-lg ${
-                      item.id === 2
-                        ? 'w-[calc(100%-70px)] sm:w-[calc(100%-40px)]'
-                        : 'w-[calc(100%-170px)] sm:w-[calc(100%-140px)]'
-                    }`}
-                    variants={itemVariants}
-                    whileHover={{
-                      scale: 1.03,
-                      y: -5,
-                      boxShadow:
-                        '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-                    }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ type: 'spring', damping: 20 }}
-                  />
-                ))}
+              {/* Phone Image */}
+              <motion.div className="flex justify-center" variants={containerVariants}>
+                <motion.img
+                  src={item.imagePath}
+                  alt={`${item.titleHeader} 화면`}
+                  className="w-[280px] h-auto max-w-[calc(100%-40px)] rounded-xl shadow-lg"
+                  variants={itemVariants}
+                  whileHover={{
+                    scale: 1.03,
+                    y: -5,
+                    boxShadow:
+                      '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: 'spring', damping: 20 }}
+                  onError={(e) => {
+                    console.error('이미지 로드 실패:', item.imagePath);
+                    e.currentTarget.style.display = 'none';
+                  }}
+                  onLoad={() => {
+                    console.log('이미지 로드 성공:', item.imagePath);
+                  }}
+                />
               </motion.div>
             </motion.div>
           );
@@ -340,6 +315,11 @@ const Landing = () => {
           {`간편하고 빠르게 요금제를 정하고 싶다면
 무너즈와 함께 해보세요!`}
         </div>
+        <img
+          src={IMAGES.MOONER['moonoz-logo']}
+          alt="MoonoZ 로고"
+          className="w-20 h-auto mt-4 cursor-pointer mx-auto block"
+        />
       </motion.div>
 
       {/* Bottom Button */}
