@@ -3,20 +3,15 @@ import { getBrandBackgroundColor, getBrandDotColor } from '@/utils/brandColor';
 import { cn } from '@/lib/utils';
 
 const brands = [
-  'MIXXO',
-  'CGV',
-  'LG생활건강',
-  'GS25',
-  '리디셀렉트',
   '배스킨라빈스',
   'CU',
-  '교보문고',
-  '이디야커피',
-  '뚜레쥬르',
-  '맘스터치',
+  '파리바게뜨',
+  '메가MGC커피',
+  '파파존스',
+  '메가',
   '올리브영',
-  '무신사',
-  '티빙',
+  '스파오',
+  '다이소',
 ];
 
 const meta: Meta = {

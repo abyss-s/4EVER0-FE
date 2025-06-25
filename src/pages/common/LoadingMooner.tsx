@@ -39,7 +39,7 @@ const LoadingMooner: React.FC<LoadingMoonerProps> = ({ animated = true }) => {
   const current = animated ? loadingSteps[step] : loadingSteps[0];
 
   return (
-    <div className="flex flex-col items-center justify-center py-10">
+    <div className="flex flex-col items-center justify-center py-4">
       <img src={current.imageUrl} alt={current.alt} title={current.title} className="w-50 h-auto" />
       <p className="mt-4 text-m text-gray-600">{current.title}</p>
     </div>

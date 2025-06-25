@@ -7,6 +7,7 @@ import MapPopover from './MapPopover';
 import { createMarkerClustering, type MarkerClusteringInstance } from '@/utils/markerClustering';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import LoadingMooner from '@/pages/common/LoadingMooner';
+import { getrawBackgroundColor } from '@/utils/brandColor';
 
 interface StoreMapProps {
   className?: string;
@@ -23,6 +24,7 @@ interface StoreData {
   address: string;
   latitude: number;
   longitude: number;
+  brandName: string;
 }
 
 // const pinColors = [
@@ -107,6 +109,7 @@ export default function StoreMap({
             address: place.address,
             latitude: place.lat,
             longitude: place.lng,
+            brandName: place.brandName,
           }));
           setNearbyStores(stores);
         } else {
@@ -216,11 +219,13 @@ export default function StoreMap({
                 background: var(--color-brand-red);
                 border: 3px solid white;
                 border-radius: 50%;
+                box-shadow: 0 3px 10px rgba(221, 70, 64, 0.4);
                 position: relative;
               ">
                 <div style="
                   width: 6px;
                   height: 6px;
+                  background: white;
                   border-radius: 50%;
                   position: absolute;
                   top: 50%;
@@ -236,7 +241,9 @@ export default function StoreMap({
       }
 
       nearbyStores.forEach((store) => {
-        const fillColor = '#EC4899';
+        console.log(store.brandName);
+        const fillColor = getrawBackgroundColor(store.brandName);
+        console.log(fillColor);
 
         const dynamicPinSvg = `
           <svg
@@ -253,6 +260,8 @@ export default function StoreMap({
             <circle cx="12" cy="10" r="3"/>
           </svg>
         `;
+
+        console.log(`Generated SVG with fill color: ${dynamicPinSvg}`);
 
         const marker = addMarker({
           position: { lat: store.latitude, lng: store.longitude },

@@ -79,7 +79,7 @@ const HotPlace = () => {
   };
 
   return (
-    <div className="space-y-4 min-h-full overflow-auto">
+    <div className="space-y-4 min-h-full overflow-y">
       {/* 헤더 섹션 - 마이페이지 스타일 적용 */}
       <div>
         <div className="flex items-start gap-2 mt-6 text-brand-darkblue">

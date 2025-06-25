@@ -8,6 +8,7 @@ interface StoreData {
   address: string;
   latitude: number;
   longitude: number;
+  brandName: string;
 }
 
 interface MapPopoverProps {
@@ -28,7 +29,11 @@ export default function StorePopover({
   if (!open) return <>{children}</>;
 
   // 1) BRAND_META에서 해당 브랜드 메타 정보 찾기
-  const meta = BRAND_META.find((b) => b.id === store.id);
+  // 1) BRAND_META에서 해당 브랜드 메타 정보 찾기
+  const meta = BRAND_META.find((b) => b.name === store.brandName);
+
+  // 2) 브랜드 로고 URL 가져오기
+  const brandLogoUrl = meta?.logoUrl ?? ''; // 브랜드가 없다면 빈 문자열
 
   return (
     <div
@@ -83,6 +88,15 @@ export default function StorePopover({
           </div>
 
           {/* 우측 로고 이미지 */}
+          <div>
+            {brandLogoUrl && (
+              <img
+                src={brandLogoUrl}
+                alt={store.brandName}
+                className="w-15 h-15 shadow-md object-contain rounded-2xl"
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
