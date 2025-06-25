@@ -22,7 +22,7 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
   const bannerData: BannerItem[] = [
     {
       id: 1,
-      action: () => navigate('/chatbot'),
+      action: () => navigate('/landing'),
       mobileImage: IMAGES.BANNER.GUIDE,
       desktopImage: IMAGES.BANNER.GUIDE_DESKTOP,
     },
