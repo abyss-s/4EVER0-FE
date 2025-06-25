@@ -6,6 +6,7 @@ import { ArrowRightIcon } from '@radix-ui/react-icons';
 import TutorialStep2Background from './TutorialStep2Background';
 import { IMAGES } from '@/constant/imagePath';
 import BackButton from '@/pages/intro/BackButton';
+import { Button } from '@/components/Button';
 
 const BottomNavHint = ({
   left,
@@ -120,7 +121,7 @@ const Tutorial = () => {
               <BackButton onClick={handleBack} color="white" />
             </div>
 
-            <div className="flex flex-col mt-24 items-center relative">
+            <div className="flex flex-col mt-28 items-center relative">
               <div className="relative w-[180px] mt-10">
                 <img
                   src={IMAGES.bubble}
@@ -137,12 +138,14 @@ const Tutorial = () => {
                   className="w-full h-auto mb-10"
                 />
               </div>
-              <button
-                onClick={goToHome}
-                className="py-3 px-6 mt-1 bg-[var(--color-brand-yellow)] hover:bg-[var(--color-brand-yellow-hover)] text-black rounded-full font-semibold text-sm transition-colors"
+              <Button
+                onClick={() => setStep(3)}
+                variant="default"
+                size="default"
+                className="mt-4 bg-[var(--color-brand-yellow)] hover:bg-[var(--color-brand-yellow-hover)] text-black text-sm font-semibold"
               >
-                MoonoZ 시작하기 →
-              </button>
+                다음 →
+              </Button>
             </div>
 
             <div className="relative w-full h-[0px] mx-auto translate-y-[14px]">
@@ -183,6 +186,67 @@ const Tutorial = () => {
               <BottomNavHint left="85%" align="right" rotate={-45} text={<span>내 정보</span>} />
             </div>
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (step === 3) {
+    return (
+      <div className="relative w-full h-screen overflow-hidden">
+        <div className="absolute inset-0 z-0 flex justify-center">
+          <TutorialStep2Background />
+        </div>
+
+        <div className="absolute inset-0 z-10 bg-black/60 backdrop-blur-sm" />
+
+        <div
+          className="absolute z-20 pointer-events-none w-full flex justify-center"
+          style={{
+            top: '25%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+          }}
+        >
+          <div className="relative w-[390px] h-[290px] md:h-[140px] rounded-[30px]  -translate-y-5">
+            <div className="absolute inset-0 rounded-[30px] border-4 border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,0.6)] animate-pulse" />
+
+            <div
+              className="absolute inset-0 w-full h-full rounded-[30px] bg-yellow-400/10 blur-md opacity-60"
+              style={{
+                animation: 'pingSlow 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+              }}
+            />
+          </div>
+        </div>
+        <div
+          className="absolute z-30"
+          style={{
+            top: '10%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+          }}
+        >
+          <div className="relative w-[140px] h-auto ml-45 mt-8">
+            <img src={IMAGES.yellowBubble} alt="노란 말풍선" className="w-full h-auto" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[14px] text-white font-semibold text-center leading-snug whitespace-pre-line pointer-events-none">
+              처음이라면, {'\n'}이 설명서 꼭 읽어보세요!
+            </div>
+          </div>
+        </div>
+        <div className="absolute bottom-80 left-1/2 -translate-x-1/2 z-30">
+          <Button
+            onClick={goToHome}
+            variant="default"
+            size="default"
+            className="bg-[var(--color-brand-yellow)] hover:bg-[var(--color-brand-yellow-hover)] text-black font-semibold text-sm px-6 py-3 rounded-full"
+          >
+            MoonoZ 시작하기 →
+          </Button>
+        </div>
+
+        <div className="absolute top-5 left-6 z-30">
+          <BackButton onClick={handleBack} color="white" />
         </div>
       </div>
     );

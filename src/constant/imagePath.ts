@@ -54,4 +54,5 @@ export const IMAGES = {
     'taco-milky-front': 'images/taco-milky-front.png',
   },
   bubble: '/images/bubble.png',
+  yellowBubble: '/images/yellowBubble.png',
 } as const;
