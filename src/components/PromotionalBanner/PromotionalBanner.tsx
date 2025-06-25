@@ -22,24 +22,30 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
   const bannerData: BannerItem[] = [
     {
       id: 1,
+      action: () => navigate('/landing'),
+      mobileImage: IMAGES.BANNER.GUIDE,
+      desktopImage: IMAGES.BANNER.GUIDE_DESKTOP,
+    },
+    {
+      id: 2,
       action: () => navigate('/chatbot'),
       mobileImage: IMAGES.BANNER.TACO_SIGNAL,
       desktopImage: IMAGES.BANNER.TACO_SIGNAL_DESKTOP,
     },
     {
-      id: 2,
+      id: 3,
       action: () => navigate('/plans'),
       mobileImage: IMAGES.BANNER.NERGET_PLAN,
       desktopImage: IMAGES.BANNER.NERGET_PLAN_DESKTOP,
     },
     {
-      id: 3,
+      id: 4,
       action: () => navigate('/hotplace'),
       mobileImage: IMAGES.BANNER.HOTPLACE,
       desktopImage: IMAGES.BANNER.HOTPLACE_DESKTOP,
     },
     {
-      id: 4,
+      id: 5,
       action: () => navigate('/mission', { state: { scrollTo: 'uplus' } }),
       mobileImage: IMAGES.BANNER.UPTP,
       desktopImage: IMAGES.BANNER.UPTP_DESKTOP,
