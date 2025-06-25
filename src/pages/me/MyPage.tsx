@@ -220,31 +220,41 @@ const MyPage: React.FC = () => {
         )}
 
         {/* 내 요금제 */}
-        {profileLoading ? (
-          <div className="space-y-2 py-4 px-4 bg-gray-200 rounded-lg text-center">
-            <h3 className="text-lg font-bold text-gray-700">요금제를 불러오는 중입니다...</h3>
-          </div>
-        ) : plan ? (
-          <>
-            <h1 className="text-xl font-bold text-brand-darkblue mb-4 align-center">내 요금제</h1>
-            <BillSummaryCard
-              phoneNumber={profile?.phoneNumber ?? '010-****-****'}
-              planName={plan?.name ?? '기본 요금제'}
-              month={month}
-              amount={Number(plan?.price) ?? 0}
-              usageData={usageData}
-            />
-          </>
-        ) : (
-          <div className="space-y-2 py-4 px-4 bg-gray-200 rounded-lg text-center">
-            <h3 className="text-lg font-bold text-gray-700">요금제가 없어요 😢</h3>
-            <p className="text-sm text-gray-500">
-              아직 가입한 요금제가 없습니다.
-              <br />
-              무너와 함께 완벽한 요금제를 찾아보세요! 🚀
-            </p>
-          </div>
-        )}
+        {(() => {
+          if (profileLoading) {
+            return (
+              <div className="space-y-2 py-4 px-4 bg-gray-200 rounded-lg text-center">
+                <h3 className="text-lg font-bold text-gray-700">요금제를 불러오는 중입니다...</h3>
+              </div>
+            );
+          }
+          if (plan) {
+            return (
+              <>
+                <h1 className="text-xl font-bold text-brand-darkblue mb-4 align-center">
+                  내 요금제
+                </h1>
+                <BillSummaryCard
+                  phoneNumber={profile?.phoneNumber ?? '010-****-****'}
+                  planName={plan?.name ?? '기본 요금제'}
+                  month={month}
+                  amount={Number(plan?.price)}
+                  usageData={usageData}
+                />
+              </>
+            );
+          }
+          return (
+            <div className="space-y-2 py-4 px-4 bg-gray-200 rounded-lg text-center">
+              <h3 className="text-lg font-bold text-gray-700">요금제가 없어요 😢</h3>
+              <p className="text-sm text-gray-500">
+                아직 가입한 요금제가 없습니다.
+                <br />
+                무너와 함께 완벽한 요금제를 찾아보세요! 🚀
+              </p>
+            </div>
+          );
+        })()}
 
         {/* 빠른 액세스 */}
         <h1 className="text-xl font-bold text-brand-darkblue mb-4 align-center">자주 찾는 메뉴</h1>

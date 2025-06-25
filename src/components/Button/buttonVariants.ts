@@ -21,7 +21,7 @@ export const buttonVariants = cva(
           'bg-black text-white rounded-[6px] px-2 py-0.5 text-xs font-semibold hover:bg-black/80 inline-flex items-center gap-1',
         map: 'w-[120px] bg-white border border-gray-200 text-gray-700 rounded-md text-sm font-medium shadow-sm hover:shadow-md transition-shadow flex items-center justify-center gap-1.5 px-4 py-2 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-600',
         yellowFull:
-          'w-full mt-auto py-3 bg-[var(--color-brand-yellow)] hover:bg-[var(--color-brand-yellow-hover)] text-black rounded-md button-text transition-colors',
+          'w-full mt-auto py-3 bg-[var(--color-brand-yellow)] hover:bg-[var(--color-brand-yellow-hover)] text-black rounded-md button-text font-semibold transition-colors',
         startMoonoz:
           'py-3 px-6 mt-1 bg-[var(--color-brand-yellow)] hover:bg-[var(--color-brand-yellow-hover)] text-black rounded-md font-semibold text-sm transition-colors',
       },

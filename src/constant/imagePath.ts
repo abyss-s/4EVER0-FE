@@ -27,6 +27,7 @@ export const IMAGES = {
     rotation_3: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_3.png',
     rotation_4: 'https://d3e0ocbonj571p.cloudfront.net/Rotation_4.png',
     'mooner-sad': '/images/mooner-sad.svg',
+    'mooner-zone': '/images/moonerzone.png',
   },
   COUPON: {
     TICKET_RED: '/images/ticket-red.svg',
@@ -57,4 +58,5 @@ export const IMAGES = {
     'taco-milky-front': 'images/taco-milky-front.png',
   },
   bubble: '/images/bubble.png',
+  yellowBubble: '/images/yellowBubble.png',
 } as const;

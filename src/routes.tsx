@@ -25,6 +25,7 @@ import Intro from '@/pages/intro/Intro';
 import Tutorial from '@/pages/intro/Tutorial';
 import IntroRedirect from '@/pages/intro/IntroRedirect';
 import PlanDetail from './pages/plan/PlanDetail';
+import MoonerZone from '@/pages/me/MoonerZone';
 import Landing from './pages/landing/landing';
 
 const routes: RouteObject[] = [
@@ -62,6 +63,7 @@ const routes: RouteObject[] = [
               { path: 'likes', element: <Likes /> },
               { path: 'events', element: <Events /> },
               { path: 'subscriptions', element: <Subscriptions /> },
+              { path: 'mooner-zone', element: <MoonerZone /> },
             ],
           },
           {},
