@@ -42,24 +42,43 @@ const MyPage: React.FC = () => {
 
   const availableCoupons = coupons.filter((c) => c.isUsed === false);
 
-  const [shouldShowLoading, setShouldShowLoading] = useState(false);
+  const [showErrorFallback, setShowErrorFallback] = useState(false);
 
   useEffect(() => {
+    let timeout: ReturnType<typeof setTimeout>;
+
     if (isLoading) {
-      const timer = setTimeout(() => setShouldShowLoading(true), 2000);
-      return () => clearTimeout(timer);
+      timeout = setTimeout(() => setShowErrorFallback(true), 5000);
     } else {
-      setShouldShowLoading(false);
+      setShowErrorFallback(false);
     }
+
+    return () => clearTimeout(timeout);
   }, [isLoading]);
 
-  if (isLoading && shouldShowLoading)
+  if (isLoading) {
+    if (showErrorFallback) {
+      return (
+        <Empty
+          imageSrc={IMAGES.MOONER['mooner-sad']}
+          altText="요금제 에러"
+          message="요금제를 불러오지 못했습니다"
+          buttonText="다시 시도하기"
+          onClickButton={refetch}
+        />
+      );
+    }
+
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingMooner />
+      <div className="fixed inset-0 z-55 bg-white items-center flex justify-center">
+        <div className="scale-125">
+          <LoadingMooner />
+        </div>
       </div>
     );
-  if (isLoading && (error || !plan)) {
+  }
+
+  if (error || !plan) {
     return (
       <Empty
         imageSrc={IMAGES.MOONER['mooner-sad']}
