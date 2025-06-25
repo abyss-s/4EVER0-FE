@@ -125,8 +125,9 @@ export const UBTI: React.FC = () => {
           back_image: IMAGES.TACO[tacoImages.back as keyof typeof IMAGES.TACO],
         });
 
-        setIsDataReady(true);
         setShowResultLoading(false);
+        setIsDataReady(true);
+
         loadDetailedData(state.data);
       }, 1500);
     } else {
@@ -136,6 +137,19 @@ export const UBTI: React.FC = () => {
 
     setIsLoading(false);
   }, [location.state]);
+
+  // 디버깅용 로그
+  useEffect(() => {
+    console.log('🎬 UBTI.tsx 상태 변화:', {
+      isDataReady,
+      currentStep,
+      isFlipped,
+      isBaked,
+      isRevealed,
+      showResults,
+      messageIndex,
+    });
+  }, [isDataReady, currentStep, isFlipped, isBaked, isRevealed, showResults, messageIndex]);
 
   // 컴포넌트 언마운트 시 타이머 정리
   useEffect(() => {
@@ -287,7 +301,6 @@ export const UBTI: React.FC = () => {
         isBaked={isBaked}
         isRevealed={isRevealed}
         ubtiType={ubtiType}
-        stepMessages={stepMessages}
       />
 
       {/* 결과 섹션 */}
