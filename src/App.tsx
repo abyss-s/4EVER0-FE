@@ -16,7 +16,7 @@ function App() {
         <GlobalModalProvider />
         <Sooner position="bottom-center" style={{ bottom: '80px' }} />
       </ThemeProvider>
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
