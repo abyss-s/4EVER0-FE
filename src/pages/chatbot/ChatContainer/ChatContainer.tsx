@@ -18,6 +18,7 @@ import { SubscriptionRecommendationsData } from '@/types/streaming';
 import { fetchUBTIResult } from '@/apis/ubti/ubti';
 import { useScrollTracker } from '@/hooks/useScrollTracker';
 import { ScrollToTopButton } from '@/components/common/ScrollToTopButton/ScrollToTopButton';
+import { fetchLikedCoupons, LikedCoupon } from '@/apis/like/getLikeCoupons';
 
 export const ChatContainer: React.FC = () => {
   // 스크롤 이벤트 감지용
@@ -30,6 +31,13 @@ export const ChatContainer: React.FC = () => {
   const [showTutorial, setShowTutorial] = useState(false);
   const isInitializedRef = useRef(false);
   const navigate = useNavigate();
+  const [likedCoupons, setLikedCoupons] = useState<LikedCoupon[]>([]);
+
+  useEffect(() => {
+    fetchLikedCoupons()
+      .then((coupons) => setLikedCoupons(coupons))
+      .catch((err) => console.error('내 좋아요 쿠폰 에러', err));
+  }, []);
 
   // Zustand store에서 상태와 액션 분리
   const sessions = useChatStore((state) => state.sessions);
@@ -410,6 +418,7 @@ export const ChatContainer: React.FC = () => {
         onLikesRecommendation={handleLikesRecommendation}
         onUsageRecommendation={handleUsageRecommendation}
         onResetChat={resetChat}
+        likedCoupons={likedCoupons}
       />
 
       <ScrollToTopButton scrollRef={scrollRef} />
