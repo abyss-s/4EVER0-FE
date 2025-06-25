@@ -55,4 +55,11 @@ export const IMAGES = {
     'taco-milky-front': 'images/taco-milky-front.png',
   },
   bubble: '/images/bubble.png',
+  PHONE: {
+    PHONE_MISSON: '/images/iPhone.svg',
+    PHONE_MOONOTALK: '/images/iPhone-1.svg',
+    PHONE_HOME: '/images/iPhone-2.svg',
+    PHONE_HOTPLACE: '/images/iPhone-3.svg',
+    PHONE_MYPAGE: '/images/iPhone-4.svg',
+  },
 } as const;
