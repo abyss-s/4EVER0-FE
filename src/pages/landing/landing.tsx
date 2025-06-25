@@ -140,7 +140,7 @@ const Landing = () => {
     <div
       className="flex flex-col w-full max-w-[600px] min-h-screen mx-auto overflow-x-hidden relative"
       style={{
-        background: `linear-gradient(200deg, ${brandColors.yellow}20 0%, ${brandColors.darkblue}10 100%)`,
+        background: '#FFF',
       }}
     >
       {/* Start Section */}
@@ -158,7 +158,6 @@ const Landing = () => {
         >
           MoonoZ
         </motion.div>
-
         {/* Illustration */}
         <motion.div
           className="w-64 h-48 rounded-2xl flex items-center justify-center mb-8 shadow-lg"
@@ -177,9 +176,11 @@ const Landing = () => {
             />
           </motion.div>
         </motion.div>
-
         {/* 노란 박스 */}
-        <motion.div className="w-[calc(100%-42px)] mb-8" variants={slideUpVariants}>
+        <motion.div className="px-4">
+          <img src={IMAGES.BANNER.GUIDE} className="w-full h-auto"></img>
+        </motion.div>
+        {/* <motion.div className="w-[calc(100%-42px)] mb-8" variants={slideUpVariants}>
           <motion.div
             className="w-full h-64 rounded-xl flex items-center justify-center shadow-lg"
             style={{
@@ -190,7 +191,7 @@ const Landing = () => {
           >
             <div className="text-4xl">💬</div>
           </motion.div>
-        </motion.div>
+        </motion.div> */}
 
         {/* Scroll Indicator */}
         <motion.div
@@ -214,7 +215,6 @@ const Landing = () => {
           </div>
           스크롤해보세요
         </motion.div>
-
         {/* MoonoZ 로고와 텍스트 */}
         <motion.div
           className="flex flex-col items-center gap-2"
