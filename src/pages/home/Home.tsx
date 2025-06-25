@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useUserProfile } from '@/stores/useUserProfile';
@@ -13,8 +13,13 @@ import PromotionalBanner from '@/components/PromotionalBanner/PromotionalBanner'
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthStore();
-  const { data: profile, isLoading: profileLoading } = useUserProfile();
+  const { data: profile, isLoading: profileLoading, refetch: refetchProfile } = useUserProfile();
   const { data: plan, isLoading: planLoading } = useCurrentPlan();
+
+  // On component mount, fetch user profile
+  useEffect(() => {
+    refetchProfile(); // Fetch the user profile on component mount
+  }, [refetchProfile]);
 
   const formatUsage = (
     label: string,
