@@ -65,7 +65,7 @@ export const Playground: Story = {
   },
 };
 
-// 다양한 컬러 변형
+// 다양한 컬러
 export const ColorVariants: Story = {
   render: () => (
     <div className="flex flex-col gap-4 p-4">

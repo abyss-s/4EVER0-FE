@@ -22,6 +22,9 @@ const meta: Meta<typeof Button> = {
         'link',
         'login',
         'missionStatus',
+        'map',
+        'yellowFull',
+        'startMoonoz',
       ],
     },
     size: {
@@ -58,6 +61,8 @@ export const AllVariants: Story = {
           'missionStatus',
           'missionStatusCom',
           'map',
+          'yellowFull',
+          'startMoonoz',
         ] as ButtonVariant[]
       ).map((variant) => (
         <Button key={variant} variant={variant}>
@@ -107,6 +112,22 @@ export const MapButtons: Story = {
         <span>🗺️</span>
         <span>전체 보기</span>
       </Button>
+    </div>
+  ),
+};
+
+export const TutorialNextButton: Story = {
+  render: () => (
+    <div className="w-full flex">
+      <Button variant="yellowFull">다음으로 넘어가기</Button>
+    </div>
+  ),
+};
+
+export const StartMoonozButton: Story = {
+  render: () => (
+    <div className="flex justify-center">
+      <Button variant="startMoonoz">MoonoZ 시작하기 →</Button>
     </div>
   ),
 };

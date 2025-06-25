@@ -41,7 +41,7 @@ export function createStreamingHeaders(
 
   if (includeCredentials) {
     // 필요시 인증 헤더 추가
-    headers['Authorization'] = 'Bearer token'; // 예시
+    headers['Authorization'] = 'Bearer token';
   }
 
   return headers;

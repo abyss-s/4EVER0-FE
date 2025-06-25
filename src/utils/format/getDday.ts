@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { calcDday } from '@/utils/calcDday'; // 기존 calcDday는 그대로 유지
+import { calcDday } from '@/utils/calcDday';
 
 /**
  * Date 객체를 받아 디데이 문자열 반환

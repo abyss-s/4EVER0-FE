@@ -9,6 +9,7 @@ import { useAuthStore } from '@/stores/useAuthStore';
 import { Alert } from '@/components/ui/alert';
 import { createAlertHelper, AlertState } from '@/utils/alertUtils';
 import { ServiceData } from './ServiceCard';
+import { LikedCoupon } from '@/apis/like/getLikeCoupons';
 
 interface ChatInputAreaProps {
   ubtiInProgress: boolean;
@@ -21,6 +22,7 @@ interface ChatInputAreaProps {
   onLikesRecommendation: () => void;
   onUsageRecommendation: () => void;
   onResetChat: () => void;
+  likedCoupons: LikedCoupon[];
 }
 
 export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
@@ -33,6 +35,7 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
   onLikesRecommendation,
   onUsageRecommendation,
   onResetChat,
+  likedCoupons,
 }) => {
   const [showServiceDrawer, setShowServiceDrawer] = React.useState(false);
   const [showTooltip, setShowTooltip] = React.useState(false);
@@ -81,7 +84,8 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
       action: onLikesRecommendation,
       color: 'from-pink-500 to-rose-500',
       requiresLogin: true,
-      disabled: false,
+      disabled: likedCoupons.length === 0,
+      noDataMessage: '먼저 핫플레이스에서 브랜드를 좋아요 해주세요!',
     },
     {
       id: 'usage',
@@ -108,7 +112,14 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
 
   const handleServiceClick = (service: ServiceData) => {
     if (service.disabled) {
-      showAlert('준비중인 기능', '준비중인 기능입니다. 조금만 기다려주세요! 🙏');
+      if (service.id === 'likes') {
+        showAlert(
+          '좋아요한 브랜드가 없어요!',
+          '📍 먼저 핫플레이스 스토어맵에서\n브랜드를 좋아요 해주세요 🙏',
+        );
+      } else {
+        showAlert('준비중인 기능', '준비중인 기능입니다. 조금만 기다려주세요! 🙏');
+      }
       return;
     }
 
@@ -232,6 +243,7 @@ export const ChatInputArea: React.FC<ChatInputAreaProps> = ({
           {!ubtiInProgress && (
             <div className="relative">
               <Button
+                id="tutorial-plus-button"
                 variant="outline"
                 size="icon"
                 onClick={() => {

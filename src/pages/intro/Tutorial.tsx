@@ -122,6 +122,7 @@ const Tutorial = () => {
             </div>
 
             <div className="flex flex-col mt-28 items-center relative">
+
               <div className="relative w-[180px] mt-10">
                 <img
                   src={IMAGES.bubble}
@@ -145,6 +146,7 @@ const Tutorial = () => {
                 className="mt-4 bg-[var(--color-brand-yellow)] hover:bg-[var(--color-brand-yellow-hover)] text-black text-sm font-semibold"
               >
                 다음 →
+
               </Button>
             </div>
 

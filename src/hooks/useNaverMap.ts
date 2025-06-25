@@ -55,7 +55,6 @@ export function useNaverMap(options: NaverMapOptions = {}) {
     }
   }, []);
 
-  // 방어적 프로그래밍을 적용한 마커 추가
   const addMarker = useCallback(
     (markerOptions: MarkerOptions) => {
       if (!mapInstanceRef.current) {
@@ -281,7 +280,7 @@ export function useNaverMap(options: NaverMapOptions = {}) {
     };
   }, [isApiReady, isNaverMapsFullyLoaded, attemptInitialization]);
 
-  // 🎯 메인 초기화 effect
+  // 메인 초기화 effect
   useEffect(() => {
     console.log('🔄 useNaverMap 메인 useEffect 실행');
 

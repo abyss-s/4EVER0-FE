@@ -26,6 +26,7 @@ import Tutorial from '@/pages/intro/Tutorial';
 import IntroRedirect from '@/pages/intro/IntroRedirect';
 import PlanDetail from './pages/plan/PlanDetail';
 import MoonerZone from '@/pages/me/MoonerZone';
+import Landing from './pages/landing/landing';
 
 const routes: RouteObject[] = [
   {
@@ -77,6 +78,7 @@ const routes: RouteObject[] = [
       { path: 'plans', element: <Plan /> },
       { path: 'plans/:id', element: <PlanDetail /> },
       { path: 'share/:id', element: <UBTIShare /> },
+      { path: 'landing', element: <Landing /> },
 
       // 테스트용
       { path: 'design-system', element: <DesignSystemTest /> },

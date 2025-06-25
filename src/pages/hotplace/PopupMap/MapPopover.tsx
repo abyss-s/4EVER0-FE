@@ -1,4 +1,3 @@
-// components/map/MapPopover.tsx
 import React from 'react';
 
 interface PopupData {
@@ -33,7 +32,7 @@ export default function MapPopover({
     <>
       {children}
 
-      {/* 🎯 브라우저 중앙 고정 팝오버 */}
+      {/* 브라우저 중앙 고정 팝오버 */}
       <div
         className="bg-white rounded-lg shadow-2xl border"
         style={{

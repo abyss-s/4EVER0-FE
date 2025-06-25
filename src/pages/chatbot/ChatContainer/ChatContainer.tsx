@@ -18,6 +18,7 @@ import { SubscriptionRecommendationsData } from '@/types/streaming';
 import { fetchUBTIResult } from '@/apis/ubti/ubti';
 import { useScrollTracker } from '@/hooks/useScrollTracker';
 import { ScrollToTopButton } from '@/components/common/ScrollToTopButton/ScrollToTopButton';
+import { fetchLikedCoupons, LikedCoupon } from '@/apis/like/getLikeCoupons';
 
 export const ChatContainer: React.FC = () => {
   // 스크롤 이벤트 감지용
@@ -30,6 +31,13 @@ export const ChatContainer: React.FC = () => {
   const [showTutorial, setShowTutorial] = useState(false);
   const isInitializedRef = useRef(false);
   const navigate = useNavigate();
+  const [likedCoupons, setLikedCoupons] = useState<LikedCoupon[]>([]);
+
+  useEffect(() => {
+    fetchLikedCoupons()
+      .then((coupons) => setLikedCoupons(coupons))
+      .catch((err) => console.error('내 좋아요 쿠폰 에러', err));
+  }, []);
 
   // Zustand store에서 상태와 액션 분리
   const sessions = useChatStore((state) => state.sessions);
@@ -101,7 +109,7 @@ export const ChatContainer: React.FC = () => {
     [currentSession?.isCompleted],
   );
 
-  // 초기화 로직
+  // 초기화 로직 - 두 번 실행 방지
   const initializeChat = useCallback(() => {
     if (!isInitializedRef.current) {
       isInitializedRef.current = true;
@@ -109,10 +117,9 @@ export const ChatContainer: React.FC = () => {
 
       const getInitialGreeting = () => {
         if (isMunerTone) {
-          return `안뇽! 🤟 나는 무너야~ 🐙\n완전 럭키비키하게 만났네! ✨\n요금제나 구독 뭐든지 물어봐~ 💜\n💡 이런 걸 물어봐도 돼:"요금제 추천해줘 or 구독 추천해줘"`;
+          return `안뇽! 🤟 나는 무너야~ 🐙\n완전 럭키비키하게 만났네! ✨\n요금제나 구독 뭐든지 물어봐~ 💜\n\n💡 이런 걸 물어봐도 돼: "요금제 추천해줘" or "구독 추천해줘"`;
         } else {
-          return `안녕하세요! 😊 저는 LG유플러스의 AI 어시스턴트예요.\n📋 다음과 같은 도움을 드릴 수 있어요:\n요금제 추천해주세요
-                  \n구독 서비스 추천해주세요.\n궁금한 점이 있으시면 언제든지 물어보세요!`;
+          return `안녕하세요! 😊 저는 LG유플러스의 AI 어시스턴트예요.\n\n📋 다음과 같은 도움을 드릴 수 있어요:\n• 요금제 추천해주세요\n• 구독 서비스 추천해주세요\n\n궁금한 점이 있으시면 언제든지 물어보세요!`;
         }
       };
 
@@ -142,14 +149,46 @@ export const ChatContainer: React.FC = () => {
     if (!currentSessionId) {
       initializeChat();
     }
-  }, [currentSessionId, initializeChat]); // isMunerTone 의존성 제거해야 함
+  }, [currentSessionId, initializeChat]);
 
-  // 자동 스크롤
+  // 개선된 자동 스크롤
   useEffect(() => {
     if (messages.length > 0) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      // 약간의 지연으로 DOM 업데이트 완료 후 스크롤
+      const timer = setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'end',
+        });
+      }, 100);
+
+      return () => clearTimeout(timer);
     }
-  }, [messages.length]);
+  }, [messages]);
+
+  // 스트리밍 중에도 스크롤 유지
+  useEffect(() => {
+    if (
+      chatMutation.isPending ||
+      ubtiMutation.isPending ||
+      likesRecommendationMutation.isPending ||
+      usageRecommendationMutation.isPending
+    ) {
+      const timer = setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'end',
+        });
+      }, 300);
+
+      return () => clearTimeout(timer);
+    }
+  }, [
+    chatMutation.isPending,
+    ubtiMutation.isPending,
+    likesRecommendationMutation.isPending,
+    usageRecommendationMutation.isPending,
+  ]);
 
   // 일반 채팅 메시지 전송
   const handleSendMessage = useCallback(
@@ -265,7 +304,8 @@ export const ChatContainer: React.FC = () => {
     }
     resetUBTI();
     resetCards();
-    resetStreamingState(); // 🆕
+    resetStreamingState();
+    isInitializedRef.current = false; // 초기화 플래그 리셋
     const newSessionId = createSession();
     addMessage(newSessionId, '새로운 대화를 시작합니다! 😊 무엇을 도와드릴까요?', 'bot');
   }, [
@@ -378,6 +418,7 @@ export const ChatContainer: React.FC = () => {
         onLikesRecommendation={handleLikesRecommendation}
         onUsageRecommendation={handleUsageRecommendation}
         onResetChat={resetChat}
+        likedCoupons={likedCoupons}
       />
 
       <ScrollToTopButton scrollRef={scrollRef} />

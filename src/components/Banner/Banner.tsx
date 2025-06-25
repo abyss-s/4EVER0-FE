@@ -87,7 +87,6 @@ export function Banner({
           </div>
         )}
       </div>
-      {/* 동그라미 추가 */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-white/20 rounded-full -translate-y-16 translate-x-16 pointer-events-none dark:bg-white/10" />
       <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/15 rounded-full translate-y-12 -translate-x-12 pointer-events-none dark:bg-white/8" />
       <div className="absolute top-1/2 right-8 w-16 h-16 bg-[var(--color-brand-darkblue-light)]/5 rounded-full pointer-events-none dark:bg-[var(--color-brand-yellow)]/20" />

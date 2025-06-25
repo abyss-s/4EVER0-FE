@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/ui/input';
 import { Send } from 'lucide-react';
@@ -14,27 +14,10 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   onSendMessage,
   disabled = false,
   placeholder = '무너에게 메시지를 입력하세요...',
-  autoFocus = true,
+  autoFocus = false,
 }) => {
   const [message, setMessage] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // 컴포넌트 마운트 시 포커스
-  useEffect(() => {
-    if (autoFocus && !disabled && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [autoFocus, disabled]);
-
-  // 메시지 전송 후 포커스 복구
-  const focusInput = useCallback(() => {
-    // 약간의 지연을 두어 DOM 업데이트 후 포커스
-    setTimeout(() => {
-      if (inputRef.current && !disabled) {
-        inputRef.current.focus();
-      }
-    }, 100);
-  }, [disabled]);
 
   const handleSubmit = useCallback(
     (e: React.FormEvent) => {
@@ -43,11 +26,9 @@ export const ChatInput: React.FC<ChatInputProps> = ({
       if (trimmedMessage && !disabled) {
         onSendMessage(trimmedMessage);
         setMessage('');
-        // 메시지 전송 후 포커스 복구
-        focusInput();
       }
     },
-    [message, disabled, onSendMessage, focusInput],
+    [message, disabled, onSendMessage],
   );
 
   const handleKeyPress = useCallback(
@@ -59,13 +40,6 @@ export const ChatInput: React.FC<ChatInputProps> = ({
     },
     [handleSubmit],
   );
-
-  // disabled 상태가 변경될 때 포커스 관리
-  useEffect(() => {
-    if (!disabled && autoFocus) {
-      focusInput();
-    }
-  }, [disabled, autoFocus, focusInput]);
 
   return (
     <form onSubmit={handleSubmit} className="flex w-full items-center h-10 space-x-2">

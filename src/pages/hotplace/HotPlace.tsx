@@ -80,22 +80,47 @@ const HotPlace = () => {
   return (
     <div className="pb-20 space-y-4 min-h-full">
       {/* 헤더 섹션 - 마이페이지 스타일 적용 */}
-      <div className="px-4">
-        <h2 className="title-1 mt-6 flex items-center text-brand-darkblue gap-2">
-          <img src={IMAGES.MOONER['mooner-hotplace']} alt="문어 아이콘" className="w-15 h-15" />
-          요즘 뜨는핫플레이스를 찾고, <br />내 근처 쿠폰을 저장해보세요!
-        </h2>
+      <div>
+        <div className="flex items-start gap-2 mt-6 text-brand-darkblue">
+          <h2 className="title-1 mt-6 flex items-center text-brand-darkblue gap-2">
+            <img src={IMAGES.MOONER['mooner-hotplace']} alt="문어 아이콘" className="w-15 h-15" />
+            요즘 뜨는 핫플레이스를 찾고, <br />내 근처 쿠폰을 저장해보세요!
+          </h2>
+        </div>
 
         {/* MZ PICK 배너 */}
         <div className="mt-6 mb-4">
           <Card className="bg-gradient-to-r from-brand-yellow to-brand-red text-white">
-            <CardContent className="text-center py-2">
-              <div className="flex items-center justify-center gap-2">
-                <TrendingUp className="w-5 h-5" />
-                <span className="font-bold">요즘 핫한 MZ들의 PICK은?!</span>
+            <CardContent className="py-2 px-3">
+              <div className="flex flex-col items-center justify-center text-center gap-1">
+                {/* 아이콘 + 제목 가로 정렬 */}
+                <div className="flex items-center justify-center gap-1">
+                  <TrendingUp className="w-5 h-5" />
+                  <span className="font-bold">요즘 핫한 MZ들의 PICK은?!</span>
+                </div>
+                {/* 설명 문구 */}
+                {/* <span className="font-semibold text-sm">
+                  지금 Top3 쿠폰을 확인하고 지도에서 주변 매장을 찾아보세요 !
+                </span> */}
               </div>
             </CardContent>
           </Card>
+        </div>
+      </div>
+
+      {/* 인기 쿠폰 섹션 */}
+      <div className="px-4">
+        {/* 쿠폰 리스트 */}
+        <div className="grid grid-cols-3 sm:grid-cols-3 xs:grid-cols-2 gap-4 justify-items-center pt-4">
+          {[0, 1, 2].map((index) => (
+            <TopCouponCard
+              key={index}
+              deal={bestDeals[index]}
+              index={index}
+              isLoading={isLoading}
+              getDiscountLabel={getDiscountLabel}
+            />
+          ))}
         </div>
       </div>
 
@@ -156,26 +181,6 @@ const HotPlace = () => {
             )}
           </CardContent>
         </Card>
-      </div>
-
-      {/* 인기 쿠폰 섹션 */}
-      <div className="px-4">
-        <h1 className="text-xl font-bold text-brand-darkblue mb-4">
-          인기 쿠폰 <span className="text-red-400 font-bold">TOP 3</span>
-        </h1>
-
-        {/* 쿠폰 리스트 */}
-        <div className="flex flex-col gap-4 pt-4">
-          {[0, 1, 2].map((index) => (
-            <TopCouponCard
-              key={index}
-              deal={bestDeals[index]}
-              index={index}
-              isLoading={isLoading}
-              getDiscountLabel={getDiscountLabel}
-            />
-          ))}
-        </div>
       </div>
     </div>
   );

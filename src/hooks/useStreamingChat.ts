@@ -291,13 +291,11 @@ export const useStreamingChat = () => {
       setExpectingCards(userMessage.includes('추천') || userMessage.includes('요금제') || isLikes);
 
       return {
-        // createStreamingHandlers의 onChunk 함수 개선 (일반 텍스트 처리 부분)
-
         onChunk: (chunk: string) => {
           const parsedResponse = parseStreamingResponse(chunk);
 
           if (parsedResponse) {
-            // JSON 응답 처리 (기존 로직 그대로)
+            // JSON 응답 처리
             switch (parsedResponse.type) {
               case 'usage_analysis': {
                 setCurrentUsageAnalysis(parsedResponse.data);

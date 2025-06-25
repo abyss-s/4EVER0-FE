@@ -1,21 +1,26 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useModalStore } from '@/stores/useModalStore';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/Badge';
 import type { SubscriptionItem } from '@/types/subscription';
 import type { Brand } from '@/types/brand';
+import { SelectedProductsCard } from '@/components/SelectedProductsCard/SelectedProductsCard';
+import { cn } from '@/lib/utils';
 
 interface PaymentStepProps {
   selectedMainItems: SubscriptionItem[];
   selectedLifeBrands: Brand[];
   isLoggedIn: boolean;
+  isProcessing?: boolean;
+  onSubscribe: () => void;
 }
 
 export function PaymentStep({
   selectedMainItems,
   selectedLifeBrands,
   isLoggedIn,
+  isProcessing,
+  onSubscribe,
 }: PaymentStepProps) {
   const totalPrice = selectedMainItems.reduce((sum, item) => sum + item.price, 0);
   const { openModal } = useModalStore();
@@ -46,45 +51,25 @@ export function PaymentStep({
         <Badge variant="step">STEP 3</Badge>
         <h2 className="text-lg font-semibold mt-2">선택 완료</h2>
       </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">선택한 상품</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <h4 className="font-medium text-sm mb-2">메인 구독 상품</h4>
-            <div className="space-y-2">
-              {selectedMainItems.map((item) => (
-                <div key={item.id} className="flex justify-between text-sm p-2 bg-gray-50 rounded">
-                  <span>{item.title}</span>
-                  <span className="font-medium">{item.price.toLocaleString()}원</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h4 className="font-medium text-sm mb-2">라이프 혜택</h4>
-            <div className="flex flex-wrap gap-1">
-              {selectedLifeBrands.map((brand) => (
-                <Badge key={brand.id} variant="category" size="sm">
-                  {brand.title}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
-          <div className="border-t pt-3">
-            <div className="flex justify-between items-center">
-              <span className="font-semibold">총 금액</span>
-              <span className="text-lg font-bold text-pink-600">
-                {totalPrice.toLocaleString()}원
-              </span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex justify-center">
+        <SelectedProductsCard
+          selectedMainItems={selectedMainItems}
+          selectedLifeBrands={selectedLifeBrands}
+          totalPrice={totalPrice}
+        />
+      </div>
+      <div className="pt-4">
+        <button
+          disabled={isProcessing}
+          onClick={onSubscribe}
+          className={cn(
+            'w-full py-3 rounded-lg font-semibold text-white transition',
+            isProcessing ? 'bg-gray-300 cursor-not-allowed' : 'bg-pink-500 hover:bg-pink-600',
+          )}
+        >
+          {isProcessing ? '처리 중...' : '구독 완료하기'}
+        </button>
+      </div>
     </div>
   );
 }

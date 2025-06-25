@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Benefit } from '@/types/uplus';
-import { getMonthlyBenefits } from '@/apis/uplus/benefit';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode, Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -12,24 +11,14 @@ import { cn } from '@/lib/utils';
 
 interface UplusBenefitPreviewProps {
   selectedCategory: string;
+  benefits: Benefit[] | null;
 }
 
-export const UplusBenefitPreview = ({ selectedCategory }: UplusBenefitPreviewProps) => {
-  const [benefits, setBenefits] = useState<Benefit[] | null>(null);
+export const UplusBenefitPreview = ({ selectedCategory, benefits }: UplusBenefitPreviewProps) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
-  useEffect(() => {
-    getMonthlyBenefits()
-      .then((data) => {
-        setBenefits(data);
-      })
-      .catch((err) => {
-        console.error('❌ 유플 혜택 조회 실패:', err);
-      });
-  }, []);
-
   if (benefits === null) {
-    return <p className="text-sm text-gray-400 px-2">혜택을 불러오는 중입니다...</p>;
+    return null; // 로딩 메시지 제거
   }
 
   // 카테고리 필터링 적용

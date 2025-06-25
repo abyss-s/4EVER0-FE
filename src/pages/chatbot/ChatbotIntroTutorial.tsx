@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ArrowRight, MessageCircle, Plus, ToggleLeft, Sparkles } from 'lucide-react';
 import { Button } from '@/components/Button';
 import { IMAGES } from '@/constant/imagePath';
+import { useTutorialHighlight } from '@/hooks/useTutorialHighlight';
 
 interface ChatbotIntroTutorialProps {
   isVisible: boolean;
@@ -14,12 +15,9 @@ interface TutorialStep {
   title: string;
   description: string;
   icon: React.ReactNode;
-  highlight?: string;
-  position?: {
-    top?: string;
-    bottom?: string;
-    left?: string;
-    right?: string;
+  highlight?: {
+    elementId: string;
+    description: string;
   };
 }
 
@@ -34,15 +32,17 @@ const tutorialSteps: TutorialStep[] = [
   {
     id: 2,
     title: '플러스(+) 버튼의 비밀',
-    description: '채팅창 왼쪽의 + 버튼을 누르면\n특별한 서비스 메뉴가 나타나요!',
+    description: '채팅 입력창 왼쪽 + 버튼을 누르면\n특별한 서비스 메뉴가 나타나요!',
     icon: <Plus className="w-8 h-8 text-green-500" />,
-    highlight: 'plus-button',
-    position: { bottom: '100px', left: '20px' },
+    highlight: {
+      elementId: 'tutorial-plus-button',
+      description: '이 버튼을 눌러보세요!',
+    },
   },
   {
     id: 3,
     title: '타코시그널 검사',
-    description: '나만의 통신 유형을 알아보는\n재미있는 성격 검사예요! 🐙',
+    description: '나만의 통신 유형을 알아보는 재밌는 검사예요! 🐙\n서비스 메뉴에서 검사해볼까요?',
     icon: <Sparkles className="w-8 h-8 text-purple-500" />,
   },
   {
@@ -50,8 +50,10 @@ const tutorialSteps: TutorialStep[] = [
     title: '톤 스위치 기능',
     description: '무너를 정중한 모드 ↔ MZ 모드로\n바꿀 수 있어요! (로그인 필요)',
     icon: <ToggleLeft className="w-8 h-8 text-orange-500" />,
-    highlight: 'tone-switch',
-    position: { top: '20px', right: '20px' },
+    highlight: {
+      elementId: 'tutorial-tone-switch',
+      description: '여기서 톤을 바꿀 수 있어요!',
+    },
   },
 ];
 
@@ -61,6 +63,7 @@ export const ChatbotIntroTutorial: React.FC<ChatbotIntroTutorialProps> = ({
 }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isClosing, setIsClosing] = useState(false);
+  const { highlightPosition, highlightElement, clearHighlight } = useTutorialHighlight();
 
   const handleNext = () => {
     if (currentStep < tutorialSteps.length - 1) {
@@ -72,6 +75,7 @@ export const ChatbotIntroTutorial: React.FC<ChatbotIntroTutorialProps> = ({
 
   const handleClose = () => {
     setIsClosing(true);
+    clearHighlight();
     localStorage.setItem('hasSeenChatbotTutorial', 'true');
     setTimeout(() => {
       onClose();
@@ -82,6 +86,30 @@ export const ChatbotIntroTutorial: React.FC<ChatbotIntroTutorialProps> = ({
   const handleSkip = () => {
     handleClose();
   };
+
+  // 스텝 변경 시 하이라이트 처리
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const step = tutorialSteps[currentStep];
+    if (step.highlight) {
+      // 약간의 지연을 두어 DOM이 준비된 후 하이라이트
+      const timer = setTimeout(() => {
+        highlightElement(step.highlight!.elementId);
+      }, 200);
+
+      return () => clearTimeout(timer);
+    } else {
+      clearHighlight();
+    }
+  }, [currentStep, isVisible, highlightElement, clearHighlight]);
+
+  // 컴포넌트 언마운트 시 하이라이트 정리
+  useEffect(() => {
+    return () => {
+      clearHighlight();
+    };
+  }, [clearHighlight]);
 
   if (!isVisible) return null;
 
@@ -100,17 +128,34 @@ export const ChatbotIntroTutorial: React.FC<ChatbotIntroTutorialProps> = ({
             transition={{ duration: 0.3 }}
           />
 
-          {/* 하이라이트 영역  */}
-          {step.highlight && step.position && (
+          {/* 동적 하이라이트 영역 */}
+          {highlightPosition && (
             <motion.div
               className="fixed z-[10000] pointer-events-none"
-              style={step.position}
+              style={{
+                top: highlightPosition.top - 8,
+                left: highlightPosition.left - 8,
+                width: highlightPosition.width + 16,
+                height: highlightPosition.height + 16,
+              }}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
               transition={{ delay: 0.2, type: 'spring' }}
             >
-              <div className="w-12 h-12 rounded-full border-4 border-yellow-400 animate-pulse" />
-              <div className="absolute inset-0 w-12 h-12 rounded-full bg-yellow-400/20 animate-ping" />
+              {/* 하이라이트 테두리 */}
+              <div className="w-full h-full rounded-xl border-4 border-yellow-400 animate-pulse relative">
+                {/* 펄스 효과 */}
+                <div className="absolute inset-0 w-full h-full rounded-xl bg-yellow-400/20 animate-ping" />
+
+                {/* 화살표나 설명 텍스트 */}
+                {step.highlight && (
+                  <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-black px-3 py-1 rounded-lg text-sm font-medium whitespace-nowrap">
+                    {step.highlight.description}
+                    <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-yellow-400"></div>
+                  </div>
+                )}
+              </div>
             </motion.div>
           )}
 
@@ -207,7 +252,7 @@ export const ChatbotIntroTutorial: React.FC<ChatbotIntroTutorialProps> = ({
                     variant="outline"
                     size="sm"
                     onClick={handleSkip}
-                    className="flex-1 max-w-[120px]" // 최대 너비 제한
+                    className="flex-1 max-w-[120px]"
                   >
                     건너뛰기
                   </Button>
@@ -215,7 +260,7 @@ export const ChatbotIntroTutorial: React.FC<ChatbotIntroTutorialProps> = ({
                     variant="default"
                     size="sm"
                     onClick={handleNext}
-                    className="flex-1 max-w-[120px] bg-yellow-400 hover:bg-yellow-500 text-gray-800" // 최대 너비 제한
+                    className="flex-1 max-w-[120px] bg-yellow-400 hover:bg-yellow-500 text-gray-800"
                   >
                     {currentStep === tutorialSteps.length - 1 ? (
                       '시작하기'
