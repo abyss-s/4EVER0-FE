@@ -99,6 +99,7 @@ export const useStreamingChat = () => {
             price: mainSubData.price || 0,
             category: mainSubData.category || '',
             image_url: mainSubData.image_url || '',
+            description: mainSubData.type || '',
           };
         } else if (item.type === 'life_brand') {
           // LifeBrand 타입에 맞게 변환
@@ -108,6 +109,7 @@ export const useStreamingChat = () => {
             name: lifeBrandData.name || '',
             image_url: lifeBrandData.image_url || '',
             description: lifeBrandData.description || '',
+            category: lifeBrandData.type || '',
           };
         }
       });
