@@ -1,0 +1,12 @@
+{
+  "name": "MoonoZ - AI 요금제 추천",
+  "short_name": "MoonoZ",
+  "description": "MZ세대를 위한 AI 기반 요금제 및 구독 서비스 추천",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#25394B",
+  "orientation": "portrait-primary",
+  "categories": ["lifestyle", "utilities"],
+  "lang": "ko"
+}

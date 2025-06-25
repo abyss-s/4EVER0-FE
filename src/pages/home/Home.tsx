@@ -9,6 +9,7 @@ import { IMAGES } from '@/constant/imagePath';
 import { useCurrentPlan } from '@/hooks/useCurrentPlan';
 import { BillSummaryCard } from '@/components/ui/billsummarycard';
 import PromotionalBanner from '@/components/PromotionalBanner/PromotionalBanner';
+import { SEOHelmet } from '@/seo/SEOHelmet';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
@@ -65,6 +66,13 @@ const Home: React.FC = () => {
 
   return (
     <div>
+      <SEOHelmet
+        title="MoonoZ 홈 - AI 요금제 추천 서비스"
+        description="무너와 함께 나에게 맞는 요금제를 찾아보세요. AI 기반 개인 맞춤 추천으로 최적의 선택을 도와드립니다."
+        keywords="홈, AI추천, 요금제, 개인맞춤"
+        url="https://4-ever-0-fe.vercel.app/home"
+      />
+
       <Banner
         variant="primary"
         size="sm"
