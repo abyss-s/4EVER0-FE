@@ -56,10 +56,10 @@ export const IMAGES = {
   },
   bubble: '/images/bubble.png',
   PHONE: {
-    PHONE_MISSON: '/images/iPhone.svg',
-    PHONE_MOONOTALK: '/images/iPhone-1.svg',
-    PHONE_HOME: '/images/iPhone-2.svg',
-    PHONE_HOTPLACE: '/images/iPhone-3.svg',
-    PHONE_MYPAGE: '/images/iPhone-4.svg',
+    PHONE_MISSON: '/images/iPhone.png',
+    PHONE_MOONOTALK: '/images/iPhone-1.png',
+    PHONE_HOME: '/images/iPhone-2.png',
+    PHONE_HOTPLACE: '/images/iPhone-3.png',
+    PHONE_MYPAGE: '/images/iPhone-4.png',
   },
 } as const;
