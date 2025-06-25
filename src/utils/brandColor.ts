@@ -1,4 +1,3 @@
-
 const tailwindColors: { [key: string]: string } = {
   'bg-pink-500': '#ec4899',
   'bg-emerald-500': '#10b981',
@@ -10,7 +9,6 @@ const tailwindColors: { [key: string]: string } = {
   'bg-teal-500': '#14b8a6',
   'bg-gray-500': '#6b7280',
 };
-
 
 export const getBrandBackgroundColor = (brand: string): string => {
   const colorMap: { [key: string]: string } = {
@@ -42,7 +40,6 @@ export const getrawBackgroundColor = (brand: string): string => {
   const tailwindClass = colorMap[brand] || 'bg-gray-400'; // 기본 색상
   return tailwindColors[tailwindClass] || '#000000'; // 색상 코드 반환
 };
-
 
 export const getBrandDotColor = (brand: string): string => {
   const dotColorMap: { [key: string]: string } = {
