@@ -153,7 +153,7 @@ const Signup: React.FC = () => {
                 type="tel"
                 value={formData.phoneNumber}
                 onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                placeholder="전화번호를 입력해주세요"
+                placeholder="전화번호를 입력해주세요 (010-0000-0000)"
                 className="h-12 border-slate-200 focus:border-yellow-400 focus:ring-yellow-400"
                 required
                 autoComplete="tel"
