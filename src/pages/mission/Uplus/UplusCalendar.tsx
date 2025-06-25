@@ -1,34 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { BaseCalendar } from '@/components/Calendar/BaseCalendar';
 import { format, isSameDay } from 'date-fns';
-import { getMonthlyBenefits } from '@/apis/uplus/benefit';
 import { Benefit } from '@/types/uplus';
 import { getBrandDotColor } from '@/utils/brandColor';
 import { BenefitDetailModal } from './UplusBenefitDetail';
 
 interface UplusCalendarProps {
   selectedCategory: string;
+  benefits: Benefit[] | null;
 }
 
-export const UplusCalendar = ({ selectedCategory }: UplusCalendarProps) => {
-  const [benefits, setBenefits] = useState<Benefit[] | null>(null);
+export const UplusCalendar = ({ selectedCategory, benefits }: UplusCalendarProps) => {
   const [month, setMonth] = useState(new Date());
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  useEffect(() => {
-    getMonthlyBenefits()
-      .then((data) => {
-        console.log('✅ 응답 성공:', data);
-        setBenefits(data);
-      })
-      .catch((err) => {
-        console.error('❌ 유플 혜택 조회 실패:', err.response?.data || err.message);
-      });
-  }, []);
-
-  // 날짜 클릭 핸들러 추가!
+  // 날짜 클릭 핸들러
   const handleDateClick = (date: Date, isCurrentMonth: boolean) => {
     if (!isCurrentMonth) return;
 
@@ -37,7 +24,7 @@ export const UplusCalendar = ({ selectedCategory }: UplusCalendarProps) => {
   };
 
   if (!benefits) {
-    return <p className="text-sm text-gray-400">혜택 불러오는 중...</p>;
+    return null; // 로딩 메시지 제거
   }
 
   // 선택된 카테고리에 따라 필터링
@@ -45,6 +32,7 @@ export const UplusCalendar = ({ selectedCategory }: UplusCalendarProps) => {
     selectedCategory === '전체'
       ? benefits
       : benefits.filter((b) => b.category === selectedCategory);
+
   return (
     <>
       <BaseCalendar
@@ -59,7 +47,7 @@ export const UplusCalendar = ({ selectedCategory }: UplusCalendarProps) => {
           return (
             <div
               className="flex flex-col items-center justify-center h-full relative cursor-pointer hover:bg-gray-50 transition-colors rounded"
-              onClick={() => handleDateClick(date, isCurrentMonth)} // 클릭 이벤트 추가
+              onClick={() => handleDateClick(date, isCurrentMonth)}
             >
               <span className="relative z-10">{format(date, 'd')}</span>
 
