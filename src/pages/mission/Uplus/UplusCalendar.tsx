@@ -15,7 +15,6 @@ export const UplusCalendar = ({ selectedCategory, benefits }: UplusCalendarProps
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-
   // 날짜 클릭 핸들러
   const handleDateClick = (date: Date, isCurrentMonth: boolean) => {
     if (!isCurrentMonth) return;
