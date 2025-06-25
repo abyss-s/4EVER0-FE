@@ -17,7 +17,6 @@ export const getBrandBackgroundColor = (brand: string): string => {
     파리바게뜨: 'bg-orange-500', // 추가 색상 예시
     메가MGC커피: 'bg-brown-600', // 추가 색상 예시
     파파존스: 'bg-red-500', // 추가 색상 예시
-    메가: 'bg-indigo-500', // 추가 색상 예시
     올리브영: 'bg-green-600',
     스파오: 'bg-teal-500', // 추가 색상 예시
     다이소: 'bg-gray-500', // 추가 색상 예시
@@ -33,7 +32,6 @@ export const getrawBackgroundColor = (brand: string): string => {
     파리바게뜨: 'bg-orange-500', // 추가 색상 예시
     메가MGC커피: 'bg-brown-600', // 추가 색상 예시
     파파존스: 'bg-red-500', // 추가 색상 예시
-    메가: 'bg-indigo-500', // 추가 색상 예시
     올리브영: 'bg-green-600',
     스파오: 'bg-teal-500', // 추가 색상 예시
     다이소: 'bg-gray-500', // 추가 색상 예시
@@ -51,7 +49,6 @@ export const getBrandDotColor = (brand: string): string => {
     파리바게뜨: 'bg-orange-300', // 추가 색상 예시
     메가MGC커피: 'bg-brown-300', // 추가 색상 예시
     파파존스: 'bg-red-300', // 추가 색상 예시
-    메가: 'bg-indigo-300', // 추가 색상 예시
     올리브영: 'bg-green-300',
     스파오: 'bg-teal-300', // 추가 색상 예시
     다이소: 'bg-gray-300', // 추가 색상 예시
