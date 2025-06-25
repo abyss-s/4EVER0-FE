@@ -52,7 +52,12 @@ const MyPage: React.FC = () => {
     }
   }, [isLoading]);
 
-  if (isLoading && shouldShowLoading) return <LoadingMooner />;
+  if (isLoading && shouldShowLoading)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingMooner />
+      </div>
+    );
   if (isLoading && (error || !plan)) {
     return (
       <Empty
