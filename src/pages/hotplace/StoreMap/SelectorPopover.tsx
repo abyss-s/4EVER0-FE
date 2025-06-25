@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/Popover';
 import { Heart, HeartIcon } from 'lucide-react';
 import { changeCouponLike } from '@/apis/coupon/changeCouponlike';
