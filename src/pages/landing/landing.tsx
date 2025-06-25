@@ -240,7 +240,7 @@ const Landing = () => {
 
       {/* Contents Section */}
       <div className="flex flex-col gap-24 pt-32 whitespace-pre-line">
-        {CONTENTS.map((item, index) => {
+        {CONTENTS.map((item) => {
           const ref = useRef(null);
           const inView = useInView(ref, { once: true });
 
