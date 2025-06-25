@@ -8,3 +8,8 @@ export const changePlan = async (planId: number) => {
   const res = await apiWithToken.post('/user/plans', { plan_id: planId });
   return res?.data;
 };
+
+export const disconnectPlan = async () => {
+  const res = await apiWithToken.delete('/user/plans');
+  return res?.data;
+};
