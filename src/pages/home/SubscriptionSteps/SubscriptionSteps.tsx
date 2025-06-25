@@ -209,6 +209,8 @@ export const SubscriptionSteps = ({ className }: SubscriptionStepsProps) => {
             selectedMainItems={selectedMainItems}
             selectedLifeBrands={selectedLifeBrands}
             isLoggedIn={isLoggedIn}
+            isProcessing={subscribeMutation.isPending}
+            onSubscribe={handleSubscribe}
           />
         )}
       </div>
