@@ -32,6 +32,7 @@ export const IMAGES = {
     TICKET_GRAY: '/images/ticket-gray.svg',
   },
   TACO: {
+    'taco-secret': 'images/taco-secret.png',
     'taco-signal': 'images/taco-signal.png',
     'taco-main-front': 'images/taco-main-front.png',
     'taco-main-back': 'images/taco-main-back.png',
