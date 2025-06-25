@@ -111,7 +111,7 @@ const Landing = () => {
     {
       id: 2,
       titleHeader: '🐙: 쿠폰 쓰고 싶은데 멀리 가긴 싫어ㅠ',
-      title: '2. 내 근처의 팝업스토어/쿠폰 등의 \n다양한 혜택을 즐겨보세요.',
+      title: '2. 내 근처의 팝업스토어/쿠폰 등의 \n다양한 혜택을 즐겨보세요!',
       imagePath: IMAGES.PHONE.PHONE_HOTPLACE,
     },
     {
@@ -371,18 +371,18 @@ const Landing = () => {
       >
         <div className="text-lg font-medium px-4" style={{ color: `${brandColors.darkblue}` }}>
           {`간편하고 빠르게 요금제를 정하고 싶다면
-무너즈🐙와 함께 해보세요!`}
+무너즈🐙와 함께 해보세요! \n 👇🏻`}
         </div>
         <img
           src={IMAGES.MOONER['moonoz-logo']}
           alt="MoonoZ 로고"
-          className="w-20 h-auto mt-4 cursor-pointer mx-auto block"
+          className="w-20 h-auto cursor-pointer mx-auto block"
         />
       </motion.div>
 
       {/* Bottom Button */}
       <motion.div
-        className="mt-16 mb-8 px-4"
+        className="mt-4 mb-8 px-4"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1, type: 'spring', damping: 20 }}
