@@ -66,5 +66,12 @@ export const IMAGES = {
     'taco-milky-front': 'images/taco-milky-front.png',
   },
   bubble: '/images/bubble.png',
+  PHONE: {
+    PHONE_MISSON: '/images/iPhone-mission.png',
+    PHONE_MOONOTALK: '/images/iPhone-moonotalk.png',
+    PHONE_HOME: '/images/iPhone-home.png',
+    PHONE_HOTPLACE: '/images/iPhone-2.png',
+    PHONE_MYPAGE: '/images/iPhone-3.png',
+  },
   yellowBubble: '/images/yellowBubble.png',
 } as const;

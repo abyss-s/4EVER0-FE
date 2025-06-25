@@ -9,7 +9,7 @@ const brandColors = {
   red: '#DC2626',
 };
 
-// 애니메이션 variants - 타입 오류 수정
+// 애니메이션 variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -99,34 +99,30 @@ const Landing = () => {
 
   const lastInView = useInView(lastRef, { once: true });
 
-  // Mock data for demonstration
   const CONTENTS = [
     {
       id: 1,
-      titleHeader: '무너톡한테 물어보기',
-      title: '간단하게 무너톡에게\n물어보세요',
-      images: [
-        'https://via.placeholder.com/300x400/FFE066/1E3A8A?text=Landing+2',
-        'https://via.placeholder.com/300x400/1E3A8A/FFE066?text=Landing+3',
-      ],
+      titleHeader: '🐙: 나에게 맞는 요금제가 뭘까?!',
+      title: '1. 간단하게 무너톡에게\n물어보세요!',
+      imagePath: IMAGES.PHONE.PHONE_MOONOTALK,
     },
     {
       id: 2,
-      titleHeader: '내 근처에 있는 정보 탐색하기',
-      title: '내 근처의 팝업스토어/쿠폰 등의 \n다양한 혜택을 즐겨보세요',
-      images: ['https://via.placeholder.com/350x450/DC2626/FFE066?text=Landing+4'],
+      titleHeader: '🐙: 쿠폰 쓰고 싶은데 멀리 가긴 싫어ㅠ',
+      title: '2. 내 근처의 팝업스토어/쿠폰 등의 \n다양한 혜택을 즐겨보세요.',
+      imagePath: IMAGES.PHONE.PHONE_HOTPLACE,
     },
     {
       id: 3,
-      titleHeader: '매일매일 다양한 혜택이 우수수!',
-      title: '나만의 캘린더와 함께\nU+의 혜택을 확인하고, 보상 포인트까지!',
-      images: ['https://via.placeholder.com/300x400/1E3A8A/FFE066?text=Landing+5'],
+      titleHeader: '🐙: 매일매일 다양한 혜택이 우수수!',
+      title: '3. 나만의 캘린더와 함께\nU+의 혜택을 확인하고, 보상 포인트까지!',
+      imagePath: IMAGES.PHONE.PHONE_MISSON,
     },
     {
       id: 4,
-      titleHeader: '모든 걸 한번에 모아두다!',
-      title: '내가 저장해둔 혜택들과 요금제를\n한눈에 확인해볼까요?',
-      images: ['https://via.placeholder.com/300x400/FFE066/1E3A8A?text=Landing+6'],
+      titleHeader: '🐙: 모든 걸 한번에 모아모아~',
+      title: '4. 내가 저장해둔 혜택들과 요금제를\n한 눈에 확인해볼까요?',
+      imagePath: IMAGES.PHONE.PHONE_MYPAGE,
     },
   ];
 
@@ -143,38 +139,19 @@ const Landing = () => {
     <div
       className="flex flex-col w-full max-w-[600px] min-h-screen mx-auto overflow-x-hidden relative"
       style={{
-        background: `linear-gradient(200deg, ${brandColors.yellow}20 0%, ${brandColors.darkblue}10 100%)`,
+        background: '#FFF',
       }}
     >
       {/* Start Section */}
       <motion.div
-        className="flex flex-col items-center w-full pt-32 sm:pt-24 min-h-screen relative"
+        className="flex flex-col items-center w-full pt-20 min-h-screen relative"
         variants={containerVariants}
         initial="hidden"
         animate={isLoaded ? 'visible' : 'hidden'}
       >
-        {/* Main Logo */}
+        {/* Illustration  */}
         <motion.div
-          className="w-[calc(100%-152px)] h-10 mb-4 rounded-lg flex items-center justify-center font-bold text-lg"
-          style={{ backgroundColor: `${brandColors.darkblue}`, color: `${brandColors.yellow}` }}
-          variants={itemVariants}
-        >
-          MoonoZ
-        </motion.div>
-
-        {/* Logo Header */}
-        <motion.div className="w-[calc(100%-230px)] mb-6" variants={itemVariants}>
-          <div
-            className="w-full h-8 rounded-lg flex items-center justify-center font-semibold"
-            style={{ backgroundColor: `${brandColors.yellow}`, color: `${brandColors.darkblue}` }}
-          >
-            사용설명서
-          </div>
-        </motion.div>
-
-        {/* Illustration */}
-        <motion.div
-          className="w-64 h-48 rounded-2xl flex items-center justify-center mb-8 shadow-lg"
+          className="w-64 h-48 rounded-2xl flex items-center justify-center mb-6 shadow-lg relative"
           style={{
             background: `linear-gradient(135deg, ${brandColors.yellow} 0%, ${brandColors.red}40 100%)`,
           }}
@@ -182,6 +159,73 @@ const Landing = () => {
           whileHover={{ scale: 1.05, rotate: 2 }}
           whileTap={{ scale: 0.95 }}
         >
+          {/* 말풍선 - 오른쪽 비스듬히 배치 */}
+          <motion.div
+            className="absolute -top-16 -right-8 z-20"
+            variants={scaleVariants} // 문어와 동시에 나타남
+          >
+            {/* 말풍선 본체 */}
+            <motion.div
+              className="relative px-4 py-3 rounded-2xl shadow-2xl backdrop-blur-lg border border-white/30"
+              style={{
+                background: 'rgba(255, 255, 255, 0.95)',
+                maxWidth: '200px',
+              }}
+              animate={{
+                y: [0, -3, 0],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            >
+              <div
+                className="text-sm font-bold text-center leading-tight"
+                style={{ color: brandColors.darkblue }}
+              >
+                어서와~ 무너즈는 처음이지?
+                <br />나 🐙무너가 다 알려줄게~
+              </div>
+
+              {/* 말풍선 꼬리 - 문어를 향하도록 조정 */}
+              <div className="absolute -bottom-3 left-8">
+                <div
+                  className="w-6 h-6 rotate-45 backdrop-blur-lg border-r border-b border-white/30"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.95)',
+                  }}
+                />
+              </div>
+
+              {/* 말풍선 반짝이 효과 */}
+              <motion.div
+                className="absolute top-1 right-2 w-1 h-1 bg-yellow-400 rounded-full"
+                animate={{
+                  opacity: [0, 1, 0],
+                  scale: [0, 1, 0],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  delay: 0.5,
+                }}
+              />
+              <motion.div
+                className="absolute top-3 right-4 w-0.5 h-0.5 bg-pink-400 rounded-full"
+                animate={{
+                  opacity: [0, 1, 0],
+                  scale: [0, 1, 0],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  delay: 1.2,
+                }}
+              />
+            </motion.div>
+          </motion.div>
+
           <motion.div className="text-6xl" variants={floatingVariants} animate="animate">
             <img
               src={IMAGES.MOONER['moonoz-hello']}
@@ -191,27 +235,14 @@ const Landing = () => {
           </motion.div>
         </motion.div>
 
-        {/* 텍스트 */}
-        <motion.div
-          className="text-center font-medium text-xl mb-6"
-          style={{ color: `${brandColors.darkblue}` }}
-          variants={slideUpVariants}
-        >
-          {`통신사 요금 고를 때,
-어떤 혜택을 고려할 지가 어렵지 않으셨나요?`}
-        </motion.div>
-
-        {/* 노란 박스 */}
+        {/* 배너 박스 */}
         <motion.div className="w-[calc(100%-42px)] mb-8" variants={slideUpVariants}>
           <motion.div
-            className="w-full h-64 rounded-xl flex items-center justify-center shadow-lg"
-            style={{
-              background: `linear-gradient(90deg, ${brandColors.yellow}60 0%, ${brandColors.red}40 100%)`,
-            }}
+            className="w-full rounded-xl flex items-center justify-center shadow-lg"
             whileHover={{ scale: 1.02, rotateY: 5 }}
             transition={{ type: 'spring', damping: 20 }}
           >
-            <div className="text-4xl">💬</div>
+            <img src={IMAGES.BANNER.GUIDE} className="w-full h-auto rounded-xl" />
           </motion.div>
         </motion.div>
 
@@ -238,7 +269,6 @@ const Landing = () => {
           스크롤해보세요
         </motion.div>
 
-        {/* MoonoZ 로고와 텍스트 */}
         <motion.div
           className="flex flex-col items-center gap-2"
           variants={staggerContainerVariants}
@@ -249,21 +279,24 @@ const Landing = () => {
             variants={itemVariants}
             whileHover={{ scale: 1.05 }}
           >
-            MoonoZ
+            <span style={{ color: '#DD4640' }}>M</span>
+            <span style={{ color: '#FFE066' }}>oono</span>
+            <span style={{ color: '#DD4640' }}>Z </span>
+            <span style={{ color: '#FFE066' }}>&nbsp;사용 설명서</span>
           </motion.div>
           <motion.div
             className="text-lg font-medium"
             style={{ color: `${brandColors.darkblue}` }}
             variants={itemVariants}
           >
-            무너즈가 도와드릴게요!
+            요금제 찾기? 무너즈가 EASY하게 도와줄게!
           </motion.div>
         </motion.div>
       </motion.div>
 
       {/* Contents Section */}
-      <div className="flex flex-col gap-40 sm:gap-48 pt-64 whitespace-pre-line">
-        {CONTENTS.map((item, index) => {
+      <div className="flex flex-col gap-24 pt-32 whitespace-pre-line">
+        {CONTENTS.map((item) => {
           const ref = useRef(null);
           const inView = useInView(ref, { once: true });
 
@@ -271,16 +304,14 @@ const Landing = () => {
             <motion.div
               key={item.id}
               ref={ref}
-              className={`flex flex-col items-center w-full text-xl ${
-                index === 3 ? 'gap-px -mt-16' : ''
-              }`}
+              className="flex flex-col items-center w-full text-xl"
               variants={staggerContainerVariants}
               initial="hidden"
               animate={inView ? 'visible' : 'hidden'}
             >
               {/* Title Section */}
               <motion.div
-                className="flex flex-col justify-center items-center gap-2 text-center whitespace-pre-line pb-11"
+                className="flex flex-col justify-center items-center gap-2 text-center whitespace-pre-line pb-8"
                 variants={slideUpVariants}
               >
                 <motion.div
@@ -299,29 +330,29 @@ const Landing = () => {
                 </motion.div>
               </motion.div>
 
-              {/* Images */}
-              <motion.div className="flex flex-col gap-4" variants={containerVariants}>
-                {item.images.map((image, imgIndex) => (
-                  <motion.img
-                    key={imgIndex}
-                    src={image}
-                    alt={`Landing ${item.id}-${imgIndex + 1}`}
-                    className={`rounded-xl shadow-lg ${
-                      item.id === 2
-                        ? 'w-[calc(100%-70px)] sm:w-[calc(100%-40px)]'
-                        : 'w-[calc(100%-170px)] sm:w-[calc(100%-140px)]'
-                    }`}
-                    variants={itemVariants}
-                    whileHover={{
-                      scale: 1.03,
-                      y: -5,
-                      boxShadow:
-                        '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-                    }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ type: 'spring', damping: 20 }}
-                  />
-                ))}
+              {/* Phone Image */}
+              <motion.div className="flex justify-center" variants={containerVariants}>
+                <motion.img
+                  src={item.imagePath}
+                  alt={`${item.titleHeader} 화면`}
+                  className="w-[280px] h-auto max-w-[calc(100%-40px)] rounded-xl shadow-lg"
+                  variants={itemVariants}
+                  whileHover={{
+                    scale: 1.03,
+                    y: -5,
+                    boxShadow:
+                      '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: 'spring', damping: 20 }}
+                  onError={(e) => {
+                    console.error('이미지 로드 실패:', item.imagePath);
+                    e.currentTarget.style.display = 'none';
+                  }}
+                  onLoad={() => {
+                    console.log('이미지 로드 성공:', item.imagePath);
+                  }}
+                />
               </motion.div>
             </motion.div>
           );
@@ -338,8 +369,13 @@ const Landing = () => {
       >
         <div className="text-lg font-medium px-4" style={{ color: `${brandColors.darkblue}` }}>
           {`간편하고 빠르게 요금제를 정하고 싶다면
-무너즈와 함께 해보세요!`}
+무너즈🐙와 함께 해보세요!`}
         </div>
+        <img
+          src={IMAGES.MOONER['moonoz-logo']}
+          alt="MoonoZ 로고"
+          className="w-20 h-auto mt-4 cursor-pointer mx-auto block"
+        />
       </motion.div>
 
       {/* Bottom Button */}
