@@ -227,20 +227,15 @@ const Tutorial = () => {
             transform: 'translateX(-50%)',
           }}
         >
-          <div className="relative w-[140px] h-auto ml-45 mt-8">
+          <div className="relative w-[144px] h-auto ml-47 mt-4">
             <img src={IMAGES.yellowBubble} alt="노란 말풍선" className="w-full h-auto" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[14px] text-white font-semibold text-center leading-snug whitespace-pre-line pointer-events-none">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15px] text-white font-semibold text-center leading-snug whitespace-pre-line pointer-events-none">
               처음이라면, {'\n'}이 설명서 꼭 읽어보세요!
             </div>
           </div>
         </div>
-        <div className="absolute bottom-80 left-1/2 -translate-x-1/2 z-30">
-          <Button
-            onClick={goToHome}
-            variant="default"
-            size="default"
-            className="bg-[var(--color-brand-yellow)] hover:bg-[var(--color-brand-yellow-hover)] text-black font-semibold text-sm px-6 py-3 rounded-full"
-          >
+        <div className="absolute bottom-80 md:bottom-[28rem] left-1/2 -translate-x-1/2 z-30">
+          <Button onClick={goToHome} variant="startMoonoz" size="default">
             MoonoZ 시작하기 →
           </Button>
         </div>

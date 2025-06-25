@@ -65,8 +65,12 @@ const MoonerZone = () => {
           allowFullScreen
         ></iframe>
       </div>
-      <div className="px-2 mt-10">
-        <p className="text-sm text-gray-600">혹시 무너 덕후세요? 그럼 여기가 본진입니다.</p>
+      <div className="px-2 mt-13">
+        <h2 className="text-lg font-bold text-brand-darkblue mb-1">
+          혹시 무너 덕후세요? 그럼 여기가 본진입니다.
+        </h2>
+
+        <p className="text-sm text-gray-600">궁금하면 사진 클릭👇🏻</p>
       </div>
       <div className="mt-4">
         <a
