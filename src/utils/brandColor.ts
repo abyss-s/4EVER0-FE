@@ -1,4 +1,4 @@
-/** 브랜드별 대표 배경색 (카드, 배너 등) */
+/* 브랜드별 대표 배경색 (카드, 배너 등) */
 export const getBrandBackgroundColor = (brand: string): string => {
   const colorMap: { [key: string]: string } = {
     MIXXO: 'bg-zinc-700',
@@ -20,7 +20,7 @@ export const getBrandBackgroundColor = (brand: string): string => {
   return colorMap[brand] || 'bg-gray-400';
 };
 
-/** 브랜드별 dot 색상 (조금 더 밝은 색상 계열) */
+/* 브랜드별 dot 색상 */
 export const getBrandDotColor = (brand: string): string => {
   const dotColorMap: { [key: string]: string } = {
     MIXXO: 'bg-zinc-400',

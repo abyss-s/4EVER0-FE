@@ -31,7 +31,7 @@ export default function StorePopover({
     <>
       {children}
 
-      {/* 🎯 브라우저 중앙 고정 팝오버 */}
+      {/* 브라우저 중앙 고정 팝오버 */}
       <div
         className="bg-white rounded-lg shadow-2xl border"
         style={{
@@ -91,7 +91,7 @@ export default function StorePopover({
             </div>
           </div>
 
-          {/* 좌표 정보 (개발자용)
+          {/* 좌표 정보 
           <div className="text-xs text-gray-400 border-t pt-2">
             위도: {store.lat.toFixed(6)}, 경도: {store.lng.toFixed(6)}
           </div> */}
@@ -107,7 +107,6 @@ export default function StorePopover({
             <button
               onClick={() => {
                 console.log('상세 정보:', store);
-                // 상세 페이지 이동 or 추가 모달 열기 구현
               }}
               className="flex-1 px-3 py-2 text-xs font-medium bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-md transition-all shadow-sm hover:shadow-md"
             >

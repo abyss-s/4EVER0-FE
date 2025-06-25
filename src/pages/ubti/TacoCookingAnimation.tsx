@@ -191,7 +191,7 @@ export const TacoCookingAnimation: React.FC<TacoCookingAnimationProps> = ({
           </>
         )}
 
-        {/* 🔧 타코야끼 그리드 - 동적 이미지 로직 개선 */}
+        {/* 타코야끼 그리드 - 동적 이미지 로직 개선 */}
         <div className="absolute top-[14%] left-[16%] w-[68%] h-[68%] grid grid-cols-3 grid-rows-3 place-items-center z-10">
           {[...Array(9)].map((_, i) => {
             const isCenter = i === 4;

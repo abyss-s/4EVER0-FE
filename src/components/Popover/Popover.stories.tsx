@@ -23,7 +23,6 @@ const meta: Meta<typeof Popover> = {
       control: 'boolean',
       description: '팝오버의 기본 열림 상태를 설정합니다.',
     },
-    // variant는 PopoverContent에 전달되는 prop이므로 여기서 제거
   },
 };
 
@@ -38,7 +37,6 @@ interface PlaygroundArgs {
 export const Playground: StoryObj<typeof Popover> = {
   args: {
     defaultOpen: false,
-    // variant는 PopoverRoot에 없는 prop이라 바로 못 넣음
   },
   render: (args: PlaygroundArgs) => (
     <Popover {...args}>

@@ -25,7 +25,7 @@ export const MouseTooltip = ({
       x: e.pageX,
       y: e.pageY,
     };
-    console.log('좌표', pos); // ← 여기에!
+    console.log('좌표', pos);
     setPosition(pos);
   };
 

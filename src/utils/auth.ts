@@ -17,7 +17,7 @@ export async function refreshAccessToken(userId: string): Promise<void> {
     await apiWithoutToken.post(`/auth/refresh`, null, {
       params: { userId },
     });
-    // 서버에서 Set-Cookie 헤더로 ACCESS_TOKEN 쿠키를 다시 내려줍니다.
+    // 서버에서 Set-Cookie 헤더로 ACCESS_TOKEN 쿠키를 다시 내려줌
   } catch (e) {
     console.error('토큰 리프레시 실패', e);
     throw e;

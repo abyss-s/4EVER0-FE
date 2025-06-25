@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { BaseSwiper } from './BaseSwiper';
 
-// 테스트용 타입 정의 (예: 문자열 슬라이드)
+// 테스트용 타입 정의 (문자열 슬라이드)
 type StringSwiper = typeof BaseSwiper<string>;
 
 const meta: Meta<StringSwiper> = {
@@ -21,7 +21,7 @@ const meta: Meta<StringSwiper> = {
 export default meta;
 type Story = StoryObj<StringSwiper>;
 
-// ✅ 테스트용 데이터 (예: 문자열 배열)
+// 테스트용 데이터 (문자열 배열)
 const sampleItems = ['슬라이드 1', '슬라이드 2', '슬라이드 3'];
 
 export const MultipleSlides: Story = {
