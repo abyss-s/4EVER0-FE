@@ -12,6 +12,7 @@ import {
   ClipboardCheck,
   Calendar,
   ChevronRight,
+  LinkIcon,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { IMAGES } from '@/constant/imagePath';
@@ -131,8 +132,16 @@ const MyPage: React.FC = () => {
           </div>
         )}
       </div>
+      <h1 className="text-xl font-bold text-brand-darkblue mb-4 align-center">내 요금제</h1>
+      <BillSummaryCard
+        phoneNumber={profile?.phoneNumber ?? '010-****-****'}
+        planName={plan.name}
+        month={month}
+        amount={Number(plan.price)}
+        usageData={usageData}
+      />
 
-      <h1 className="text-xl font-bold text-brand-darkblue mb-4">등급 안내</h1>
+      <h1 className="text-xl font-bold text-brand-darkblue mt-4 mb-4">등급 안내</h1>
       <div className="space-y-4">
         {typeof profile?.point === 'number' && (
           <Card className="bg-white p-0 shadow-sm border-0 overflow-hidden">
@@ -183,7 +192,7 @@ const MyPage: React.FC = () => {
                       className="w-8 h-8 bg-brand-yellow rounded-full flex items-center justify-center text-base shadow-sm border-2 border-white -mt-1"
                       style={{ fontSize: '18px' }}
                     >
-                      💖
+                      🏃‍♂️
                     </div>
                   </div>
                 </div>
@@ -191,7 +200,7 @@ const MyPage: React.FC = () => {
                 <div className="flex justify-between items-center text-xs text-brand-darkblue mt-3">
                   <span className="font-medium">시작</span>
                   <span className="bg-white px-2 py-1 font-lg rounded-full font-bold text-[#e63e3e]">
-                    {((profile.point / 5000) * 100).toFixed(0)}% 완주 🏃‍♂️
+                    {((profile.point / 5000) * 100).toFixed(0)}% 완주
                   </span>
                   <span className="font-medium">
                     패밀리 레벨 <br />
@@ -216,15 +225,17 @@ const MyPage: React.FC = () => {
 
         <h1 className="text-xl font-bold text-brand-darkblue mb-4 align-center">자주 찾는 메뉴</h1>
         <div className="flex gap-3">
-          <Link to="coupons">
-            <div className="bg-white border border-gray-200 rounded-xl p-4 hover:bg-gray-50 transition-colors">
+          <Link to="coupons" className="w-1/2">
+            <div className="w-full bg-white border border-gray-200 rounded-xl p-4 hover:bg-gray-50 transition-colors">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <div className="w-14 h-11 bg-white rounded-full flex items-center justify-center">
                     <Ticket className="w-6 h-6 text-[#e0b817]" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-brand-darkblue">쿠폰함</p>
+                    <p className="text-sm font-medium text-brand-darkblue whitespace-nowrap">
+                      쿠폰함
+                    </p>
                     <p className="text-lg font-bold text-brand-darkblue">
                       {availableCoupons.length}개
                     </p>
@@ -234,15 +245,24 @@ const MyPage: React.FC = () => {
               </div>
             </div>
           </Link>
+
+          <Link to="/me/mooner-zone" className="w-1/2">
+            <div className="w-full bg-white border border-gray-200 rounded-xl p-4 hover:bg-gray-50 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-14 h-11 flex items-center justify-center mr-1">
+                    <LinkIcon className="w-6 h-6 text-[#f87171]" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-brand-darkblue">무너존</p>
+                    <p className="text-lg font-bold text-brand-darkblue">HOT</p>
+                  </div>
+                </div>
+                <ChevronRight className="w-5 h-5 ml-4 text-gray-400" />
+              </div>
+            </div>
+          </Link>
         </div>
-        <h1 className="text-xl font-bold text-brand-darkblue mb-4 align-center">내 요금제</h1>
-        <BillSummaryCard
-          phoneNumber={profile?.phoneNumber ?? '010-****-****'}
-          planName={plan.name}
-          month={month}
-          amount={Number(plan.price)}
-          usageData={usageData}
-        />
 
         <h1 className="text-xl font-bold text-brand-darkblue mb-4 align-center">내 서비스</h1>
         <div className="space-y-2">
