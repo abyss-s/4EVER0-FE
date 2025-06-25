@@ -15,7 +15,7 @@ export const SelectedProductsCard = ({
   totalPrice,
 }: SelectedProductsCardProps) => {
   return (
-    <Card variant="elevated" className="max-w-sm">
+    <Card variant="elevated" className="w-full mx-auto px-4">
       <CardHeader>
         <CardTitle className="text-base">선택한 상품</CardTitle>
       </CardHeader>
