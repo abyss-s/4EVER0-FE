@@ -8,7 +8,7 @@ import React from 'react';
 interface BaseSwiperProps<T> {
   items: T[];
   renderItem: (item: T) => React.ReactNode;
-  slideWidth?: number | string; // 사용 안 할 거면 제거해도 됨
+  slideWidth?: number | string; // 사용 안 할 경우엔 제거 가능
 }
 
 export function BaseSwiper<T>({ items, renderItem }: BaseSwiperProps<T>) {

@@ -86,7 +86,7 @@ export default function StorePopover({
               <p className="text-xs text-gray-500">{meta?.benefit ?? '쿠폰 정보 없음'}</p>
             </div>
           </div>
-
+          
           {/* 우측 로고 이미지 */}
           <div>
             {brandLogoUrl && (
@@ -96,6 +96,21 @@ export default function StorePopover({
                 className="w-15 h-15 shadow-md object-contain rounded-2xl"
               />
             )}
+          <div className="flex gap-2 pt-1">
+            <button
+              onClick={() => onOpenChange?.(false)}
+              className="flex-1 px-3 py-2 text-xs font-medium bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors"
+            >
+              닫기
+            </button>
+            <button
+              onClick={() => {
+                console.log('상세 정보:', store);
+              }}
+              className="flex-1 px-3 py-2 text-xs font-medium bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-md transition-all shadow-sm hover:shadow-md"
+            >
+              상세보기
+            </button>
           </div>
         </div>
       </div>

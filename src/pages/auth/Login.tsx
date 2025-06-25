@@ -1,4 +1,3 @@
-// src/pages/login/Login.tsx
 import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -18,7 +17,7 @@ const Login: React.FC = () => {
   const location = useLocation();
   const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
 
-  // ProtectedRoute 에서 전달한 원래 경로
+  // ProtectedRoute 에서 전달한 경로
   const from =
     ((location.state as LocationState)?.from?.pathname ?? '') +
       ((location.state as LocationState)?.from?.search ?? '') || '/';
@@ -31,7 +30,7 @@ const Login: React.FC = () => {
   }, [isLoggedIn, navigate, from]);
 
   const handleLogin = (provider: string) => () => {
-    // redirectPath를 넘겨줘야 콜백에서 올바르게 돌아옵니다
+    // redirectPath를 넘겨줘야 콜백에서 올바르게 돌아옴
     console.log('▶️ saving redirectPath:', from);
     loginViaProvider(provider, from);
   };

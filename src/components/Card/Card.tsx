@@ -21,7 +21,7 @@ export function Card({ className, ...props }: CardProps) {
     <div
       data-slot="card"
       className={cn(cardVariants({ variant, size, clickable, padding }), className)}
-      {...rest} // 여기에는 HTMLAttributes<'div'>에 해당하는 기본 props만 전달됨
+      {...rest} // HTMLAttributes<'div'>에 해당하는 기본 props만 전달됨
     />
   );
 }

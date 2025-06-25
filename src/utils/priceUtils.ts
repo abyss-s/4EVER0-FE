@@ -22,7 +22,7 @@ export function calculateDiscountPrice(
     originalPrice,
     discountedPrice,
     discountAmount,
-    discountRate: discountRate * 100, // 퍼센트로 변환
+    discountRate: discountRate * 100,
   };
 }
 
@@ -43,7 +43,7 @@ export function calculateTotalDiscountPrice(
 /**
  * 가격을 한국어 형식으로 포맷팅
  * @param price 가격
- * @returns 포맷된 가격 문자열 (예: "13,900원")
+ * @returns 포맷된 가격 문자열
  */
 export function formatPrice(price: number): string {
   return `${price.toLocaleString()}원`;
@@ -52,7 +52,7 @@ export function formatPrice(price: number): string {
 /**
  * 할인율을 퍼센트 문자열로 포맷팅
  * @param rate 할인율 (0.3 = 30%)
- * @returns 포맷된 할인율 (예: "30%")
+ * @returns 포맷된 할인율
  */
 export function formatDiscountRate(rate: number): string {
   return `${Math.round(rate * 100)}%`;

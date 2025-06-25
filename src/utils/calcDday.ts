@@ -1,4 +1,3 @@
-// src/utils/calcDday.ts
 export const calcDday = (dateStr: string): string => {
   const targetDate = new Date(dateStr);
   const today = new Date();
@@ -6,7 +5,6 @@ export const calcDday = (dateStr: string): string => {
   // 날짜가 유효하지 않으면 D-NaN 방지
   if (isNaN(targetDate.getTime())) return 'D-?';
 
-  // 시각 정보 제거 (날짜만 비교)
   targetDate.setHours(0, 0, 0, 0);
   today.setHours(0, 0, 0, 0);
 
@@ -14,5 +12,5 @@ export const calcDday = (dateStr: string): string => {
 
   if (diff === 0) return 'D-day';
   if (diff > 0) return `D-${diff}`;
-  return `D+${Math.abs(diff)}`; // ✅ 과거 날짜는 D+로 표시
+  return `D+${Math.abs(diff)}`;
 };

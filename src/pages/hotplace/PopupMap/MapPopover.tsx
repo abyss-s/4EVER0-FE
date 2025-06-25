@@ -1,4 +1,3 @@
-// components/map/MapPopover.tsx
 import React from 'react';
 
 interface PopupData {
@@ -38,6 +37,7 @@ export default function MapPopover({
       <div className="px-4 py-2 bg-gray-100 border-border rounded-2xl">
         <div className="flex items-center justify-between">
           <div className="text-sm font-medium text-gray-700">매장 정보</div>
+
           <button
             onClick={() => onOpenChange?.(false)}
             className="p-1 text-gray-500 hover:text-gray-700 focus:outline-none"

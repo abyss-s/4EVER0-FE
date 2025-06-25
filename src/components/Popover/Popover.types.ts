@@ -8,7 +8,6 @@ export interface PopoverProps extends React.ComponentProps<typeof PopoverPrimiti
 export interface PopoverTriggerProps
   extends React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Trigger> {}
 
-// side variant 추가, contentVariants에 정의된 모든 variant 포함
 export interface PopoverContentProps
   extends React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>,
     VariantProps<typeof contentVariants> {

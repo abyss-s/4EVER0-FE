@@ -16,8 +16,7 @@ export const useMissionActions = () => {
       const result = await receiveMissionReward(missionId);
       toast.success(result.message ?? '보상을 수령했어요!');
 
-      // ✅ 미션 리스트 리패치 필요 (상태 COM → REC 변경)
-      // 예: queryClient.invalidateQueries(['missions']);
+      // 미션 리스트 리패치 필요 (상태 COM → REC 변경)
     } catch (e: unknown) {
       if (
         typeof e === 'object' &&

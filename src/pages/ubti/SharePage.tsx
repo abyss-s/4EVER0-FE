@@ -11,7 +11,7 @@ interface UBTIShareType {
   name: string;
   emoji: string;
   description: string;
-  front_image: string; // image_url
+  front_image: string;
   back_image: string;
   special_message: string;
   characteristic: string;

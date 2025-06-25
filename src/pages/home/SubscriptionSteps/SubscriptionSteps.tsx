@@ -143,7 +143,7 @@ export const SubscriptionSteps = ({ className }: SubscriptionStepsProps) => {
     return true;
   };
 
-  // 구독 가입 처리 (단일 선택이므로 단순화)
+  // 구독 가입 처리 (단일 선택이)
   const handleSubscribe = async () => {
     if (!handleLoginCheck()) return;
 
@@ -209,6 +209,8 @@ export const SubscriptionSteps = ({ className }: SubscriptionStepsProps) => {
             selectedMainItems={selectedMainItems}
             selectedLifeBrands={selectedLifeBrands}
             isLoggedIn={isLoggedIn}
+            isProcessing={subscribeMutation.isPending}
+            onSubscribe={handleSubscribe}
           />
         )}
       </div>

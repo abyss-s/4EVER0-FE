@@ -34,7 +34,6 @@ const Likes: React.FC = () => {
     );
   }
 
-  // userLikeCoupons 기준으로 이미지 등 추가정보 merge → 변수명 likedCoupons로 사용
   const likedCoupons = userLikeCoupons.map((like) => {
     const matched = coupons.find((coupon) => coupon.id === like.id);
     return {
@@ -77,7 +76,6 @@ const Likes: React.FC = () => {
                   description={coupon.description}
                   dateRange={coupon.dateRange}
                   imageUrl={coupon.imageUrl}
-                  // 필요시 추가 prop
                 />
               ))}
             </div>

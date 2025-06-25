@@ -1,4 +1,3 @@
-// pages/mission/Attendance/AttendanceBanner.tsx
 import { useAttendance } from '@/hooks/useAttendance';
 import { Banner } from '@/components/Banner';
 import { Button } from '@/components/Button';

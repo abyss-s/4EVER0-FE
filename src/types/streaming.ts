@@ -52,7 +52,7 @@ export interface LifeBrand {
 // 구독 추천 항목 유니온 타입 (API 응답용)
 export type SubscriptionItem = MainSubscriptionWithType | LifeBrandWithType;
 
-// 새로운 구독 추천 응답 구조 - 배열로 변경
+// 새로운 구독 추천 응답 구조
 export interface SubscriptionRecommendationsResponse {
   type: 'subscription_recommendations';
   subscriptions: SubscriptionItem[];

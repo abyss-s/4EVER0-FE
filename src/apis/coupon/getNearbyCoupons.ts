@@ -1,6 +1,6 @@
 import { apiWithToken } from '@/lib/api/apiconfig';
 import { PlaceInfo, NearbyCouponsResponse } from '@/types/brand';
-import qs from 'qs'; // npm i qs 로 설치 필요
+import qs from 'qs';
 
 export const getNearbyCoupons = async (
   lat: number,

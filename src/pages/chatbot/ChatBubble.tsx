@@ -254,25 +254,6 @@ const ChatBubble: React.FC<ChatBubbleProps> = React.memo(
       [navigate],
     );
 
-    // 전체 메시지 디버깅 정보 출력
-    // React.useEffect(() => {
-    //   if (isBot && (message.planRecommendations || message.subscriptionRecommendations)) {
-    //     console.log('[DEBUG] ChatBubble message with cards:', {
-    //       messageId: message.id,
-    //       content: message.content?.slice(0, 50) + '...',
-    //       planRecommendations: message.planRecommendations,
-    //       subscriptionRecommendations: message.subscriptionRecommendations,
-    //       subscriptionKeys: message.subscriptionRecommendations
-    //         ? Object.keys(message.subscriptionRecommendations)
-    //         : [],
-    //       hasMainSub: !!message.subscriptionRecommendations?.main_subscription,
-    //       hasLifeBrand: !!message.subscriptionRecommendations?.life_brand,
-    //       isRecommendationMessage,
-    //       isLatestBotMessage,
-    //     });
-    //   }
-    // }, [message, isRecommendationMessage, isLatestBotMessage, isBot]);
-
     // 렌더링할 내용이 없으면 null 반환
     if (!processedContent && !shouldShowPlanCards && !shouldShowSubscriptionCard) {
       return null;
@@ -376,7 +357,6 @@ const ChatBubble: React.FC<ChatBubbleProps> = React.memo(
       </div>
     );
   },
-  // React.memo 최적화
   (prevProps, nextProps) => {
     // 기본 비교
     if (prevProps.message.id !== nextProps.message.id) return false;

@@ -1,4 +1,3 @@
-// src/components/ProtectedRoute.tsx
 import React, { useState, useEffect, useCallback } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/stores/useAuthStore';

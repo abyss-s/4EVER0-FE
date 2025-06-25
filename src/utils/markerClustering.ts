@@ -1,4 +1,3 @@
-// MarkerClustering 타입 정의
 interface MarkerClusteringOptions {
   minClusterSize?: number;
   maxZoom?: number;

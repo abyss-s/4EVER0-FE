@@ -22,24 +22,30 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
   const bannerData: BannerItem[] = [
     {
       id: 1,
+      action: () => navigate('/landing'),
+      mobileImage: IMAGES.BANNER.GUIDE,
+      desktopImage: IMAGES.BANNER.GUIDE_DESKTOP,
+    },
+    {
+      id: 2,
       action: () => navigate('/chatbot'),
       mobileImage: IMAGES.BANNER.TACO_SIGNAL,
       desktopImage: IMAGES.BANNER.TACO_SIGNAL_DESKTOP,
     },
     {
-      id: 2,
+      id: 3,
       action: () => navigate('/plans'),
       mobileImage: IMAGES.BANNER.NERGET_PLAN,
       desktopImage: IMAGES.BANNER.NERGET_PLAN_DESKTOP,
     },
     {
-      id: 3,
+      id: 4,
       action: () => navigate('/hotplace'),
       mobileImage: IMAGES.BANNER.HOTPLACE,
       desktopImage: IMAGES.BANNER.HOTPLACE_DESKTOP,
     },
     {
-      id: 4,
+      id: 5,
       action: () => navigate('/mission', { state: { scrollTo: 'uplus' } }),
       mobileImage: IMAGES.BANNER.UPTP,
       desktopImage: IMAGES.BANNER.UPTP_DESKTOP,
@@ -109,9 +115,9 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
       <button
         onClick={prevSlide}
         className="absolute top-1/2 transform -translate-y-1/2 left-2
-                   w-7 h-7 flex items-center justify-center
-                   bg-black/10 hover:bg-black/30 
-                   rounded-full transition-all duration-200 backdrop-blur-sm"
+                  w-7 h-7 flex items-center justify-center
+                  bg-black/10 hover:bg-black/30 
+                  rounded-full transition-all duration-200 backdrop-blur-sm"
         aria-label="이전 슬라이드"
       >
         <ChevronLeft className="text-white w-3 h-3 md:w-5 md:h-5" />
@@ -120,9 +126,9 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
       <button
         onClick={nextSlide}
         className="absolute top-1/2 transform -translate-y-1/2 right-2
-                   w-7 h-7 flex items-center justify-center
-                   bg-black/10 hover:bg-black/30 
-                   rounded-full transition-all duration-200 backdrop-blur-sm"
+                  w-7 h-7 flex items-center justify-center
+                  bg-black/10 hover:bg-black/30 
+                  rounded-full transition-all duration-200 backdrop-blur-sm"
         aria-label="다음 슬라이드"
       >
         <ChevronRight className="text-white w-3 h-3 md:w-5 md:h-5" />
@@ -142,11 +148,11 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
               key={index}
               onClick={() => goToSlide(index)}
               className={`rounded-full transition-all duration-200 
-                         ${
-                           index === currentSlide
-                             ? 'bg-white w-4 h-2'
-                             : 'bg-white/50 hover:bg-white/70 w-2 h-2'
-                         }`}
+                        ${
+                          index === currentSlide
+                            ? 'bg-white w-4 h-2'
+                            : 'bg-white/50 hover:bg-white/70 w-2 h-2'
+                        }`}
               aria-label={`슬라이드 ${index + 1}로 이동`}
             />
           ))}
@@ -156,8 +162,8 @@ const PromotionalBanner: React.FC<PromotionalBannerProps> = ({ navigate }) => {
         <button
           onClick={togglePlayPause}
           className="w-6 h-6 flex items-center justify-center
-                     bg-white/20 hover:bg-white/30 rounded-full 
-                     transition-all duration-200 ml-2"
+                    bg-white/20 hover:bg-white/30 rounded-full 
+                    transition-all duration-200 ml-2"
           aria-label={isPlaying ? '자동 재생 정지' : '자동 재생 시작'}
         >
           {isPlaying ? (

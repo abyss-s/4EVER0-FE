@@ -1,4 +1,3 @@
-// src/pages/oauth/OAuthCallback.tsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/useAuthStore';
@@ -60,7 +59,7 @@ const OAuthCallback: React.FC = () => {
     })();
   }, [login, navigate, queryClient]);
 
-  const currentLoadingStep = loadingSteps[currentStep]; // 추가
+  const currentLoadingStep = loadingSteps[currentStep];
 
   return (
     <div className="flex flex-col items-center justify-center min-h-full">
