@@ -1,4 +1,5 @@
 import React from 'react';
+import { BRAND_META } from './Branddata';
 
 interface StoreData {
   id: number;
@@ -6,6 +7,7 @@ interface StoreData {
   address: string;
   latitude: number;
   longitude: number;
+  brandName: string;
 }
 
 interface MapPopoverProps {
@@ -19,102 +21,91 @@ interface MapPopoverProps {
 
 export default function StorePopover({
   store,
-  index,
   children,
-  showIndex = false,
   open = false,
   onOpenChange,
 }: MapPopoverProps) {
   if (!open) return <>{children}</>;
 
+  const meta = BRAND_META.find((b) => b.name === store.brandName);
+
+  const brandLogoUrl = meta?.logoUrl ?? ''; // 브랜드가 없다면 빈 문자열
+
   return (
-    <>
+    <div
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+      style={{ pointerEvents: 'auto' }}
+      className="
+        absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
+        z-10 w-80 shadow-lg overflow-hidden rounded-2xl gap-2
+      "
+    >
       {children}
 
-      {/* 브라우저 중앙 고정 팝오버 */}
-      <div
-        className="bg-white rounded-lg shadow-2xl border"
-        style={{
-          width: '320px',
-          maxWidth: '90vw',
-          maxHeight: '80vh',
-          overflow: 'auto',
-          pointerEvents: 'auto',
-        }}
-        onClick={(e) => e.stopPropagation()} // 팝오버 내부 클릭시 닫히지 않음
-      >
-        {/* 헤더 */}
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-3 relative rounded-t-lg">
-          {/* 인덱스 번호 (근처 보기일 때) */}
-          {showIndex && typeof index === 'number' && index >= 0 && (
-            <div className="absolute -top-2 -left-2 w-7 h-7 bg-red-500 rounded-full flex items-center justify-center text-xs font-bold shadow-lg ring-2 ring-white">
-              {index + 1}
-            </div>
-          )}
-
-          {/* 닫기 버튼 */}
+      {/* 헤더 */}
+      <div className="px-4 py-2 bg-gray-100 border-border rounded-2xl">
+        <div className="flex items-center justify-between">
+          <div className="text-sm font-medium text-gray-700">매장 정보</div>
           <button
             onClick={() => onOpenChange?.(false)}
-            className="absolute top-2 right-2 w-6 h-6 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center text-white transition-colors"
-            aria-label="팝오버 닫기"
+            className="p-1 text-gray-500 hover:text-gray-700 focus:outline-none"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {/* X 아이콘 */}
+            <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
+                fillRule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clipRule="evenodd"
               />
             </svg>
           </button>
-
-          {/* 제목 */}
-          <h3 className="text-base font-semibold leading-tight pr-8 text-white">{store.name}</h3>
         </div>
+      </div>
 
-        {/* 본문 */}
-        <div className="p-4 space-y-3 bg-white">
-          {/* 주소 */}
-          <div className="space-y-1">
-            <h4 className="text-xs font-medium text-gray-900 uppercase tracking-wide flex items-center gap-1">
-              <svg className="w-3 h-3 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  fillRule="evenodd"
-                  d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              위치
-            </h4>
-            <div className="p-2.5 bg-gray-50 rounded-md border text-xs">
-              <p className="text-gray-700 leading-relaxed">{store.address}</p>
+      {/* 본문 */}
+      <div className="p-4 bg-white rounded-2xl">
+        <div className="flex items-center gap-3 mb-4">
+          {/* 좌측 정보 */}
+          <div className="flex-1 min-w-0">
+            <h4 className="font-semibold text-gray-900 text-sm truncate mb-1">{store.name}</h4>
+            <p className="text-xs text-gray-600 mb-2 line-clamp-2">{store.address}</p>
+            {/* 2) meta가 있으면 benefit, 없으면 기본 텍스트 */}
+            <div className="space-y-1">
+              <p className="text-xs font-medium text-blue-600">사용 가능 쿠폰</p>
+              <p className="text-xs text-gray-500">{meta?.benefit ?? '쿠폰 정보 없음'}</p>
             </div>
           </div>
 
-          {/* 좌표 정보 
-          <div className="text-xs text-gray-400 border-t pt-2">
-            위도: {store.lat.toFixed(6)}, 경도: {store.lng.toFixed(6)}
-          </div> */}
-
-          {/* 액션 버튼들 */}
-          <div className="flex gap-2 pt-1">
-            <button
-              onClick={() => onOpenChange?.(false)}
-              className="flex-1 px-3 py-2 text-xs font-medium bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors"
-            >
-              닫기
-            </button>
-            <button
-              onClick={() => {
-                console.log('상세 정보:', store);
-              }}
-              className="flex-1 px-3 py-2 text-xs font-medium bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-md transition-all shadow-sm hover:shadow-md"
-            >
-              상세보기
-            </button>
+          {/* 우측 로고 이미지 */}
+          <div>
+            {brandLogoUrl && (
+              <img
+                src={brandLogoUrl}
+                alt={store.brandName}
+                className="w-15 h-15 shadow-md object-contain rounded-2xl"
+              />
+            )}
           </div>
         </div>
+
+        <div className="flex gap-2 pt-1">
+          <button
+            onClick={() => onOpenChange?.(false)}
+            className="flex-1 px-3 py-2 text-xs font-medium bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors"
+          >
+            닫기
+          </button>
+          <button
+            onClick={() => {
+              console.log('상세 정보:', store);
+            }}
+            className="flex-1 px-3 py-2 text-xs font-medium bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-md transition-all shadow-sm hover:shadow-md"
+          >
+            상세보기
+          </button>
+        </div>
       </div>
-    </>
+    </div>
   );
 }

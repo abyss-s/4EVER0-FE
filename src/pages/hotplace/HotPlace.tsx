@@ -9,6 +9,7 @@ import { MapPin, Store, TrendingUp } from 'lucide-react';
 import { IMAGES } from '@/constant/imagePath';
 import LoadingMooner from '@/pages/common/LoadingMooner';
 import { fetchLikedCoupons } from '@/apis/like/getLikeCoupons';
+import { Button } from '@/components/Button';
 
 const allBrandIds = [1, 2, 3, 4, 5, 6, 7, 8];
 
@@ -31,7 +32,7 @@ const HotPlace = () => {
         .split(',')
         .map((id) => Number(id))
         .filter((id) => !isNaN(id));
-      setSelectedBrandIds(brandIds.length > 0 ? brandIds : [1, 3, 4]);
+      setSelectedBrandIds(brandIds.length > 0 ? brandIds : []);
     } else {
       // 쿼리 파라미터 없으면, API 호출
       const loadLikedBrandIds = async () => {
@@ -78,7 +79,7 @@ const HotPlace = () => {
   };
 
   return (
-    <div className="pb-20 space-y-4 min-h-full">
+    <div className="space-y-4 min-h-full overflow-y">
       {/* 헤더 섹션 - 마이페이지 스타일 적용 */}
       <div>
         <div className="flex items-start gap-2 mt-6 text-brand-darkblue">
@@ -125,47 +126,43 @@ const HotPlace = () => {
       </div>
 
       {/* 맵 선택 섹션 */}
-      <div className="px-4">
-        <h1 className="text-xl font-bold text-brand-darkblue mb-4">지도 보기</h1>
-        <div className="grid grid-cols-2 gap-2">
-          <Card
-            clickable={option !== 'popup'}
-            className={option === 'popup' ? 'bg-blue-50 border-blue-200' : ''}
+      <div className="px-4 pt-5">
+        {/* <h1 className="text-xl font-bold text-brand-darkblue mb-4">지도 보기</h1> */}
+        <div className="w-[90%] mx-auto flex justify-center items-center gap-5">
+          <Button
+            variant="categoryFilter"
+            size="categoryFilter"
             onClick={() => setOption('popup')}
+            className={option === 'popup' ? 'bg-blue-50 border-blue-200' : 'border-border'}
           >
-            <CardContent className="flex flex-col items-center justify-center py-1 gap-2">
-              <MapPin className={`w-6 h-6 ${option === 'popup' ? 'text-blue-600' : ''}`} />
-              <span
-                className={`caption-1 font-medium ${option === 'popup' ? 'text-blue-600' : ''}`}
-              >
-                팝업맵 보기
-              </span>
-            </CardContent>
-          </Card>
+            <MapPin className={`w-6 h-6 ${option === 'popup' ? 'text-blue-600' : ''}`} />
+            <span className={`caption-1 font-medium ${option === 'popup' ? 'text-blue-600' : ''}`}>
+              팝업맵 보기
+            </span>
+          </Button>
 
-          <Card
-            clickable={option !== 'store'}
-            className={option === 'store' ? 'bg-blue-50 border-blue-200' : ''}
+          <Button
+            variant="categoryFilter"
+            size="categoryFilter"
             onClick={() => setOption('store')}
+            className={option === 'store' ? 'bg-blue-50 border-blue-200' : 'border-border'}
           >
-            <CardContent className="flex flex-col items-center justify-center py-1 gap-2">
-              <Store className={`w-6 h-6 ${option === 'store' ? 'text-blue-600' : ''}`} />
-              <span
-                className={`caption-1 font-medium ${option === 'store' ? 'text-blue-600' : ''}`}
-              >
-                스토어맵 보기
-              </span>
-            </CardContent>
-          </Card>
+            <Store className={`w-6 h-6 ${option === 'store' ? 'text-blue-600' : ''}`} />
+            <span
+              className={`caption-1 font-medium text-md ${option === 'store' ? 'text-blue-600' : ''}`}
+            >
+              스토어맵 보기
+            </span>
+          </Button>
         </div>
       </div>
 
       {/* 지도 컨텐츠 */}
-      <div className="px-4 pt-2 pb-4">
+      <div className="px-4 pb-4">
         <Card>
-          <CardContent className="p-0">
+          <CardContent className="p-0 h-125">
             {showMapLoader ? (
-              <div className="h-[400px] flex items-center justify-center">
+              <div className="h-[600px] flex items-center justify-center">
                 <LoadingMooner />
               </div>
             ) : option === 'popup' ? (

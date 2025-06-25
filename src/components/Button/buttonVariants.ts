@@ -24,6 +24,8 @@ export const buttonVariants = cva(
           'w-full mt-auto py-3 bg-[var(--color-brand-yellow)] hover:bg-[var(--color-brand-yellow-hover)] text-black rounded-md button-text font-semibold transition-colors',
         startMoonoz:
           'py-3 px-6 mt-1 bg-[var(--color-brand-yellow)] hover:bg-[var(--color-brand-yellow-hover)] text-black rounded-md font-semibold text-sm transition-colors',
+        categoryFilter:
+          'px-4 py-2 flex-shrink-0 whitespace-nowrap shadow-sm transition-colors rounded-full font-medium text-xs px-4 py-2 border flex items-center gap-2',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',
@@ -31,6 +33,7 @@ export const buttonVariants = cva(
         lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
         badge: 'h-5 px-2 text-xs rounded-[6px]',
         icon: 'size-9',
+        categoryFilter: 'h-12 rounded-[10px] px-6 has-[>svg]:px-4',
       },
     },
     defaultVariants: {

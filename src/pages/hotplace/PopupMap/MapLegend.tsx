@@ -16,7 +16,7 @@ export default function MapLegend({
       {/* 팝업 개수 표시 */}
       <MapLegendBox>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full" />
+          <div className="w-3 h-3 bg-[#EC4899] rounded-full" />
           <span className="text-xs font-medium text-gray-700 whitespace-nowrap">
             {isShowingNearby ? '근처' : '전체'} 팝업 {popupCount}개
           </span>

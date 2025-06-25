@@ -7,6 +7,7 @@ import MapPopover from './MapPopover';
 import { createMarkerClustering, type MarkerClusteringInstance } from '@/utils/markerClustering';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import LoadingMooner from '@/pages/common/LoadingMooner';
+import { getrawBackgroundColor } from '@/utils/brandColor';
 
 interface StoreMapProps {
   className?: string;
@@ -23,7 +24,17 @@ interface StoreData {
   address: string;
   latitude: number;
   longitude: number;
+  brandName: string;
 }
+
+// const pinColors = [
+//   '#EC4899', // 핑크
+//   '#3B82F6', // 블루
+//   '#10B981', // 그린
+//   '#F59E0B', // 옐로우
+//   '#A78BFA', // 퍼플
+//   '#EF4444', // 레드
+// ];
 
 export default function StoreMap({
   className = '',
@@ -98,6 +109,7 @@ export default function StoreMap({
             address: place.address,
             latitude: place.lat,
             longitude: place.lng,
+            brandName: place.brandName,
           }));
           setNearbyStores(stores);
         } else {
@@ -228,43 +240,44 @@ export default function StoreMap({
         if (locationMarker) currentLocationMarkerRef.current = locationMarker;
       }
 
-      nearbyStores.forEach((store, idx) => {
+      nearbyStores.forEach((store) => {
+        console.log(store.brandName);
+        const fillColor = getrawBackgroundColor(store.brandName);
+        console.log(fillColor);
+
+        const dynamicPinSvg = `
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24" height="24"
+            viewBox="0 0 24 24"
+            fill="${fillColor}"
+            stroke="white"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        `;
+
+        console.log(`Generated SVG with fill color: ${dynamicPinSvg}`);
+
         const marker = addMarker({
           position: { lat: store.latitude, lng: store.longitude },
           title: store.name,
           icon: {
             content: `
               <div style="
-                width: 28px;
-                height: 28px;
-                background: linear-gradient(135deg, var(--color-brand-darkblue) 0%, var(--color-brand-red) 100%);
-                color: white;
-                border: 3px solid white;
+                width: 32px; height: 32px;
+                display: flex; align-items: center; justify-content: center;
                 border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: bold;
-                font-size: 11px;
-                box-shadow: 0 4px 12px rgba(37, 57, 75, 0.3);
-                cursor: pointer;
-                user-select: none;
-                transition: all 0.2s ease;
-              "
-              onmouseover="
-                this.style.transform='scale(1.2)';
-                this.style.boxShadow='0 6px 20px rgba(37, 57, 75, 0.5)';
-                this.style.zIndex='1000';
-              "
-              onmouseout="
-                this.style.transform='scale(1)';
-                this.style.boxShadow='0 4px 12px rgba(37, 57, 75, 0.3)';
-                this.style.zIndex='100';
-              "
-              >${idx + 1}</div>
+              ">
+                ${dynamicPinSvg}
+              </div>
             `,
-            size: new naver.maps.Size(28, 28),
-            anchor: new naver.maps.Point(14, 14),
+            anchor: new naver.maps.Point(16, 16),
+            size: new naver.maps.Size(32, 32),
           },
         });
         if (marker) markersRef.current.push(marker);
@@ -352,7 +365,7 @@ export default function StoreMap({
   }
 
   return (
-    <div className={`relative ${className}`} style={{ width: '100%', height: '400px', ...style }}>
+    <div className={`relative ${className}`} style={{ width: '100%', height: '500px', ...style }}>
       <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
 
       <MapControls

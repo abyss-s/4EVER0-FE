@@ -24,7 +24,24 @@ interface PopupData {
   address: string;
   latitude: number;
   longitude: number;
+  image_url: string;
 }
+
+const MappinSvg = `
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="24" height="24"
+  viewBox="0 0 24 24"
+  fill = #EC4899
+  stroke="white"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/>
+  <circle cx="12" cy="10" r="3"/>
+</svg>
+`;
 
 export default function PopupMap({
   className = '',
@@ -270,47 +287,22 @@ export default function PopupMap({
       popupsToShow.forEach((popup, index) => {
         try {
           const marker = addMarker({
-            position: {
-              lat: popup.latitude,
-              lng: popup.longitude,
-            },
+            position: { lat: popup.latitude, lng: popup.longitude },
             title: popup.name,
             icon: {
               content: `
                 <div style="
-                  width: 28px;
-                  height: 28px;
-                  background: linear-gradient(135deg, var(--color-brand-darkblue) 0%, var(--color-brand-red) 100%);
-                  color: white;
-                  border: 3px solid white;
+                  width: 32px; height: 32px;
+                  display: flex; align-items: center; justify-content: center;
                   border-radius: 50%;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  font-weight: bold;
-                  font-size: 11px;
-                  box-shadow: 0 4px 12px rgba(37, 57, 75, 0.3);
-                  cursor: pointer;
-                  user-select: none;
-                  transition: all 0.2s ease;
-                "
-                onmouseover="
-                  this.style.transform='scale(1.2)';
-                  this.style.boxShadow='0 6px 20px rgba(37, 57, 75, 0.5)';
-                  this.style.zIndex='1000';
-                "
-                onmouseout="
-                  this.style.transform='scale(1)';
-                  this.style.boxShadow='0 4px 12px rgba(37, 57, 75, 0.3)';
-                  this.style.zIndex='100';
-                "
-                >${isShowingNearby ? index + 1 : '🏪'}</div>
-              `,
-              size: new naver.maps.Size(28, 28),
-              anchor: new naver.maps.Point(14, 14),
+                ">
+                    ${MappinSvg}
+                  </div>
+                `,
+              anchor: new naver.maps.Point(16, 16),
+              size: new naver.maps.Size(32, 32),
             },
           });
-
           if (!marker) {
             return;
           }
@@ -453,7 +445,7 @@ export default function PopupMap({
     isShowingNearby && nearbyPopups?.data ? nearbyPopups.data : allPopups?.data || [];
 
   return (
-    <div className={`relative ${className}`} style={{ width: '100%', height: '400px', ...style }}>
+    <div className={`relative ${className}`} style={{ width: '100%', height: '500px', ...style }}>
       <div ref={mapRef} style={{ width: '100%', height: '100%' }} />
 
       <MapControls
@@ -478,7 +470,6 @@ export default function PopupMap({
             left: '50%',
             transform: 'translate(-50%, -50%)',
             zIndex: 9999,
-            pointerEvents: 'none',
           }}
         >
           <MapPopover
@@ -498,7 +489,6 @@ export default function PopupMap({
               style={{
                 width: '1px',
                 height: '1px',
-                pointerEvents: 'auto',
               }}
             />
           </MapPopover>
