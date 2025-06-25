@@ -43,4 +43,4 @@ jobs:
         uses: atlassian/gajira-transition@v3
         with:
           issue: ${{ env.JIRA_KEY }}
-          transitionId: "31"
+          transitionId: '31'

@@ -1,8 +1,3 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-
-@custom-variant dark (&:is(.dark *));
-
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -117,4 +112,213 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* 모달 애니메이션을 위한 CSS */
+@layer base {
+  /* 애니메이션 키프레임 */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes zoomIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  @keyframes zoomOut {
+    from {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.95);
+    }
+  }
+
+  @keyframes slideInFromBottom {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideOutToBottom {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+
+  /* 애니메이션 클래스 */
+  .animate-in {
+    animation-duration: 200ms;
+    animation-fill-mode: forwards;
+  }
+
+  .animate-out {
+    animation-duration: 200ms;
+    animation-fill-mode: forwards;
+  }
+
+  .fade-in-0 {
+    animation-name: fadeIn;
+  }
+
+  .fade-out-0 {
+    animation-name: fadeOut;
+  }
+
+  .zoom-in-95 {
+    animation-name: zoomIn;
+  }
+
+  .zoom-out-95 {
+    animation-name: zoomOut;
+  }
+
+  .slide-in-from-bottom {
+    animation-name: slideInFromBottom;
+  }
+
+  .slide-out-to-bottom {
+    animation-name: slideOutToBottom;
+  }
+
+  /* 데이터 상태에 따른 애니메이션 */
+  [data-state='open'] {
+    animation-duration: 200ms;
+    animation-timing-function: ease-out;
+  }
+
+  [data-state='closed'] {
+    animation-duration: 150ms;
+    animation-timing-function: ease-in;
+  }
+}
+
+@layer utilities {
+  /* 백드롭 필터 지원 */
+  .backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+  }
+
+  .backdrop-blur-md {
+    backdrop-filter: blur(12px);
+  }
+
+  /* 링 스타일 */
+  .ring-offset-background {
+    --tw-ring-offset-color: hsl(var(--background));
+  }
+
+  .ring-ring {
+    --tw-ring-color: hsl(var(--ring));
+  }
+
+  /* 포커스 링 */
+  .focus\:ring-2:focus {
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width)
+      var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width))
+      var(--tw-ring-color);
+    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  }
+
+  .focus\:ring-offset-2:focus {
+    --tw-ring-offset-width: 2px;
+  }
+}
+
+/* 스크롤바 완전 숨기기 (모바일용) */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* 부드러운 스크롤 */
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* 터치 스크롤 최적화 */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+}
+
+/* 네이버 지도 관련 모든 요소들의 z-index 제한 */
+.naver-map-container,
+.naver-map-container * {
+  z-index: 999 !important;
+}
+
+/* 네이버 지도 컨트롤들 (줌, 지도 타입 등) z-index 제한 */
+[class*='control'],
+[class*='Control'],
+.gmnoprint,
+.naver-zoom-control,
+[class*='zoom'],
+[class*='naver'],
+[class*='Naver'] {
+  z-index: 1000 !important;
+}
+
+/* 네이버 지도 팬(pane) 요소들 z-index 제한 */
+[class*='pane'],
+[class*='Pane'],
+[class*='overlay'],
+[class*='Overlay'] {
+  z-index: 999 !important;
+}
+
+/* 특별히 문제가 되는 요소들 추가 제한 */
+.leaflet-control-container,
+.leaflet-control,
+.mapboxgl-ctrl-group,
+.mapboxgl-ctrl {
+  z-index: 1000 !important;
+}
+
+/* 지도 전체 컨테이너 z-index 제한 */
+div[style*='position: absolute'],
+div[style*='position: relative'] {
+  z-index: auto !important;
+}
+
+/* 네이버 지도 루트 요소 z-index 명시적 설정 */
+#map,
+[id*='map'],
+[class*='map-container'] {
+  z-index: 1 !important;
+  position: relative !important;
 }

@@ -1,25 +1,37 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Button } from "./Button";
-import { buttonVariants } from "./buttonVariants";
-import type { VariantProps } from "class-variance-authority";
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Button } from './Button';
+import { buttonVariants } from './buttonVariants';
+import type { VariantProps } from 'class-variance-authority';
 
-type ButtonVariant = VariantProps<typeof buttonVariants>["variant"];
-type ButtonSize = VariantProps<typeof buttonVariants>["size"];
+type ButtonVariant = VariantProps<typeof buttonVariants>['variant'];
+type ButtonSize = VariantProps<typeof buttonVariants>['size'];
 
 const meta: Meta<typeof Button> = {
-  title: "Components/Button",
+  title: 'Components/Button',
   component: Button,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     variant: {
-      control: "select",
-      options: ["default", "destructive", "outline", "secondary", "ghost", "link"],
+      control: 'select',
+      options: [
+        'default',
+        'destructive',
+        'outline',
+        'secondary',
+        'ghost',
+        'link',
+        'login',
+        'missionStatus',
+        'map',
+        'yellowFull',
+        'startMoonoz',
+      ],
     },
     size: {
-      control: "select",
-      options: ["default", "sm", "lg", "icon"],
+      control: 'select',
+      options: ['default', 'sm', 'lg', 'icon', 'badge'],
     },
-    children: { control: "text" },
+    children: { control: 'text' },
   },
 };
 
@@ -28,34 +40,94 @@ type Story = StoryObj<typeof Button>;
 
 export const Playground: Story = {
   args: {
-    children: "Button",
-    variant: "default",
-    size: "default",
+    children: 'Button',
+    variant: 'default',
+    size: 'default',
   },
 };
 
 export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-wrap gap-4">
-      {(["default", "destructive", "outline", "secondary", "ghost", "link"] as ButtonVariant[]).map(
-        (variant) => (
-          <Button key={variant} variant={variant}>
-            {variant}
-          </Button>
-        ),
-      )}
+      {(
+        [
+          'default',
+          'destructive',
+          'outline',
+          'secondary',
+          'ghost',
+          'link',
+          'login',
+          'missionStatus',
+          'missionStatusCom',
+          'map',
+          'yellowFull',
+          'startMoonoz',
+        ] as ButtonVariant[]
+      ).map((variant) => (
+        <Button key={variant} variant={variant}>
+          {variant}
+        </Button>
+      ))}
     </div>
   ),
 };
 
 export const AllSizes: Story = {
   render: () => (
-    <div className="flex gap-4">
-      {(["sm", "default", "lg", "icon"] as ButtonSize[]).map((size) => (
+    <div className="flex gap-4 items-center">
+      {(['sm', 'default', 'lg', 'icon', 'badge'] as ButtonSize[]).map((size) => (
         <Button key={size} size={size}>
-          {size === "icon" ? "⭐️" : size}
+          {size === 'icon' ? '⭐️' : size}
         </Button>
       ))}
+    </div>
+  ),
+};
+
+export const MissionStatus: Story = {
+  render: () => (
+    <div className="flex gap-3">
+      <Button variant="missionStatus" size="badge">
+        진행 중
+      </Button>
+      <Button variant="missionStatus" size="badge">
+        이미 수령
+      </Button>
+      <Button variant="missionStatusCom" size="badge">
+        🪙 수령하기
+      </Button>
+    </div>
+  ),
+};
+
+export const MapButtons: Story = {
+  render: () => (
+    <div className="flex gap-3">
+      <Button variant="map" size="default">
+        <span>📍</span>
+        <span>내 위치로 찾기&ensp;</span>
+      </Button>
+      <Button variant="map" size="default">
+        <span>🗺️</span>
+        <span>전체 보기</span>
+      </Button>
+    </div>
+  ),
+};
+
+export const TutorialNextButton: Story = {
+  render: () => (
+    <div className="w-full flex">
+      <Button variant="yellowFull">다음으로 넘어가기</Button>
+    </div>
+  ),
+};
+
+export const StartMoonozButton: Story = {
+  render: () => (
+    <div className="flex justify-center">
+      <Button variant="startMoonoz">MoonoZ 시작하기 →</Button>
     </div>
   ),
 };

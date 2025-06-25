@@ -1,8 +1,8 @@
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Smartphone, Wifi, Phone, MessageSquare, Zap, ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Smartphone, Wifi, Phone, MessageSquare, Zap, ArrowRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface Plan {
   id: number;
@@ -19,20 +19,20 @@ interface PlanCardProps {
   plan: Plan;
   onSelect?: (plan: Plan) => void;
   className?: string;
-  variant?: "list" | "detail";
+  variant?: 'list' | 'detail';
 }
 
-const PlanItem: React.FC<PlanCardProps> = ({ plan, onSelect, className, variant = "list" }) => {
+const PlanItem: React.FC<PlanCardProps> = ({ plan, onSelect, className, variant = 'list' }) => {
   const handleSelect = () => {
     onSelect?.(plan);
   };
 
-  type ThemeColor = "red" | "yellow" | "blue";
+  type ThemeColor = 'red' | 'yellow' | 'blue';
 
   const getThemeColor = (price: number): ThemeColor => {
-    if (price <= 30000) return "yellow";
-    if (price <= 50000) return "red";
-    return "blue";
+    if (price <= 30000) return 'yellow';
+    if (price <= 50000) return 'red';
+    return 'blue';
   };
 
   const themeColor: ThemeColor = getThemeColor(plan.price);
@@ -48,42 +48,42 @@ const PlanItem: React.FC<PlanCardProps> = ({ plan, onSelect, className, variant 
     }
   > = {
     red: {
-      bg: "bg-brand-red-light",
-      gradient: "bg-brand-red",
-      text: "text-brand-red",
-      price: "text-brand-red",
-      badge: "bg-brand-red-light text-brand-red",
-      button: "bg-brand-red hover:bg-brand-red-hover text-white",
+      bg: 'bg-brand-red-light',
+      gradient: 'bg-brand-red',
+      text: 'text-brand-red',
+      price: 'text-brand-red',
+      badge: 'bg-brand-red-light text-brand-red',
+      button: 'bg-brand-red hover:bg-brand-red-hover text-white',
     },
     yellow: {
-      bg: "bg-brand-yellow-light",
-      gradient: "bg-brand-yellow",
-      text: "text-brand-yellow",
-      price: "text-brand-yellow",
-      badge: "bg-brand-yellow-light text-brand-yellow",
-      button: "bg-brand-yellow hover:bg-brand-yellow-hover text-white",
+      bg: 'bg-brand-yellow-light',
+      gradient: 'bg-brand-yellow',
+      text: 'text-brand-yellow',
+      price: 'text-brand-yellow',
+      badge: 'bg-brand-yellow-light text-brand-yellow',
+      button: 'bg-brand-yellow hover:bg-brand-yellow-hover text-white',
     },
     blue: {
-      bg: "bg-brand-darkblue-light",
-      gradient: "bg-brand-darkblue",
-      text: "text-brand-darkblue",
-      price: "text-brand-darkblue",
-      badge: "bg-brand-darkblue-light text-brand-darkblue",
-      button: "bg-brand-darkblue hover:bg-brand-darkblue-hover text-white",
+      bg: 'bg-brand-darkblue-light',
+      gradient: 'bg-brand-darkblue',
+      text: 'text-brand-darkblue',
+      price: 'text-brand-darkblue',
+      badge: 'bg-brand-darkblue-light text-brand-darkblue',
+      button: 'bg-brand-darkblue hover:bg-brand-darkblue-hover text-white',
     },
   };
 
   const theme = themes[themeColor];
 
-  if (variant === "detail") {
+  if (variant === 'detail') {
     return (
-      <Card className={cn("w-full bg-white shadow-lg border-0 rounded-2xl", className)}>
+      <Card className={cn('w-full bg-white shadow-lg border-0 rounded-2xl', className)}>
         <div className="p-6">
           {/* 헤더 */}
-          <div className="text-center mx-6">
+          <div className="text-center mb-6">
             <div
               className={cn(
-                "w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center",
+                'w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center',
                 theme.gradient,
               )}
             >
@@ -91,7 +91,7 @@ const PlanItem: React.FC<PlanCardProps> = ({ plan, onSelect, className, variant 
             </div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h1>
             <div className="flex items-center justify-center gap-2">
-              <span className={cn("text-3xl font-bold", theme.price)}>
+              <span className={cn('text-3xl font-bold', theme.price)}>
                 {plan.price.toLocaleString()}원
               </span>
               <span className="text-gray-500">/ 월</span>
@@ -100,7 +100,7 @@ const PlanItem: React.FC<PlanCardProps> = ({ plan, onSelect, className, variant 
 
           {/* 설명 */}
           {plan.description && (
-            <div className={cn("p-4 rounded-xl mb-6", theme.bg)}>
+            <div className={cn('p-4 rounded-xl mb-6', theme.bg)}>
               <p className="text-sm text-gray-700 text-center">{plan.description}</p>
             </div>
           )}
@@ -162,11 +162,11 @@ const PlanItem: React.FC<PlanCardProps> = ({ plan, onSelect, className, variant 
               onClick={handleSelect}
               className="w-full h-12 rounded-xl font-medium text-white"
               style={{
-                backgroundColor: theme.gradient.includes("red")
-                  ? "#ef4444"
-                  : theme.gradient.includes("yellow")
-                    ? "#eab308"
-                    : "#3b82f6",
+                backgroundColor: theme.gradient.includes('red')
+                  ? '#ef4444'
+                  : theme.gradient.includes('yellow')
+                    ? '#eab308'
+                    : '#3b82f6',
               }}
             >
               <Smartphone className="w-5 h-5 mr-2" />
@@ -182,8 +182,8 @@ const PlanItem: React.FC<PlanCardProps> = ({ plan, onSelect, className, variant 
   return (
     <Card
       className={cn(
-        "group cursor-pointer bg-white border-0 shadow-sm hover:shadow-md transition-all duration-300",
-        "hover:-translate-y-1 rounded-xl",
+        'group cursor-pointer bg-white border-0 shadow-sm hover:shadow-md transition-all duration-300',
+        'hover:-translate-y-1 rounded-xl',
         className,
       )}
       onClick={onSelect ? handleSelect : undefined}
@@ -193,7 +193,7 @@ const PlanItem: React.FC<PlanCardProps> = ({ plan, onSelect, className, variant 
           {/* 왼쪽 아이콘 */}
           <div
             className={cn(
-              "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0",
+              'w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0',
               theme.gradient,
             )}
           >
@@ -208,7 +208,7 @@ const PlanItem: React.FC<PlanCardProps> = ({ plan, onSelect, className, variant 
                   {plan.name}
                 </h3>
                 <div className="flex items-baseline gap-1 mt-1">
-                  <span className={cn("text-lg font-bold", theme.price)}>
+                  <span className={cn('text-lg font-bold', theme.price)}>
                     {plan.price.toLocaleString()}
                   </span>
                   <span className="text-xs text-gray-500">원/월</span>
@@ -235,11 +235,11 @@ const PlanItem: React.FC<PlanCardProps> = ({ plan, onSelect, className, variant 
 
             {/* 특별 혜택 또는 설명 */}
             <div className="flex items-center justify-between">
-              {plan.voice === "무제한" || plan.speed ? (
+              {plan.voice === '무제한' || plan.speed ? (
                 <div className="flex gap-1">
-                  {plan.voice === "무제한" && (
+                  {plan.voice === '무제한' && (
                     <span
-                      className={cn("px-2 py-0.5 text-xs font-medium rounded-full", theme.badge)}
+                      className={cn('px-2 py-0.5 text-xs font-medium rounded-full', theme.badge)}
                     >
                       무제한
                     </span>
@@ -252,7 +252,7 @@ const PlanItem: React.FC<PlanCardProps> = ({ plan, onSelect, className, variant 
                 </div>
               ) : (
                 <span className="text-xs text-gray-500 truncate">
-                  {plan.description || "자세한 혜택 확인"}
+                  {plan.description || '자세한 혜택 확인'}
                 </span>
               )}
             </div>

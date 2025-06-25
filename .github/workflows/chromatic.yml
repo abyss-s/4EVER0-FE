@@ -1,0 +1,31 @@
+# Workflow name
+name: 'Chromatic Deployment'
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+# List of jobs
+jobs:
+  chromatic:
+    name: 'Run Chromatic'
+    runs-on: ubuntu-latest
+    # 워크플로우 자체를 조직에서만 실행
+    if: github.repository_owner == 'Ureca-Middle-Project-Team4'
+    # Job steps
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: yarn
+        #👇 Adds Chromatic as a step in the workflow
+      - uses: chromaui/action@latest
+        env:
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_TOKEN }}
+        # Options required for Chromatic's GitHub Action
+        with:
+          #👇 Chromatic projectToken, see https://storybook.js.org/tutorials/intro-to-storybook/react/ko/deploy/ to obtain it
+          projectToken: ${{ secrets.CHROMATIC_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          onlyChanged: true # 변경된 스토리만 테스트
+          exitZeroOnChanges: true # UI 변경사항이 있어도 성공으로 처리
