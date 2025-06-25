@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { IMAGES } from '@/constant/imagePath';
 
 // 브랜드 컬러 정의
@@ -95,6 +96,7 @@ const scaleVariants = {
 
 const Landing = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const navigate = useNavigate();
   const lastRef = useRef(null);
 
   const lastInView = useInView(lastRef, { once: true });
@@ -132,7 +134,7 @@ const Landing = () => {
   }, []);
 
   const handleStartClick = () => {
-    alert('시작하기 버튼이 클릭되었습니다!');
+    navigate('/home');
   };
 
   return (
