@@ -70,8 +70,8 @@ export const IMAGES = {
     PHONE_MISSON: '/images/iPhone-mission.png',
     PHONE_MOONOTALK: '/images/iPhone-moonotalk.png',
     PHONE_HOME: '/images/iPhone-home.png',
-    PHONE_HOTPLACE: '/images/iPhone-2.png',
-    PHONE_MYPAGE: '/images/iPhone-3.png',
+    PHONE_HOTPLACE: '/images/iPhone-hotplace.png',
+    PHONE_MYPAGE: '/images/iPhone-mypage.png',
   },
   yellowBubble: '/images/yellowBubble.png',
 } as const;
