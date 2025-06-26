@@ -1,13 +1,10 @@
 export const getCategoryEmoji = (category: string): string => {
   const emojiMap: { [key: string]: string } = {
-    '도서/콘텐츠': '📖',
-    식음료: '🍽️',
-    편의점: '🏪',
-    '뷰티/생활': '💄',
+    '식당/베이커리': '🍽️',
+    '편의점/쇼핑': '🏪',
     패션: '👕',
-    카페: '☕',
+    '디저트/음료': '☕',
     치킨: '🍗',
-    베이커리: '🥐',
   };
 
   return emojiMap[category] || '🎁';

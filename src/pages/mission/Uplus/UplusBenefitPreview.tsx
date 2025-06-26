@@ -21,6 +21,8 @@ export const UplusBenefitPreview = ({ selectedCategory, benefits }: UplusBenefit
     return null; // 로딩 메시지 제거
   }
 
+  console.log(benefits);
+
   // 카테고리 필터링 적용
   const filteredBenefits =
     selectedCategory === '전체'
@@ -72,12 +74,14 @@ export const UplusBenefitPreview = ({ selectedCategory, benefits }: UplusBenefit
                 </div>
 
                 {/* 브랜드 로고 - 오른쪽 하단, 원형 */}
-                <div className="absolute bottom-3 right-3 w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg z-10">
+                <div className="absolute bottom-3 right-3 w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg z-10 overflow-hidden">
                   <img
-                    src={benefit.imageUrl}
+                    src={benefit.image_url}
                     alt={benefit.brand}
-                    className="w-8 h-8 object-contain"
+                    className="w-13 h-13 object-cover"
                     onError={(e) => {
+                      console.log(e);
+                      console.log(benefit.image_url);
                       const target = e.currentTarget;
                       target.style.display = 'none';
                       const fallbackElement = target.parentElement?.querySelector(
