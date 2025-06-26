@@ -14,12 +14,12 @@ export const getBrandBackgroundColor = (brand: string): string => {
   const colorMap: { [key: string]: string } = {
     배스킨라빈스: 'bg-pink-500',
     CU: 'bg-emerald-500',
-    파리바게뜨: 'bg-blue-800', // 추가 색상 예시
-    메가MGC커피: 'bg-yellow-500', // 추가 색상 예시
-    파파존스: 'bg-green-700', // 추가 색상 예시
+    파리바게뜨: 'bg-blue-800',
+    메가MGC커피: 'bg-yellow-500',
+    파파존스: 'bg-green-700',
     올리브영: 'bg-lime-300',
-    스파오: 'bg-red-700', // 추가 색상 예시
-    다이소: 'bg-red-500', // 추가 색상 예시
+    스파오: 'bg-red-700',
+    다이소: 'bg-red-500',
   };
 
   return colorMap[brand] || 'bg-gray-400';
@@ -29,12 +29,12 @@ export const getrawBackgroundColor = (brand: string): string => {
   const colorMap: { [key: string]: string } = {
     배스킨라빈스: 'bg-pink-500',
     CU: 'bg-emerald-500',
-    파리바게뜨: 'bg-blue-800', // 추가 색상 예시
-    메가MGC커피: 'bg-yellow-500', // 추가 색상 예시
-    파파존스: 'bg-green-700', // 추가 색상 예시
+    파리바게뜨: 'bg-blue-800',
+    메가MGC커피: 'bg-yellow-500',
+    파파존스: 'bg-green-700',
     올리브영: 'bg-lime-300',
-    스파오: 'bg-red-700', // 추가 색상 예시
-    다이소: 'bg-red-500', // 추가 색상 예시
+    스파오: 'bg-red-700',
+    다이소: 'bg-red-500',
   };
 
   const tailwindClass = colorMap[brand] || 'bg-gray-400'; // 기본 색상
@@ -45,12 +45,12 @@ export const getBrandDotColor = (brand: string): string => {
   const dotColorMap: { [key: string]: string } = {
     배스킨라빈스: 'bg-pink-300',
     CU: 'bg-emerald-300',
-    파리바게뜨: 'bg-orange-300', // 추가 색상 예시
-    메가MGC커피: 'bg-brown-300', // 추가 색상 예시
-    파파존스: 'bg-red-300', // 추가 색상 예시
-    올리브영: 'bg-green-300',
-    스파오: 'bg-teal-300', // 추가 색상 예시
-    다이소: 'bg-gray-300', // 추가 색상 예시
+    파리바게뜨: 'bg-blue-300',
+    메가MGC커피: 'bg-yellow-300',
+    파파존스: 'bg-green-300',
+    올리브영: 'bg-lime-300',
+    스파오: 'bg-red-300',
+    다이소: 'bg-red-400',
   };
 
   return dotColorMap[brand] || 'bg-gray-300';
