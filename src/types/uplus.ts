@@ -10,14 +10,14 @@ export interface Brand {
 export interface BenefitPreview {
   brand: string;
   date: string;
-  imageUrl: string;
+  image_url: string;
 }
 
 // 특정 날짜 혜택 조회용 (상세)
 export interface BenefitDetail {
   brand: string;
   date: string;
-  imageUrl: string;
+  image_url: string;
   description: string;
   category: string;
 }

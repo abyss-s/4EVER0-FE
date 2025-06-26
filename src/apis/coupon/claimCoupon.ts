@@ -10,4 +10,4 @@ interface CouponLikeResponse {
 }
 
 export const claimCoupon = (brand_Id: number): Promise<{ data: CouponLikeResponse }> =>
-  apiWithToken.post(`/coupons/${brand_Id}/like`);
+  apiWithToken.post(`/coupons/${brand_Id}/claim`);
